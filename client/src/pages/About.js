@@ -421,23 +421,23 @@ const values = [
 
 const teamMembers = [
   {
-    name: 'John Doe',
+    name: 'Nazat Hossain',
     role: 'CEO & Founder',
-    bio: 'Visionary leader with 15+ years of experience in technology and business strategy.',
-    image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+    bio: 'Visionary leader with 4+ years of experience in technology and business strategy.',
+    image: '/ceo.png',
   },
   {
     name: 'Jane Smith',
     role: 'CTO',
     bio: 'Technical expert specializing in software architecture and innovation.',
-    image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+    image: '/logo512.png',
   },
   {
     name: 'Mike Johnson',
     role: 'Lead Developer',
     bio: 'Full-stack developer with expertise in modern web technologies.',
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+    image: '/favicon.ico',
   },
 ];
 
-export default About; 
+export default About;
