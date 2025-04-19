@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useTheme } from '../../context/ThemeContext';
 import { motion } from 'framer-motion';
-import { 
+import {
+    ChartBarIcon,
     DocumentTextIcon,
     UserGroupIcon,
     EnvelopeIcon,
-    CogIcon
+    CogIcon,
+    PencilIcon,
+    TrashIcon,
+    CheckCircleIcon,
+    XCircleIcon,
+    ClockIcon
 } from '@heroicons/react/24/outline';
+import { useTheme } from '../../context/ThemeContext';
 
 const AdminDashboard = () => {
     const { isDarkMode } = useTheme();
