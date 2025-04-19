@@ -57,10 +57,6 @@ const Navbar = () => {
                                 {link.label}
                             </Link>
                         ))}
-                    </div>
-
-                    {/* Menu Bar with Dark Mode Icon */}
-                    <div className="flex items-center space-x-4">
                         <button
                             onClick={toggleTheme}
                             className={`p-2 rounded-full ${
@@ -77,7 +73,10 @@ const Navbar = () => {
                                 </svg>
                             )}
                         </button>
+                    </div>
 
+                    {/* Mobile menu button */}
+                    <div className="flex items-center space-x-4">
                         <button
                             onClick={() => setIsMenuOpen(!isMenuOpen)}
                             className={`md:hidden p-2 rounded-lg transition-colors duration-200 ${
@@ -118,16 +117,6 @@ const Navbar = () => {
                                 {link.label}
                             </Link>
                         ))}
-                        <button
-                            onClick={toggleTheme}
-                            className={`block w-full px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200 text-center ${
-                                isDarkMode 
-                                    ? 'text-yellow-400 hover:bg-gray-800' 
-                                    : 'text-gray-600 hover:bg-gray-100'
-                            }`}
-                        >
-                            {isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-                        </button>
                     </div>
                 </div>
             </div>
@@ -135,4 +124,4 @@ const Navbar = () => {
     );
 };
 
-export default Navbar;
+export default Navbar; 

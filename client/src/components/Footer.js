@@ -18,10 +18,13 @@ const Footer = () => {
                     <div>
                         <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
                         <ul className="space-y-2">
-                            <li><Link to="/" className="text-gray-600 dark:text-gray-300 hover:text-blue-500">Home</Link></li>
-                            <li><Link to="/services" className="text-gray-600 dark:text-gray-300 hover:text-blue-500">Services</Link></li>
-                            <li><Link to="/portfolio" className="text-gray-600 dark:text-gray-300 hover:text-blue-500">Portfolio</Link></li>
-                            <li><Link to="/blog" className="text-gray-600 dark:text-gray-300 hover:text-blue-500">Blog</Link></li>
+                            <li><Link to="/" className="text-gray-600 dark:text-gray-300 hover:text-blue-500 active:text-blue-700">Home</Link></li>
+                            <li><Link to="/services" className="text-gray-600 dark:text-gray-300 hover:text-blue-500 active:text-blue-700">Services</Link></li>
+                            <li><Link to="/services#web" className="text-gray-600 dark:text-gray-300 hover:text-blue-500 active:text-blue-700">Web Development</Link></li>
+                            <li><Link to="/services#mobile" className="text-gray-600 dark:text-gray-300 hover:text-blue-500 active:text-blue-700">Mobile Apps</Link></li>
+                            <li><Link to="/services#ai" className="text-gray-600 dark:text-gray-300 hover:text-blue-500 active:text-blue-700">AI Solutions</Link></li>
+                            <li><Link to="/portfolio" className="text-gray-600 dark:text-gray-300 hover:text-blue-500 active:text-blue-700">Portfolio</Link></li>
+                            <li><Link to="/blog" className="text-gray-600 dark:text-gray-300 hover:text-blue-500 active:text-blue-700">Blog</Link></li>
                         </ul>
                     </div>
                     <div>
@@ -35,9 +38,9 @@ const Footer = () => {
                     <div>
                         <h4 className="text-lg font-semibold mb-4">Contact</h4>
                         <ul className="space-y-2">
-                            <li className="text-gray-600 dark:text-gray-300">Email: info@technest.com</li>
-                            <li className="text-gray-600 dark:text-gray-300">Phone: +1 (123) 456-7890</li>
-                            <li className="text-gray-600 dark:text-gray-300">Address: 123 Tech Street, Silicon Valley</li>
+                            <li className="text-gray-600 dark:text-gray-300">Email: technestsolution@gmail.com</li>
+                            <li className="text-gray-600 dark:text-gray-300">Phone: +880 1322-69516</li>
+                            <li className="text-gray-600 dark:text-gray-300">Address: Dhaka, Banglaedsh</li>
                         </ul>
                     </div>
                 </div>
@@ -51,4 +54,4 @@ const Footer = () => {
     );
 };
 
-export default Footer; 
+export default Footer;
