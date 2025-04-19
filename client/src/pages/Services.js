@@ -4,16 +4,20 @@ import {
   CodeBracketIcon,
   DevicePhoneMobileIcon,
   CpuChipIcon,
-  CheckIcon
+  CheckIcon,
+  StarIcon,
+  BoltIcon,
+  SparklesIcon
 } from '@heroicons/react/24/outline';
 
 const Services = () => {
   const [selectedService, setSelectedService] = useState('web-development');
+  const [hoveredPlan, setHoveredPlan] = useState(null);
 
   return (
-    <div className="pt-16">
+    <div className="pt-0">
       {/* Hero Section */}
-      <section className="relative py-20">
+      <section className="relative min-h-[60vh] flex items-center">
         <div className="absolute inset-0 bg-gradient-to-br from-primary-50 to-secondary-50 dark:from-primary-900/20 dark:to-secondary-900/20 -z-10" />
         <div className="container mx-auto px-4">
           <motion.div
@@ -87,33 +91,122 @@ const Services = () => {
                   </div>
                 </div>
                 <div className="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
-                  <h3 className="subheading mb-6">Pricing Plans</h3>
-                  <div className="space-y-6">
-                    {service.pricingPlans.map((plan, index) => (
-                      <div
-                        key={index}
-                        className="border border-gray-200 dark:border-gray-700 rounded-lg p-6"
-                      >
-                        <h4 className="font-semibold text-lg mb-2">{plan.name}</h4>
-                        <p className="text-3xl font-bold mb-4">
-                          {plan.price}
-                          <span className="text-sm font-normal text-gray-500">/project</span>
-                        </p>
-                        <ul className="space-y-2">
-                          {plan.features.map((feature, idx) => (
-                            <li key={idx} className="flex items-center text-gray-600 dark:text-gray-300">
-                              <CheckIcon className="h-5 w-5 text-primary-600 mr-2" />
-                              {feature}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    ))}
+                  <h3 className="subheading mb-6">Service Details</h3>
+                  <div className="space-y-4">
+                    <p className="text-gray-600 dark:text-gray-300">
+                      {service.detailedDescription}
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {service.features.map((feature, idx) => (
+                        <span
+                          key={idx}
+                          className="bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400 px-3 py-1 rounded-full text-sm"
+                        >
+                          {feature}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
             </motion.div>
           ))}
+        </div>
+      </section>
+
+      {/* New Pricing Section */}
+      <section className="py-20 bg-gray-50 dark:bg-gray-800">
+        <div className="container">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="text-center mb-12"
+          >
+            <h2 className="heading mb-4">Pricing Plans</h2>
+            <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+              Choose the perfect plan that fits your business needs and budget.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {pricingPlans.map((plan, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className={`relative ${
+                  plan.isPopular ? 'md:scale-105' : ''
+                }`}
+                onMouseEnter={() => setHoveredPlan(index)}
+                onMouseLeave={() => setHoveredPlan(null)}
+              >
+                {plan.isPopular && (
+                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                    <div className="bg-primary-600 text-white px-4 py-1 rounded-full text-sm font-semibold flex items-center">
+                      <StarIcon className="h-4 w-4 mr-1" />
+                      Most Popular
+                    </div>
+                  </div>
+                )}
+                <div
+                  className={`bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg transition-all duration-300 ${
+                    hoveredPlan === index ? 'transform -translate-y-2 shadow-xl' : ''
+                  } ${
+                    plan.isPopular ? 'border-2 border-primary-500' : 'border border-gray-200 dark:border-gray-700'
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-6">
+                    <h3 className="text-2xl font-bold">{plan.name}</h3>
+                    {plan.isPopular && <SparklesIcon className="h-6 w-6 text-primary-600" />}
+                  </div>
+                  
+                  <div className="mb-6">
+                    <span className="text-4xl font-bold">{plan.price}</span>
+                    <span className="text-gray-500 dark:text-gray-400">/project</span>
+                  </div>
+
+                  <ul className="space-y-4 mb-8">
+                    {plan.features.map((feature, idx) => (
+                      <li key={idx} className="flex items-center text-gray-600 dark:text-gray-300">
+                        <CheckIcon className="h-5 w-5 text-primary-600 mr-3" />
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <button
+                    className={`w-full py-3 px-6 rounded-lg font-semibold transition-all duration-300 ${
+                      plan.isPopular
+                        ? 'bg-primary-600 text-white hover:bg-primary-700'
+                        : 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700'
+                    }`}
+                  >
+                    Get Started
+                  </button>
+
+                  {plan.bonus && (
+                    <div className="mt-4 text-sm text-primary-600 flex items-center">
+                      <BoltIcon className="h-4 w-4 mr-1" />
+                      {plan.bonus}
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <div className="mt-12 text-center">
+            <p className="text-gray-600 dark:text-gray-300 mb-4">
+              Need a custom solution? We can tailor a plan specifically for your needs.
+            </p>
+            <button className="btn btn-outline">
+              Contact Us for Custom Plan
+            </button>
+          </div>
         </div>
       </section>
 
@@ -159,42 +252,7 @@ const services = [
       'Database integration and optimization',
       'API development and integration',
       'Performance optimization and SEO',
-    ],
-    pricingPlans: [
-      {
-        name: 'Basic Website',
-        price: '$1,500',
-        features: [
-          'Up to 5 pages',
-          'Responsive design',
-          'Basic SEO setup',
-          'Contact form',
-          '1 month support',
-        ],
-      },
-      {
-        name: 'Business Website',
-        price: '$3,500',
-        features: [
-          'Up to 15 pages',
-          'Custom design',
-          'Advanced SEO',
-          'Blog integration',
-          '3 months support',
-        ],
-      },
-      {
-        name: 'Web Application',
-        price: 'Custom',
-        features: [
-          'Custom features',
-          'User authentication',
-          'Database integration',
-          'API development',
-          '6 months support',
-        ],
-      },
-    ],
+    ]
   },
   {
     id: 'mobile-apps',
@@ -209,42 +267,7 @@ const services = [
       'Offline functionality',
       'Push notifications',
       'App store optimization',
-    ],
-    pricingPlans: [
-      {
-        name: 'Basic App',
-        price: '$5,000',
-        features: [
-          'Single platform (iOS or Android)',
-          'Basic features',
-          'Simple UI/UX',
-          'Basic backend',
-          '3 months support',
-        ],
-      },
-      {
-        name: 'Business App',
-        price: '$10,000',
-        features: [
-          'Both platforms',
-          'Advanced features',
-          'Custom UI/UX',
-          'API integration',
-          '6 months support',
-        ],
-      },
-      {
-        name: 'Enterprise App',
-        price: 'Custom',
-        features: [
-          'Custom features',
-          'Advanced security',
-          'Cloud integration',
-          'Analytics dashboard',
-          '12 months support',
-        ],
-      },
-    ],
+    ]
   },
   {
     id: 'ai-solutions',
@@ -259,43 +282,55 @@ const services = [
       'Predictive analytics',
       'Data processing automation',
       'AI-powered chatbots',
+    ]
+  }
+];
+
+// Add pricing plans data
+const pricingPlans = [
+  {
+    name: 'Basic',
+    price: '$1,500',
+    isPopular: false,
+    features: [
+      'Up to 5 pages',
+      'Responsive design',
+      'Basic SEO setup',
+      'Contact form',
+      '1 month support',
     ],
-    pricingPlans: [
-      {
-        name: 'AI Integration',
-        price: '$7,500',
-        features: [
-          'Basic AI features',
-          'Data analysis',
-          'Simple automation',
-          'Basic reporting',
-          '3 months support',
-        ],
-      },
-      {
-        name: 'Custom AI Solution',
-        price: '$15,000',
-        features: [
-          'Custom AI models',
-          'Advanced analytics',
-          'Process automation',
-          'Detailed reporting',
-          '6 months support',
-        ],
-      },
-      {
-        name: 'Enterprise AI',
-        price: 'Custom',
-        features: [
-          'Complex AI systems',
-          'Real-time processing',
-          'Multiple integrations',
-          'Custom dashboards',
-          '12 months support',
-        ],
-      },
-    ],
+    bonus: 'Free domain for 1 year'
   },
+  {
+    name: 'Business',
+    price: '$3,500',
+    isPopular: true,
+    features: [
+      'Up to 15 pages',
+      'Custom design',
+      'Advanced SEO',
+      'Blog integration',
+      '3 months support',
+      'Analytics setup',
+      'Social media integration'
+    ],
+    bonus: 'Free SSL certificate'
+  },
+  {
+    name: 'Enterprise',
+    price: 'Custom',
+    isPopular: false,
+    features: [
+      'Custom features',
+      'User authentication',
+      'Database integration',
+      'API development',
+      '6 months support',
+      'Performance optimization',
+      'Security implementation'
+    ],
+    bonus: 'Free maintenance for 3 months'
+  }
 ];
 
 export default Services; 

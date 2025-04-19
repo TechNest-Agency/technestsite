@@ -6,14 +6,95 @@ import {
   ChartBarIcon,
   HeartIcon,
   ShieldCheckIcon,
-  SparklesIcon
+  SparklesIcon,
+  TrophyIcon,
+  BuildingOfficeIcon,
+  GlobeAltIcon,
+  CalendarIcon
 } from '@heroicons/react/24/outline';
 
 const About = () => {
+  const milestones = [
+    {
+      year: '2024',
+      title: 'Company Founded',
+      description: 'TechNest Solutions was established with a vision to revolutionize digital transformation.'
+    },
+    {
+      year: '2024 Q2',
+      title: 'First Major Project',
+      description: 'Successfully completed our first enterprise-level project, setting new industry standards.'
+    },
+    {
+      year: '2024 Q3',
+      title: 'Team Expansion',
+      description: 'Expanded our team to 20+ professionals, bringing diverse expertise onboard.'
+    },
+    {
+      year: '2024 Q4',
+      title: 'Global Recognition',
+      description: 'Received international recognition for innovation in digital solutions.'
+    }
+  ];
+
+  const officeCulture = [
+    {
+      title: 'Work-Life Balance',
+      description: 'Flexible work hours and remote work options to ensure our team maintains a healthy balance.',
+      icon: CalendarIcon
+    },
+    {
+      title: 'Learning & Growth',
+      description: 'Regular training sessions, workshops, and conference sponsorships for continuous learning.',
+      icon: ChartBarIcon
+    },
+    {
+      title: 'Team Building',
+      description: 'Regular team outings, hackathons, and collaborative projects to strengthen bonds.',
+      icon: UserGroupIcon
+    }
+  ];
+
+  const awards = [
+    {
+      title: 'Best Tech Startup 2024',
+      organization: 'Tech Innovation Awards',
+      year: '2024'
+    },
+    {
+      title: 'Excellence in Digital Solutions',
+      organization: 'Global Tech Forum',
+      year: '2024'
+    },
+    {
+      title: 'Innovation in Web Development',
+      organization: 'Web Development Association',
+      year: '2024'
+    }
+  ];
+
+  const communityInitiatives = [
+    {
+      title: 'Tech Education',
+      description: 'Providing free coding workshops and mentorship programs for underprivileged students.',
+      icon: GlobeAltIcon
+    },
+    {
+      title: 'Environmental Responsibility',
+      description: 'Implementing green practices in our office and supporting environmental causes.',
+      icon: HeartIcon
+    },
+    {
+      title: 'Local Community Support',
+      description: 'Active participation in local community development and charity programs.',
+      icon: BuildingOfficeIcon
+    }
+  ];
+
   return (
-    <div className="pt-16">
+    <div className="pt-0">
       {/* Hero Section */}
-      <section className="relative py-20">
+      <section className="relative min-h-[60vh] flex items-center">
         <div className="absolute inset-0 bg-gradient-to-br from-primary-50 to-secondary-50 dark:from-primary-900/20 dark:to-secondary-900/20 -z-10" />
         <div className="container mx-auto px-4">
           <motion.div
@@ -139,6 +220,162 @@ const About = () => {
                 <h3 className="subheading mb-1">{member.name}</h3>
                 <p className="text-primary-600 mb-2">{member.role}</p>
                 <p className="text-gray-600 dark:text-gray-300">{member.bio}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Timeline Section */}
+      <section className="py-20 bg-gray-50 dark:bg-gray-800">
+        <div className="container">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="text-center mb-12"
+          >
+            <h2 className="heading mb-4">Our Journey</h2>
+            <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+              A timeline of our growth and achievements since our inception.
+            </p>
+          </motion.div>
+
+          <div className="relative">
+            <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-primary-200 dark:bg-primary-900/30"></div>
+            {milestones.map((milestone, index) => (
+              <motion.div
+                key={milestone.year}
+                initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className={`mb-8 flex items-center ${index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'}`}
+              >
+                <div className="w-1/2 px-4">
+                  <div className="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg">
+                    <h3 className="text-xl font-semibold mb-2">{milestone.title}</h3>
+                    <p className="text-gray-600 dark:text-gray-300">{milestone.description}</p>
+                  </div>
+                </div>
+                <div className="w-1/2 px-4 text-center">
+                  <div className="inline-block bg-primary-600 text-white px-4 py-2 rounded-lg">
+                    {milestone.year}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Office Culture Section */}
+      <section className="py-20 bg-white dark:bg-gray-900">
+        <div className="container">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="text-center mb-12"
+          >
+            <h2 className="heading mb-4">Our Office Culture</h2>
+            <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+              We believe in creating an environment where everyone can thrive and grow.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {officeCulture.map((item, index) => (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6"
+              >
+                <div className="w-12 h-12 bg-primary-100 dark:bg-primary-900/20 rounded-lg flex items-center justify-center mb-4">
+                  <item.icon className="h-6 w-6 text-primary-600" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
+                <p className="text-gray-600 dark:text-gray-300">{item.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Awards Section */}
+      <section className="py-20 bg-gray-50 dark:bg-gray-800">
+        <div className="container">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="text-center mb-12"
+          >
+            <h2 className="heading mb-4">Awards & Recognition</h2>
+            <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+              Our commitment to excellence has been recognized by industry leaders.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {awards.map((award, index) => (
+              <motion.div
+                key={award.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="bg-white dark:bg-gray-900 rounded-xl p-6 text-center"
+              >
+                <div className="w-12 h-12 bg-primary-100 dark:bg-primary-900/20 rounded-lg flex items-center justify-center mb-4 mx-auto">
+                  <TrophyIcon className="h-6 w-6 text-primary-600" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2">{award.title}</h3>
+                <p className="text-gray-600 dark:text-gray-300 mb-2">{award.organization}</p>
+                <p className="text-primary-600">{award.year}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Community Involvement Section */}
+      <section className="py-20 bg-white dark:bg-gray-900">
+        <div className="container">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="text-center mb-12"
+          >
+            <h2 className="heading mb-4">Community Involvement</h2>
+            <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+              We believe in giving back to the community and making a positive impact.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {communityInitiatives.map((initiative, index) => (
+              <motion.div
+                key={initiative.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6"
+              >
+                <div className="w-12 h-12 bg-primary-100 dark:bg-primary-900/20 rounded-lg flex items-center justify-center mb-4">
+                  <initiative.icon className="h-6 w-6 text-primary-600" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2">{initiative.title}</h3>
+                <p className="text-gray-600 dark:text-gray-300">{initiative.description}</p>
               </motion.div>
             ))}
           </div>

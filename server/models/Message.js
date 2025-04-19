@@ -12,6 +12,10 @@ const messageSchema = new mongoose.Schema({
         trim: true,
         lowercase: true
     },
+    phone: {
+        type: String,
+        trim: true
+    },
     subject: {
         type: String,
         required: true,
@@ -19,34 +23,84 @@ const messageSchema = new mongoose.Schema({
     },
     message: {
         type: String,
-        required: true
+        required: true,
+        trim: true
+    },
+    service: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Service'
     },
     status: {
         type: String,
-        enum: ['new', 'read', 'replied', 'archived'],
+        enum: ['new', 'read', 'replied', 'spam'],
         default: 'new'
     },
-    service: {
+    priority: {
+        type: String,
+        enum: ['low', 'medium', 'high', 'urgent'],
+        default: 'medium'
+    },
+    source: {
+        type: String,
+        enum: ['contact_form', 'chat', 'email', 'phone'],
+        default: 'contact_form'
+    },
+    assignedTo: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    },
+    replies: [{
+        user: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            required: true
+        },
+        content: {
+            type: String,
+            required: true
+        },
+        createdAt: {
+            type: Date,
+            default: Date.now
+        }
+    }],
+    notes: [{
+        user: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            required: true
+        },
+        content: {
+            type: String,
+            required: true
+        },
+        createdAt: {
+            type: Date,
+            default: Date.now
+        }
+    }],
+    metadata: {
+        ip: String,
+        userAgent: String,
+        referrer: String,
+        location: {
+            country: String,
+            city: String
+        }
+    },
+    tags: [{
         type: String,
         trim: true
-    },
-    budget: {
-        type: String,
-        trim: true
-    },
-    timeline: {
-        type: String,
-        trim: true
-    },
-    attachments: [{
-        filename: String,
-        path: String,
-        size: Number,
-        mimetype: String
     }]
 }, {
     timestamps: true
 });
+
+// Add indexes for better query performance
+messageSchema.index({ status: 1 });
+messageSchema.index({ priority: 1 });
+messageSchema.index({ createdAt: -1 });
+messageSchema.index({ email: 1 });
 
 const Message = mongoose.model('Message', messageSchema);
 

@@ -110,43 +110,21 @@ router.get('/verify-email/:token', async (req, res) => {
 });
 
 // Login user
-router.post('/login', [
-    body('email').isEmail().normalizeEmail(),
-    body('password').exists()
-], async (req, res) => {
+router.post('/login', async (req, res) => {
     try {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
-        }
-
         const { email, password } = req.body;
 
-        // Find user
+        // Find user by email
         const user = await User.findOne({ email });
         if (!user) {
-            return res.status(400).json({ message: 'Invalid credentials' });
-        }
-
-        // Check if account is locked
-        if (user.isLocked()) {
-            return res.status(400).json({ 
-                message: 'Account is locked. Please try again later.' 
-            });
+            return res.status(401).json({ message: 'Invalid credentials' });
         }
 
         // Check password
         const isMatch = await user.comparePassword(password);
         if (!isMatch) {
-            await user.incrementLoginAttempts();
-            return res.status(400).json({ message: 'Invalid credentials' });
+            return res.status(401).json({ message: 'Invalid credentials' });
         }
-
-        // Reset login attempts on successful login
-        user.loginAttempts = 0;
-        user.lockUntil = undefined;
-        user.lastLogin = Date.now();
-        await user.save();
 
         // Generate JWT token
         const token = jwt.sign(
