@@ -9,24 +9,22 @@ import {
     CogIcon,
     PencilIcon,
     TrashIcon,
-    CheckCircleIcon,
-    XCircleIcon,
-    ClockIcon,
     PlusIcon,
     ArrowPathIcon,
     EyeIcon,
-    CalendarIcon,
     UserPlusIcon
 } from '@heroicons/react/24/outline';
 import { useTheme } from '../../context/ThemeContext';
 import { useNavigate } from 'react-router-dom';
 import ImageUpload from '../../components/ImageUpload';
+import axios from 'axios';
 
 const AdminDashboard = () => {
     const { isDarkMode } = useTheme();
     const { user } = useAuth();
     const [activeTab, setActiveTab] = useState('overview');
     const [isLoading, setIsLoading] = useState(true);
+    const [courses, setCourses] = useState([]);
     const [stats, setStats] = useState({
         totalPosts: 0,
         totalServices: 0,
@@ -113,6 +111,16 @@ const AdminDashboard = () => {
         contactDescription: '',
         contactAddress: '',
         contactPhone: ''
+    });
+
+    const [editingId, setEditingId] = useState(null);
+    const [formData, setFormData] = useState({
+        title: '',
+        description: '',
+        price: '',
+        duration: '',
+        instructor: '',
+        image: ''
     });
 
     const navigate = useNavigate();
@@ -400,12 +408,62 @@ const AdminDashboard = () => {
             });
 
             if (response.ok) {
-                const result = await response.json();
                 alert('Settings updated successfully');
             }
         } catch (error) {
             console.error('Error saving settings:', error);
         }
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            if (editingId) {
+                await axios.put(`/api/courses/${editingId}`, formData);
+            } else {
+                await axios.post('/api/courses', formData);
+            }
+            const response = await axios.get('/api/courses');
+            setCourses(response.data);
+            resetForm();
+        } catch (error) {
+            console.error('Error submitting course:', error);
+        }
+    };
+
+    const handleEdit = (course) => {
+        setEditingId(course._id);
+        setFormData({
+            title: course.title,
+            description: course.description,
+            price: course.price,
+            duration: course.duration,
+            instructor: course.instructor,
+            image: course.image
+        });
+    };
+
+    const handleDelete = async (courseId) => {
+        if (window.confirm('Are you sure you want to delete this course?')) {
+            try {
+                await axios.delete(`/api/courses/${courseId}`);
+                setCourses(courses.filter(course => course._id !== courseId));
+            } catch (error) {
+                console.error('Error deleting course:', error);
+            }
+        }
+    };
+
+    const resetForm = () => {
+        setEditingId(null);
+        setFormData({
+            title: '',
+            description: '',
+            price: '',
+            duration: '',
+            instructor: '',
+            image: ''
+        });
     };
 
     const renderLoadingSpinner = () => (
@@ -1485,6 +1543,141 @@ const AdminDashboard = () => {
         </div>
     );
 
+    const renderCourses = () => (
+        <div className="container mx-auto p-4">
+            <h1 className="text-3xl font-bold mb-6">Course Management</h1>
+            
+            {/* Course Form */}
+            <div className="bg-white p-6 rounded-lg shadow-md mb-8">
+                <h2 className="text-xl font-semibold mb-4">
+                    {editingId ? 'Edit Course' : 'Add New Course'}
+                </h2>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    <div>
+                        <label className="block mb-1">Title</label>
+                        <input
+                            type="text"
+                            value={formData.title}
+                            onChange={(e) => setFormData({...formData, title: e.target.value})}
+                            className="w-full p-2 border rounded"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label className="block mb-1">Description</label>
+                        <textarea
+                            value={formData.description}
+                            onChange={(e) => setFormData({...formData, description: e.target.value})}
+                            className="w-full p-2 border rounded"
+                            required
+                        />
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                        <div>
+                            <label className="block mb-1">Price ($)</label>
+                            <input
+                                type="number"
+                                value={formData.price}
+                                onChange={(e) => setFormData({...formData, price: e.target.value})}
+                                className="w-full p-2 border rounded"
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label className="block mb-1">Duration</label>
+                            <input
+                                type="text"
+                                value={formData.duration}
+                                onChange={(e) => setFormData({...formData, duration: e.target.value})}
+                                className="w-full p-2 border rounded"
+                                required
+                            />
+                        </div>
+                    </div>
+                    <div>
+                        <label className="block mb-1">Instructor</label>
+                        <input
+                            type="text"
+                            value={formData.instructor}
+                            onChange={(e) => setFormData({...formData, instructor: e.target.value})}
+                            className="w-full p-2 border rounded"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label className="block mb-1">Image URL</label>
+                        <input
+                            type="text"
+                            value={formData.image}
+                            onChange={(e) => setFormData({...formData, image: e.target.value})}
+                            className="w-full p-2 border rounded"
+                            required
+                        />
+                    </div>
+                    <div className="flex gap-2">
+                        <button
+                            type="submit"
+                            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                        >
+                            {editingId ? 'Update Course' : 'Add Course'}
+                        </button>
+                        {editingId && (
+                            <button
+                                type="button"
+                                onClick={resetForm}
+                                className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+                            >
+                                Cancel
+                            </button>
+                        )}
+                    </div>
+                </form>
+            </div>
+
+            {/* Courses List */}
+            <div className="bg-white rounded-lg shadow-md">
+                <h2 className="text-xl font-semibold p-4 border-b">All Courses</h2>
+                <div className="overflow-x-auto">
+                    <table className="w-full">
+                        <thead className="bg-gray-50">
+                            <tr>
+                                <th className="px-6 py-3 text-left">Title</th>
+                                <th className="px-6 py-3 text-left">Price</th>
+                                <th className="px-6 py-3 text-left">Duration</th>
+                                <th className="px-6 py-3 text-left">Instructor</th>
+                                <th className="px-6 py-3 text-left">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-200">
+                            {courses.map((course) => (
+                                <tr key={course._id}>
+                                    <td className="px-6 py-4">{course.title}</td>
+                                    <td className="px-6 py-4">${course.price}</td>
+                                    <td className="px-6 py-4">{course.duration}</td>
+                                    <td className="px-6 py-4">{course.instructor}</td>
+                                    <td className="px-6 py-4">
+                                        <button
+                                            onClick={() => handleEdit(course)}
+                                            className="text-blue-600 hover:text-blue-800 mr-3"
+                                        >
+                                            Edit
+                                        </button>
+                                        <button
+                                            onClick={() => handleDelete(course._id)}
+                                            className="text-red-600 hover:text-red-800"
+                                        >
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    );
+
     return (
         <motion.div 
             initial={{ opacity: 0 }}
@@ -1577,6 +1770,17 @@ const AdminDashboard = () => {
                                 <CogIcon className="h-5 w-5 mr-2" />
                                 Settings
                             </button>
+                            <button
+                                onClick={() => setActiveTab('courses')}
+                                className={`w-full text-left px-4 py-2 rounded-lg flex items-center ${
+                                    activeTab === 'courses'
+                                        ? isDarkMode ? 'bg-blue-600 text-white' : 'bg-blue-100 text-blue-700'
+                                        : isDarkMode ? 'text-gray-300 hover:bg-gray-700' : 'text-gray-700 hover:bg-gray-100'
+                                }`}
+                            >
+                                <DocumentTextIcon className="h-5 w-5 mr-2" />
+                                Courses
+                            </button>
                         </nav>
                     </div>
                 </motion.div>
@@ -1595,6 +1799,7 @@ const AdminDashboard = () => {
                         activeTab === 'users' ? renderUsers() :
                         activeTab === 'messages' ? renderMessages() :
                         activeTab === 'settings' ? renderSettings() :
+                        activeTab === 'courses' ? renderCourses() :
                         <div className="text-center py-12">
                             <p className="text-gray-500">This section is under development</p>
                         </div>
@@ -1605,4 +1810,4 @@ const AdminDashboard = () => {
     );
 };
 
-export default AdminDashboard; 
+export default AdminDashboard;

@@ -83,12 +83,15 @@ app.post('/api/test-post', (req, res) => {
     res.json({ message: 'POST request received', body: req.body });
 });
 
+const courseRoutes = require('./routes/courses');
+
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/admin', require('./routes/admin'));
 app.use('/api/blog', require('./routes/blog'));
 app.use('/api/portfolio', require('./routes/portfolio'));
 app.use('/api/services', require('./routes/services'));
 app.use('/api/messages', require('./routes/messages'));
+app.use('/api/courses', courseRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -108,4 +111,4 @@ app.listen(PORT, () => {
     console.log(`CORS enabled for: http://localhost:3001`);
 });
 
-module.exports = app; 
+module.exports = app;
