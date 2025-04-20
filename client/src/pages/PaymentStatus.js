@@ -1,13 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
 import { useTheme } from '../context/ThemeContext';
+import { useCart } from '../context/CartContext';
 
 const PaymentStatus = () => {
-  const { status } = useParams();
+  const location = useLocation();
   const { isDarkMode } = useTheme();
-  const isSuccess = status === 'success';
+  const isSuccess = location.pathname.includes('success');
+  const { clearCart } = useCart();
+
+  useEffect(() => {
+    if (isSuccess) {
+      clearCart();
+    }
+  }, [isSuccess, clearCart]);
 
   return (
     <div className="min-h-screen py-12 bg-gray-50 dark:bg-gray-900">

@@ -5,11 +5,10 @@ import {
   DevicePhoneMobileIcon,
   CpuChipIcon,
   CheckIcon,
-  StarIcon
+  StarIcon,
+  ShoppingCartIcon
 } from '@heroicons/react/24/outline';
 import { useCart } from '../context/CartContext';
-import { ShoppingCartIcon } from '@heroicons/react/24/outline';
-
 const Services = () => {
   const [selectedService, setSelectedService] = useState('web-development');
   const [hoveredPlan, setHoveredPlan] = useState(null);
@@ -17,10 +16,13 @@ const Services = () => {
 
   const handleAddToCart = (plan) => {
     addToCart({
-      id: plan.name,
+      id: plan.name.toLowerCase().replace(/\s+/g, '-'),
       title: plan.name,
       price: plan.price,
-      type: 'plan'
+      type: 'service-plan',
+      description: plan.details,
+      category: selectedService,
+      features: plan.features
     });
   };
 

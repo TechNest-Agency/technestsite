@@ -19,6 +19,18 @@ export const CartProvider = ({ children }) => {
     }, [cartItems]);
 
     const addToCart = (item) => {
+        const productDetails = {
+            id: item.id,
+            title: item.title,
+            price: item.price,
+            type: item.type || 'service',
+            description: item.details || item.description || '',
+            category: item.category || '',
+            features: item.features || [],
+            duration: item.duration || '',
+            image: item.image || ''
+        };
+
         setCartItems(prev => {
             const existingItem = prev.find(i => i.id === item.id);
             if (existingItem) {
@@ -28,7 +40,7 @@ export const CartProvider = ({ children }) => {
                         : i
                 );
             }
-            return [...prev, { ...item, quantity: 1 }];
+            return [...prev, { ...productDetails, quantity: 1 }];
         });
         setIsCartOpen(true);
     };

@@ -276,7 +276,10 @@ const About = () => {
       id: pkg.id,
       title: pkg.title,
       price: pkg.price,
-      type: 'package'
+      type: 'enterprise-package',
+      description: pkg.details,
+      features: pkg.features,
+      category: 'Enterprise Solutions'
     });
   };
 

@@ -47,34 +47,68 @@ const Cart = () => {
                                     <div className="flow-root">
                                         <ul className="divide-y divide-gray-200 dark:divide-gray-700">
                                             {cartItems.map((item) => (
-                                                <li key={item.id} className="flex py-6">
-                                                    <div className="flex-1 ml-4">
-                                                        <div className="flex justify-between text-base font-medium text-gray-900 dark:text-white">
-                                                            <h3>{item.title}</h3>
-                                                            <p className="ml-4">{item.price}</p>
+                                                <li key={item.id} className="py-6">
+                                                    <div className="flex flex-col space-y-3">
+                                                        <div className="flex justify-between">
+                                                            <div className="flex-1">
+                                                                <h3 className="text-base font-medium text-gray-900 dark:text-white">
+                                                                    {item.title}
+                                                                </h3>
+                                                                <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                                                                    {item.description}
+                                                                </p>
+                                                                {item.features && item.features.length > 0 && (
+                                                                    <ul className="mt-2 list-disc list-inside text-sm text-gray-500 dark:text-gray-400">
+                                                                        {item.features.slice(0, 2).map((feature, index) => (
+                                                                            <li key={index}>{feature}</li>
+                                                                        ))}
+                                                                        {item.features.length > 2 && (
+                                                                            <li>+ {item.features.length - 2} more features</li>
+                                                                        )}
+                                                                    </ul>
+                                                                )}
+                                                            </div>
+                                                            <p className="text-base font-medium text-gray-900 dark:text-white ml-4">
+                                                                {item.price}
+                                                            </p>
                                                         </div>
-                                                        <div className="flex items-center mt-2">
-                                                            <button
-                                                                className="p-1 text-gray-400 hover:text-gray-500"
-                                                                onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                                                            >
-                                                                <MinusIcon className="h-4 w-4" />
-                                                            </button>
-                                                            <span className="mx-2 text-gray-600 dark:text-gray-300">
-                                                                {item.quantity}
-                                                            </span>
-                                                            <button
-                                                                className="p-1 text-gray-400 hover:text-gray-500"
-                                                                onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                                            >
-                                                                <PlusIcon className="h-4 w-4" />
-                                                            </button>
-                                                            <button
-                                                                className="ml-4 text-primary-600 hover:text-primary-500"
-                                                                onClick={() => removeFromCart(item.id)}
-                                                            >
-                                                                Remove
-                                                            </button>
+                                                        
+                                                        <div className="flex items-center justify-between">
+                                                            <div className="flex items-center space-x-2">
+                                                                {item.type && (
+                                                                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-200">
+                                                                        {item.type}
+                                                                    </span>
+                                                                )}
+                                                                {item.category && (
+                                                                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
+                                                                        {item.category}
+                                                                    </span>
+                                                                )}
+                                                            </div>
+                                                            <div className="flex items-center">
+                                                                <button
+                                                                    className="p-1 text-gray-400 hover:text-gray-500"
+                                                                    onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                                                                >
+                                                                    <MinusIcon className="h-4 w-4" />
+                                                                </button>
+                                                                <span className="mx-2 text-gray-600 dark:text-gray-300">
+                                                                    {item.quantity}
+                                                                </span>
+                                                                <button
+                                                                    className="p-1 text-gray-400 hover:text-gray-500"
+                                                                    onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                                                >
+                                                                    <PlusIcon className="h-4 w-4" />
+                                                                </button>
+                                                                <button
+                                                                    className="ml-4 text-primary-600 hover:text-primary-500 text-sm"
+                                                                    onClick={() => removeFromCart(item.id)}
+                                                                >
+                                                                    Remove
+                                                                </button>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </li>

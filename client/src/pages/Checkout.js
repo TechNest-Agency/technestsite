@@ -13,6 +13,35 @@ import {
   DevicePhoneMobileIcon,
 } from '@heroicons/react/24/outline';
 
+const pricing = {
+  local: {
+    'starter-website': { price: '১২,০০০', name: 'Starter Website', details: 'Single Page, Responsive Design, Basic SEO, 1 Month Support' },
+    'pro-website': { price: '২৫,০০০', name: 'Pro Website + Admin Panel', details: 'Multi Page, CMS/Admin, Advanced SEO, Blog/Portfolio' },
+    'custom-mern': { price: '৫০,০০০+', name: 'Custom MERN SaaS MVP', details: 'Auth, Dashboard, API, Payment Integration, 3+ Months Support' },
+    'maintenance': { price: '৩,০০০–৭,০০০', name: 'Maintenance Monthly', details: 'Updates, Security, Performance, Content Management' },
+    'custom-logo': { price: '৩,০০০', name: 'Custom Logo + Branding', details: 'Professional Branding Package' },
+    'seo-optimization': { price: '৫,০০০', name: 'SEO Optimization (Full)', details: 'Complete SEO Package' },
+    'performance-opt': { price: '৩,৫০০', name: 'Performance Optimization', details: 'Website Speed and Performance Enhancement' },
+    'mobile-app': { price: '৩০,০০০+', name: 'Mobile App (PWA or Native)', details: 'Custom Mobile Application Development' }
+  },
+  international: {
+    'starter-website': { price: '$120', name: 'Starter Website', details: 'Single Page, Responsive Design, Basic SEO, 1 Month Support' },
+    'pro-website': { price: '$250', name: 'Pro Website + Admin Panel', details: 'Multi Page, CMS/Admin, Advanced SEO, Blog/Portfolio' },
+    'custom-mern': { price: '$500+', name: 'Custom MERN SaaS MVP', details: 'Auth, Dashboard, API, Payment Integration, 3+ Months Support' },
+    'maintenance': { price: '$30–$70', name: 'Maintenance Monthly', details: 'Updates, Security, Performance, Content Management' },
+    'custom-logo': { price: '$30', name: 'Custom Logo + Branding', details: 'Professional Branding Package' },
+    'seo-optimization': { price: '$50', name: 'SEO Optimization (Full)', details: 'Complete SEO Package' },
+    'performance-opt': { price: '$40', name: 'Performance Optimization', details: 'Website Speed and Performance Enhancement' },
+    'mobile-app': { price: '$300+', name: 'Mobile App (PWA or Native)', details: 'Custom Mobile Application Development' }
+  },
+  enterprise: {
+    'starter-website': { price: '$200', name: 'Starter Website', details: 'Enterprise Level Single Page Website' },
+    'pro-website': { price: '$400', name: 'Pro Website + Admin Panel', details: 'Enterprise Level Multi-Page Website' },
+    'custom-mern': { price: '$800–$1500', name: 'Custom MERN SaaS MVP', details: 'Enterprise Level Custom Solution' },
+    'maintenance': { price: '$100–$200', name: 'Maintenance Monthly', details: 'Enterprise Level Support and Maintenance' }
+  }
+};
+
 const paymentMethods = {
   local: [
     {
@@ -75,14 +104,45 @@ const Checkout = () => {
       if (values.location === 'local') {
         if (values.paymentMethod === 'card-local') {
           // Integrate SSLCommerz here
-          window.location.href = '/api/payment/sslcommerz/init';
+          const response = await fetch('/api/payment/sslcommerz/init', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              cart: cartItems,
+              total: getCartTotal(),
+              email: values.email
+            }),
+          });
+          const data = await response.json();
+          if (data.url) {
+            window.location.href = data.url;
+          } else {
+            throw new Error('Payment initialization failed');
+          }
         } else {
           setShowQR(true);
         }
       } else {
         if (values.paymentMethod === 'stripe') {
-          // Integrate Stripe here
-          window.location.href = '/api/payment/stripe/init';
+          const response = await fetch('/api/payment/stripe/init', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              cart: cartItems,
+              total: getCartTotal(),
+              email: values.email
+            }),
+          });
+          const data = await response.json();
+          if (data.url) {
+            window.location.href = data.url;
+          } else {
+            throw new Error('Payment initialization failed');
+          }
         } else if (values.paymentMethod === 'payoneer') {
           // Send email to admin for Payoneer invoice
           await fetch('/api/payment/payoneer/request', {
