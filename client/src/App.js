@@ -22,6 +22,8 @@ import Cart from './components/Cart';
 import Checkout from './pages/Checkout';
 import ThankYou from './pages/ThankYou';
 import PaymentStatus from './pages/PaymentStatus';
+import TeamMembers from './pages/TeamMembers';
+import Profile from './pages/Profile';
 
 function App() {
   return (
@@ -46,8 +48,14 @@ function App() {
                     <Route path="/checkout" element={<Checkout />} />
                     <Route path="/thank-you" element={<ThankYou />} />
                     <Route path="/payment/:status" element={<PaymentStatus />} />
+                    <Route path="/team" element={<TeamMembers />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/test" element={<TestConnection />} />
+                    <Route path="/profile" element={
+                      <ProtectedRoute>
+                        <Profile />
+                      </ProtectedRoute>
+                    } />
                     <Route path="/admin/*" element={
                       <ProtectedRoute requireAdmin>
                         <AdminDashboard />

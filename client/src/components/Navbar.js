@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
-import { SunIcon, MoonIcon, Bars3Icon, XMarkIcon, ShoppingCartIcon } from '@heroicons/react/24/outline';
+import { Bars3Icon, XMarkIcon, ShoppingCartIcon } from '@heroicons/react/24/outline';
 import { useCart } from '../context/CartContext';
-import { useAuth } from '../context/AuthContext'; // Ensure this import is correct
 
 const Navbar = (props) => {
     const { isDarkMode, toggleTheme } = useTheme();
@@ -11,7 +10,6 @@ const Navbar = (props) => {
     const location = useLocation();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const { getCartCount, setIsCartOpen } = useCart();
-    const { isAuthenticated } = useAuth(); // Ensure this is correctly retrieved from context
 
     const handleLogoClick = (e) => {
         console.log('Logo clicked');
@@ -21,6 +19,7 @@ const Navbar = (props) => {
     const navLinks = [
         { path: '/', label: 'Home' },
         { path: '/about', label: 'About' },
+        { path: '/team', label: 'Team' },
         { path: '/services', label: 'Services' },
         { path: '/portfolio', label: 'Portfolio' },
         { path: '/blog', label: 'Blog' },

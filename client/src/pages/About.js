@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useCart } from '../context/CartContext';
+import { Link } from 'react-router-dom';
 import { 
   LightBulbIcon, 
   UserGroupIcon, 
@@ -392,7 +393,7 @@ const About = () => {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
             {teamMembers.map((member, index) => (
               <motion.div
                 key={member.name}
@@ -400,13 +401,13 @@ const About = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="text-center"
+                className="text-center group hover:scale-105 transition-transform duration-300"
               >
                 <div className="w-48 h-48 mx-auto mb-4 rounded-full overflow-hidden">
                   <img
                     src={member.image}
                     alt={member.name}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                   />
                 </div>
                 <h3 className="subheading mb-1">{member.name}</h3>
@@ -414,6 +415,25 @@ const About = () => {
                 <p className="text-gray-600 dark:text-gray-300">{member.bio}</p>
               </motion.div>
             ))}
+          </div>
+          
+          <div className="text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+            >
+              <Link
+                to="/team"
+                className="inline-flex items-center px-6 py-3 text-lg font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors duration-200"
+              >
+                Meet the Full Team
+                <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </Link>
+            </motion.div>
           </div>
         </div>
       </section>

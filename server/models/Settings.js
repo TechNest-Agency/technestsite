@@ -5,12 +5,12 @@ const settingsSchema = new mongoose.Schema({
         title: {
             type: String,
             required: true,
-            trim: true
+            default: 'TechNest Solutions'
         },
         description: {
             type: String,
             required: true,
-            trim: true
+            default: 'Modern IT Agency'
         },
         logo: {
             light: String,
@@ -57,7 +57,8 @@ const settingsSchema = new mongoose.Schema({
     contact: {
         email: {
             type: String,
-            required: true
+            required: true,
+            default: 'contact@technest.com'
         },
         phone: String,
         address: String,
@@ -219,6 +220,19 @@ const settingsSchema = new mongoose.Schema({
                     github: String
                 }
             }]
+        },
+        blog: {
+            title: String,
+            description: String,
+            postsPerPage: {
+                type: Number,
+                default: 10
+            }
+        },
+        contact: {
+            title: String,
+            description: String,
+            mapEmbed: String
         }
     },
     maintenance: {
@@ -250,13 +264,12 @@ const settingsSchema = new mongoose.Schema({
 // Ensure only one settings document exists
 settingsSchema.pre('save', async function(next) {
     const count = await this.constructor.countDocuments();
-    if (count > 0 && !this.isModified()) {
-        const error = new Error('Only one settings document can exist');
-        next(error);
+    if (count > 0 && this.isNew) {
+        next(new Error('Only one settings document can exist'));
     }
     next();
 });
 
 const Settings = mongoose.model('Settings', settingsSchema);
 
-module.exports = Settings; 
+module.exports = Settings;

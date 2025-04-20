@@ -3,24 +3,18 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const ProtectedRoute = ({ children, requireAdmin = false }) => {
-  // Temporarily bypass authentication check
+  const { isAuthenticated, user } = useAuth();
+  const location = useLocation();
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+
+  if (requireAdmin && user?.role !== 'admin') {
+    return <Navigate to="/" replace />;
+  }
+
   return children;
-
-  // Original authentication logic (commented out for now)
-  
-//   const { isAuthenticated, user } = useAuth();
-//   const location = useLocation();
-
-//   if (!isAuthenticated) {
-//     return <Navigate to="/login" state={{ from: location }} replace />;
-//   }
-
-//   if (requireAdmin && user.role !== 'admin') {
-//     return <Navigate to="/" replace />;
-//   }
-
-//   return children;
-  
 };
 
-export default ProtectedRoute; 
+export default ProtectedRoute;

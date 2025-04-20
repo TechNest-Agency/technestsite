@@ -12,6 +12,7 @@ const path = require('path');
 const fs = require('fs');
 const dotenv = require('dotenv');
 const multer = require('multer');
+const Settings = require('../models/Settings');
 
 // Configure multer for file upload
 const storage = multer.diskStorage({
@@ -45,34 +46,23 @@ const upload = multer({
 // Get dashboard stats
 router.get('/dashboard', [auth, adminAuth], async (req, res) => {
     try {
-        const [totalPosts, totalServices, totalUsers, totalMessages] = await Promise.all([
-            Blog.countDocuments(),
-            Service.countDocuments(),
-            User.countDocuments(),
-            Message.countDocuments()
-        ]);
-
-        res.json({
-            stats: {
-                totalPosts,
-                totalServices,
-                totalUsers,
-                totalMessages
-            }
-        });
+        const stats = {
+            totalPosts: await Blog.countDocuments(),
+            totalServices: await Service.countDocuments(),
+            totalUsers: await User.countDocuments(),
+            totalMessages: await Message.countDocuments(),
+        };
+        res.json({ stats });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server error' });
     }
 });
 
-// Get all posts (including drafts)
+// Blog post management
 router.get('/posts', [auth, adminAuth], async (req, res) => {
     try {
-        const posts = await Blog.find()
-            .sort({ createdAt: -1 })
-            .populate('author', 'username profile');
-
+        const posts = await Blog.find().sort({ createdAt: -1 });
         res.json({ posts });
     } catch (error) {
         console.error(error);
@@ -80,31 +70,91 @@ router.get('/posts', [auth, adminAuth], async (req, res) => {
     }
 });
 
-// Get all services
-router.get('/services', [auth, adminAuth], async (req, res) => {
+router.post('/posts', [
+    auth,
+    adminAuth,
+    body('title').trim().notEmpty(),
+    body('content').trim().notEmpty(),
+    body('category').trim().notEmpty(),
+], async (req, res) => {
     try {
-        const services = await Service.find()
-            .sort({ createdAt: -1 });
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
 
-        res.json({ services });
+        const newPost = new Blog({
+            ...req.body,
+            author: req.user._id
+        });
+
+        await newPost.save();
+        res.status(201).json(newPost);
     } catch (error) {
-        console.error('Error fetching services:', error);
-        res.status(500).json({ message: 'Error fetching services' });
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
     }
 });
 
-// Create new service
+router.put('/posts/:id', [
+    auth,
+    adminAuth,
+    body('title').optional().trim().notEmpty(),
+    body('content').optional().trim().notEmpty(),
+    body('category').optional().trim().notEmpty(),
+], async (req, res) => {
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        const post = await Blog.findById(req.params.id);
+        if (!post) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+
+        Object.assign(post, req.body);
+        await post.save();
+        res.json(post);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+router.delete('/posts/:id', [auth, adminAuth], async (req, res) => {
+    try {
+        const post = await Blog.findById(req.params.id);
+        if (!post) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+
+        await post.remove();
+        res.json({ message: 'Post deleted' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// Service management
+router.get('/services', [auth, adminAuth], async (req, res) => {
+    try {
+        const services = await Service.find().sort({ order: 1 });
+        res.json({ services });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
 router.post('/services', [
     auth,
     adminAuth,
     body('title').trim().notEmpty(),
     body('description').trim().notEmpty(),
-    body('shortDescription').trim().notEmpty(),
-    body('icon').trim().notEmpty(),
-    body('category').isIn(['web', 'app', 'ai', 'cybersecurity', 'marketing', 'cloud']),
-    body('features').isArray(),
-    body('pricing').isArray(),
-    body('technologies').isArray()
+    body('category').trim().notEmpty(),
 ], async (req, res) => {
     try {
         const errors = validationResult(req);
@@ -112,28 +162,21 @@ router.post('/services', [
             return res.status(400).json({ errors: errors.array() });
         }
 
-        const service = new Service(req.body);
-        await service.save();
-
-        res.status(201).json(service);
+        const newService = new Service(req.body);
+        await newService.save();
+        res.status(201).json(newService);
     } catch (error) {
-        console.error('Error creating service:', error);
-        res.status(500).json({ message: 'Error creating service' });
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
     }
 });
 
-// Update service
 router.put('/services/:id', [
     auth,
     adminAuth,
     body('title').optional().trim().notEmpty(),
     body('description').optional().trim().notEmpty(),
-    body('shortDescription').optional().trim().notEmpty(),
-    body('icon').optional().trim().notEmpty(),
-    body('category').optional().isIn(['web', 'app', 'ai', 'cybersecurity', 'marketing', 'cloud']),
-    body('features').optional().isArray(),
-    body('pricing').optional().isArray(),
-    body('technologies').optional().isArray()
+    body('category').optional().trim().notEmpty(),
 ], async (req, res) => {
     try {
         const errors = validationResult(req);
@@ -141,36 +184,32 @@ router.put('/services/:id', [
             return res.status(400).json({ errors: errors.array() });
         }
 
-        const service = await Service.findByIdAndUpdate(
-            req.params.id,
-            req.body,
-            { new: true }
-        );
-        
+        const service = await Service.findById(req.params.id);
         if (!service) {
             return res.status(404).json({ message: 'Service not found' });
         }
-        
+
+        Object.assign(service, req.body);
+        await service.save();
         res.json(service);
     } catch (error) {
-        console.error('Error updating service:', error);
-        res.status(500).json({ message: 'Error updating service' });
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
     }
 });
 
-// Delete service
 router.delete('/services/:id', [auth, adminAuth], async (req, res) => {
     try {
-        const service = await Service.findByIdAndDelete(req.params.id);
-        
+        const service = await Service.findById(req.params.id);
         if (!service) {
             return res.status(404).json({ message: 'Service not found' });
         }
-        
-        res.json({ message: 'Service deleted successfully' });
+
+        await service.remove();
+        res.json({ message: 'Service deleted' });
     } catch (error) {
-        console.error('Error deleting service:', error);
-        res.status(500).json({ message: 'Error deleting service' });
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
     }
 });
 
@@ -353,16 +392,11 @@ router.delete('/messages/:id', [auth, adminAuth], async (req, res) => {
 // Get settings
 router.get('/settings', [auth, adminAuth], async (req, res) => {
     try {
-        const settings = {
-            siteTitle: process.env.SITE_TITLE,
-            siteDescription: process.env.SITE_DESCRIPTION,
-            contactEmail: process.env.CONTACT_EMAIL,
-            smtpHost: process.env.SMTP_HOST,
-            smtpPort: process.env.SMTP_PORT,
-            smtpUsername: process.env.SMTP_USER,
-            smtpPassword: process.env.SMTP_PASS
-        };
-
+        let settings = await Settings.findOne();
+        if (!settings) {
+            settings = new Settings();
+            await settings.save();
+        }
         res.json(settings);
     } catch (error) {
         console.error(error);
@@ -371,42 +405,16 @@ router.get('/settings', [auth, adminAuth], async (req, res) => {
 });
 
 // Update settings
-router.put('/settings', [
-    auth,
-    adminAuth,
-    body('siteTitle').optional().trim().notEmpty(),
-    body('siteDescription').optional().trim().notEmpty(),
-    body('contactEmail').optional().isEmail(),
-    body('smtpHost').optional().trim().notEmpty(),
-    body('smtpPort').optional().isInt(),
-    body('smtpUsername').optional().trim().notEmpty(),
-    body('smtpPassword').optional().trim().notEmpty()
-], async (req, res) => {
+router.put('/settings', [auth, adminAuth], async (req, res) => {
     try {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
+        let settings = await Settings.findOne();
+        if (!settings) {
+            settings = new Settings();
         }
-
-        // Update environment variables
-        const envPath = path.join(__dirname, '../.env');
-        let envContent = fs.readFileSync(envPath, 'utf8');
-
-        Object.entries(req.body).forEach(([key, value]) => {
-            const regex = new RegExp(`^${key}=.*$`, 'm');
-            if (envContent.match(regex)) {
-                envContent = envContent.replace(regex, `${key}=${value}`);
-            } else {
-                envContent += `\n${key}=${value}`;
-            }
-        });
-
-        fs.writeFileSync(envPath, envContent);
-
-        // Reload environment variables
-        dotenv.config();
-
-        res.json({ message: 'Settings updated successfully' });
+        
+        Object.assign(settings, req.body);
+        await settings.save();
+        res.json(settings);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server error' });
@@ -429,4 +437,4 @@ router.post('/upload', adminAuth, upload.single('image'), (req, res) => {
     }
 });
 
-module.exports = router; 
+module.exports = router;
