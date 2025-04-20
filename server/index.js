@@ -84,6 +84,7 @@ app.post('/api/test-post', (req, res) => {
 });
 
 const courseRoutes = require('./routes/courses');
+const paymentRoutes = require('./routes/payment');
 
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/admin', require('./routes/admin'));
@@ -92,6 +93,7 @@ app.use('/api/portfolio', require('./routes/portfolio'));
 app.use('/api/services', require('./routes/services'));
 app.use('/api/messages', require('./routes/messages'));
 app.use('/api/courses', courseRoutes);
+app.use('/api/payment', paymentRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

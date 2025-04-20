@@ -5,14 +5,24 @@ import {
   DevicePhoneMobileIcon,
   CpuChipIcon,
   CheckIcon,
-  StarIcon,
-  BoltIcon,
-  SparklesIcon
+  StarIcon
 } from '@heroicons/react/24/outline';
+import { useCart } from '../context/CartContext';
+import { ShoppingCartIcon } from '@heroicons/react/24/outline';
 
 const Services = () => {
   const [selectedService, setSelectedService] = useState('web-development');
   const [hoveredPlan, setHoveredPlan] = useState(null);
+  const { addToCart } = useCart();
+
+  const handleAddToCart = (plan) => {
+    addToCart({
+      id: plan.name,
+      title: plan.name,
+      price: plan.price,
+      type: 'plan'
+    });
+  };
 
   return (
     <div className="pt-0">
@@ -138,9 +148,7 @@ const Services = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className={`relative ${
-                  plan.isPopular ? 'md:scale-105' : ''
-                }`}
+                className={`relative flex flex-col ${plan.isPopular ? 'md:scale-105' : ''}`}
                 onMouseEnter={() => setHoveredPlan(index)}
                 onMouseLeave={() => setHoveredPlan(null)}
               >
@@ -152,48 +160,39 @@ const Services = () => {
                     </div>
                   </div>
                 )}
-                <div
-                  className={`bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg transition-all duration-300 ${
-                    hoveredPlan === index ? 'transform -translate-y-2 shadow-xl' : ''
-                  } ${
-                    plan.isPopular ? 'border-2 border-primary-500' : 'border border-gray-200 dark:border-gray-700'
-                  }`}
-                >
-                  <div className="flex items-center justify-between mb-6">
+                <div className={`flex-1 bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg transition-all duration-300 flex flex-col ${
+                  hoveredPlan === index ? 'transform -translate-y-2 shadow-xl' : ''
+                }`}>
+                  <div className="flex-1">
                     <h3 className="text-2xl font-bold">{plan.name}</h3>
-                    {plan.isPopular && <SparklesIcon className="h-6 w-6 text-primary-600" />}
-                  </div>
-                  
-                  <div className="mb-6">
-                    <span className="text-4xl font-bold">{plan.price}</span>
-                    <span className="text-gray-500 dark:text-gray-400">/project</span>
-                  </div>
-
-                  <ul className="space-y-4 mb-8">
-                    {plan.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-center text-gray-600 dark:text-gray-300">
-                        <CheckIcon className="h-5 w-5 text-primary-600 mr-3" />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-
-                  <button
-                    className={`w-full py-3 px-6 rounded-lg font-semibold transition-all duration-300 ${
-                      plan.isPopular
-                        ? 'bg-primary-600 text-white hover:bg-primary-700'
-                        : 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700'
-                    }`}
-                  >
-                    Get Started
-                  </button>
-
-                  {plan.bonus && (
-                    <div className="mt-4 text-sm text-primary-600 flex items-center">
-                      <BoltIcon className="h-4 w-4 mr-1" />
-                      {plan.bonus}
+                    <div className="mt-4 mb-6">
+                      <span className="text-4xl font-bold">{plan.price}</span>
+                      <span className="text-gray-500 dark:text-gray-400">/project</span>
                     </div>
-                  )}
+                    <ul className="space-y-4 mb-8">
+                      {plan.features.map((feature, idx) => (
+                        <li key={idx} className="flex items-center text-gray-600 dark:text-gray-300">
+                          <CheckIcon className="h-5 w-5 text-primary-600 mr-3" />
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="space-y-3 mt-auto pt-6">
+                    <button
+                      onClick={() => handleAddToCart(plan)}
+                      className="w-full flex items-center justify-center py-3 px-6 rounded-lg bg-primary-600 text-white hover:bg-primary-700 transition-colors duration-200"
+                    >
+                      <ShoppingCartIcon className="h-5 w-5 mr-2" />
+                      Add to Cart
+                    </button>
+                    <button
+                      onClick={() => window.location.href = '/contact'}
+                      className="w-full py-3 px-6 rounded-lg border-2 border-primary-600 text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/10 transition-colors duration-200"
+                    >
+                      Contact Us
+                    </button>
+                  </div>
                 </div>
               </motion.div>
             ))}
@@ -333,4 +332,4 @@ const pricingPlans = [
   }
 ];
 
-export default Services; 
+export default Services;

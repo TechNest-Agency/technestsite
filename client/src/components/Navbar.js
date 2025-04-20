@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
-import { SunIcon, MoonIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { SunIcon, MoonIcon, Bars3Icon, XMarkIcon, ShoppingCartIcon } from '@heroicons/react/24/outline';
+import { useCart } from '../context/CartContext';
 
 const Navbar = () => {
     const { isDarkMode, toggleTheme } = useTheme();
     const navigate = useNavigate();
     const location = useLocation();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const { getCartCount, setIsCartOpen } = useCart();
 
     const handleLogoClick = (e) => {
         console.log('Logo clicked');
@@ -58,6 +60,17 @@ const Navbar = () => {
                                 {link.label}
                             </Link>
                         ))}
+                        <button
+                            onClick={() => setIsCartOpen(true)}
+                            className="relative p-2 text-gray-600 hover:text-primary-600 dark:text-gray-300 dark:hover:text-primary-400"
+                        >
+                            <ShoppingCartIcon className="h-6 w-6" />
+                            {getCartCount() > 0 && (
+                                <span className="absolute -top-1 -right-1 bg-primary-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                                    {getCartCount()}
+                                </span>
+                            )}
+                        </button>
                         <button
                             onClick={toggleTheme}
                             className={`p-2 rounded-full ${

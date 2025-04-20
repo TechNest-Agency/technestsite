@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useCart } from '../context/CartContext';
 import { 
   LightBulbIcon, 
   UserGroupIcon, 
@@ -10,10 +11,23 @@ import {
   TrophyIcon,
   BuildingOfficeIcon,
   GlobeAltIcon,
-  CalendarIcon
+  CalendarIcon,
+  CodeBracketIcon,
+  PaintBrushIcon,
+  WrenchScrewdriverIcon,
+  ServerIcon,
+  CommandLineIcon,
+  CloudArrowUpIcon,
+  CubeTransparentIcon,
+  ChatBubbleBottomCenterTextIcon,
+  DevicePhoneMobileIcon,
+  CurrencyDollarIcon,
+  ShoppingCartIcon
 } from '@heroicons/react/24/outline';
 
 const About = () => {
+  const { addToCart } = useCart();
+
   const milestones = [
     {
       year: '2024',
@@ -90,6 +104,181 @@ const About = () => {
       icon: BuildingOfficeIcon
     }
   ];
+
+  const services = [
+    {
+      title: 'Website Design & Development',
+      icon: CodeBracketIcon,
+      items: [
+        'MERN Stack Website',
+        'Personal Portfolio',
+        'Business/Agency Website',
+        'E-commerce Website',
+        'Landing Page Design',
+        'Blog Website'
+      ]
+    },
+    {
+      title: 'UI/UX Design',
+      icon: PaintBrushIcon,
+      items: [
+        'Figma Web & App UI Design',
+        'Wireframe to UI',
+        'Dark/Light Theme Design',
+        'Dashboard UI'
+      ]
+    },
+    {
+      title: 'Web App Development',
+      icon: CubeTransparentIcon,
+      items: [
+        'Admin Dashboard',
+        'CRM System',
+        'SaaS Tools',
+        'Booking App',
+        'Blood Donor Management',
+        'Resume Builder'
+      ]
+    },
+    {
+      title: 'Maintenance & Bug Fixing',
+      icon: WrenchScrewdriverIcon,
+      items: [
+        'Speed Optimization',
+        'Mobile Responsiveness Fix',
+        'Bug Fixing & Code Refactor',
+        'SEO Optimization'
+      ]
+    },
+    {
+      title: 'Custom CMS & Dashboard',
+      icon: ServerIcon,
+      items: [
+        'React Admin Panel',
+        'Firebase Dashboard',
+        'Node.js + MongoDB CMS',
+        'Content Management System'
+      ]
+    },
+    {
+      title: 'Template Design & Sale',
+      icon: CommandLineIcon,
+      items: [
+        'HTML/CSS Templates',
+        'React Templates',
+        'Tailwind UI Kits',
+        'Gumroad Template Setup'
+      ]
+    },
+    {
+      title: 'API Integration & Backend',
+      icon: CloudArrowUpIcon,
+      items: [
+        'Third-party API Integration',
+        'Authentication (JWT, Firebase)',
+        'REST API / GraphQL Setup',
+        'Admin CRUD Operations'
+      ]
+    },
+    {
+      title: 'Conversion Services',
+      icon: ChatBubbleBottomCenterTextIcon,
+      items: [
+        'PSD/Figma/XD to HTML',
+        'HTML to React',
+        'Static Site to Dynamic'
+      ]
+    },
+    {
+      title: 'Hosting & Deployment',
+      icon: CloudArrowUpIcon,
+      items: [
+        'Domain/Hosting Setup',
+        'Firebase / Vercel / Netlify Deployment',
+        'Email Setup'
+      ]
+    },
+    {
+      title: 'Additional Services',
+      icon: DevicePhoneMobileIcon,
+      items: [
+        'Mobile App Development (React Native)',
+        'WordPress Development',
+        'Graphics Design',
+        'Social Media Management'
+      ]
+    }
+  ];
+
+  const packages = [
+    {
+      id: 'basic-website',
+      title: 'Basic Website',
+      price: '15,000৳ / $136',
+      features: [
+        'Single Page Website',
+        'Responsive Design',
+        'Basic SEO',
+        '2 Revisions',
+        '1 Month Support'
+      ],
+      icon: CurrencyDollarIcon,
+      buttonText: 'Get Started'
+    },
+    {
+      id: 'pro-website',
+      title: 'Pro Website with Admin Panel',
+      price: '25,000৳ / $227',
+      features: [
+        'Multi-page Website',
+        'Admin Dashboard',
+        'Content Management',
+        'Advanced SEO',
+        '3 Revisions',
+        '2 Months Support'
+      ],
+      icon: CurrencyDollarIcon,
+      buttonText: 'Get Pro'
+    },
+    {
+      id: 'full-mern-saas',
+      title: 'Full MERN SaaS MVP',
+      price: '40,000৳+ / $364+',
+      features: [
+        'Complete SaaS Solution',
+        'Custom Features',
+        'Admin & User Dashboard',
+        'API Integration',
+        'Unlimited Revisions',
+        '3 Months Support'
+      ],
+      icon: CurrencyDollarIcon,
+      buttonText: 'Get Enterprise'
+    },
+    {
+      id: 'monthly-maintenance',
+      title: 'Monthly Maintenance',
+      price: '2,000৳-5,000৳ / $18-$45',
+      features: [
+        'Regular Updates',
+        'Security Monitoring',
+        'Performance Optimization',
+        'Content Updates',
+        'Technical Support'
+      ],
+      icon: CurrencyDollarIcon,
+      buttonText: 'Subscribe'
+    }
+  ];
+
+  const handleAddToCart = (pkg) => {
+    addToCart({
+      id: pkg.id,
+      title: pkg.title,
+      price: pkg.price,
+      type: 'package'
+    });
+  };
 
   return (
     <div className="pt-0 overflow-hidden">
@@ -381,6 +570,113 @@ const About = () => {
           </div>
         </div>
       </section>
+
+      {/* Services Section */}
+      <section className="py-20 bg-gray-50 dark:bg-gray-800">
+        <div className="container">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="text-center mb-12"
+          >
+            <h2 className="heading mb-4">Our Services</h2>
+            <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+              Comprehensive digital solutions tailored to your needs
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {services.map((service, index) => (
+              <motion.div
+                key={service.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg"
+              >
+                <div className="w-12 h-12 bg-primary-100 dark:bg-primary-900/20 rounded-lg flex items-center justify-center mb-4">
+                  <service.icon className="h-6 w-6 text-primary-600" />
+                </div>
+                <h3 className="text-xl font-semibold mb-4">{service.title}</h3>
+                <ul className="space-y-2">
+                  {service.items.map((item, i) => (
+                    <li key={i} className="flex items-center text-gray-600 dark:text-gray-300">
+                      <span className="w-2 h-2 bg-primary-600 rounded-full mr-2"></span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing Packages Section */}
+      <section className="py-20 bg-white dark:bg-gray-900">
+        <div className="container">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="text-center mb-12"
+          >
+            <h2 className="heading mb-4">Pricing Packages</h2>
+            <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+              Choose the perfect package for your needs
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {packages.map((pkg, index) => (
+              <motion.div
+                key={pkg.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 shadow-lg flex flex-col"
+              >
+                <div className="flex-1">
+                  <div className="w-12 h-12 bg-primary-100 dark:bg-primary-900/20 rounded-lg flex items-center justify-center mb-4">
+                    <pkg.icon className="h-6 w-6 text-primary-600" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2">{pkg.title}</h3>
+                  <p className="text-2xl font-bold text-primary-600 mb-4">{pkg.price}</p>
+                  <ul className="space-y-2 mb-6">
+                    {pkg.features.map((feature, i) => (
+                      <li key={i} className="flex items-center text-gray-600 dark:text-gray-300">
+                        <span className="w-2 h-2 bg-primary-600 rounded-full mr-2"></span>
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="space-y-3 pt-4 mt-auto">
+                  <button
+                    onClick={() => handleAddToCart(pkg)}
+                    className="w-full flex items-center justify-center py-2 px-4 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200"
+                  >
+                    <ShoppingCartIcon className="h-5 w-5 mr-2" />
+                    Add to Cart
+                  </button>
+                  <button
+                    onClick={() => window.location.href = '/contact'}
+                    className="w-full py-2 px-4 border-2 border-primary-600 text-primary-600 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/10 transition-colors duration-200"
+                  >
+                    {pkg.buttonText}
+                  </button>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
     </div>
   );
 };

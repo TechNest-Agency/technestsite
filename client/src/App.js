@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider } from './context/AuthContext';
 import { HelmetProvider } from 'react-helmet-async';
+import { CartProvider } from './context/CartContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -17,38 +18,48 @@ import AdminDashboard from './pages/admin/Dashboard';
 import ScrollToTop from './components/ScrollToTop';
 import ProtectedRoute from './components/ProtectedRoute';
 import BlogPost from './pages/BlogPost';
+import Cart from './components/Cart';
+import Checkout from './pages/Checkout';
+import ThankYou from './pages/ThankYou';
+import PaymentStatus from './pages/PaymentStatus';
 
 function App() {
   return (
     <AuthProvider>
       <ThemeProvider>
-        <HelmetProvider>
-          <Router>
-            <ScrollToTop />
-            <div className="min-h-screen flex flex-col">
-              <Navbar />
-              <main className="flex-grow">
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/about" element={<About />} />
-                  <Route path="/services" element={<Services />} />
-                  <Route path="/portfolio" element={<Portfolio />} />
-                  <Route path="/blog" element={<Blog />} />
-                  <Route path="/blog/:id" element={<BlogPost />} />
-                  <Route path="/contact" element={<Contact />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/test" element={<TestConnection />} />
-                  <Route path="/admin/*" element={
-                    <ProtectedRoute requireAdmin>
-                      <AdminDashboard />
-                    </ProtectedRoute>
-                  } />
-                </Routes>
-              </main>
-              <Footer />
-            </div>
-          </Router>
-        </HelmetProvider>
+        <CartProvider>
+          <HelmetProvider>
+            <Router>
+              <ScrollToTop />
+              <div className="min-h-screen flex flex-col">
+                <Navbar />
+                <Cart />
+                <main className="flex-grow">
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/services" element={<Services />} />
+                    <Route path="/portfolio" element={<Portfolio />} />
+                    <Route path="/blog" element={<Blog />} />
+                    <Route path="/blog/:id" element={<BlogPost />} />
+                    <Route path="/contact" element={<Contact />} />
+                    <Route path="/checkout" element={<Checkout />} />
+                    <Route path="/thank-you" element={<ThankYou />} />
+                    <Route path="/payment/:status" element={<PaymentStatus />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/test" element={<TestConnection />} />
+                    <Route path="/admin/*" element={
+                      <ProtectedRoute requireAdmin>
+                        <AdminDashboard />
+                      </ProtectedRoute>
+                    } />
+                  </Routes>
+                </main>
+                <Footer />
+              </div>
+            </Router>
+          </HelmetProvider>
+        </CartProvider>
       </ThemeProvider>
     </AuthProvider>
   );
