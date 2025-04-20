@@ -726,10 +726,10 @@ const teamMembers = [
     image: '/ceo.png',
   },
   {
-    name: 'Jane Smith',
+    name: 'Arifin Hasan',
     role: 'CTO',
     bio: 'Technical expert specializing in software architecture and innovation.',
-    image: '/logo512.png',
+    image: '/ceo2.jpg',
   },
   {
     name: 'Mike Johnson',
