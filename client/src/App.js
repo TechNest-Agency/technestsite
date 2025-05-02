@@ -2,8 +2,11 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider } from './context/AuthContext';
+import { AnalyticsProvider } from './context/AnalyticsContext';
+import { PerformanceProvider } from './context/PerformanceContext';
 import { HelmetProvider } from 'react-helmet-async';
 import { CartProvider } from './context/CartContext';
+import { BlogProvider } from './context/BlogContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -24,6 +27,7 @@ import ThankYou from './pages/ThankYou';
 import PaymentStatus from './pages/PaymentStatus';
 import TeamMembers from './pages/TeamMembers';
 import Profile from './pages/Profile';
+import PreloadResources from './components/PreloadResources';
 
 function App() {
   return (
@@ -32,39 +36,46 @@ function App() {
         <CartProvider>
           <HelmetProvider>
             <Router>
-              <ScrollToTop />
-              <div className="min-h-screen flex flex-col">
-                <Navbar />
-                <Cart />
-                <main className="flex-grow">
-                  <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="/services" element={<Services />} />
-                    <Route path="/portfolio" element={<Portfolio />} />
-                    <Route path="/blog" element={<Blog />} />
-                    <Route path="/blog/:id" element={<BlogPost />} />
-                    <Route path="/contact" element={<Contact />} />
-                    <Route path="/checkout" element={<Checkout />} />
-                    <Route path="/thank-you" element={<ThankYou />} />
-                    <Route path="/payment/:status" element={<PaymentStatus />} />
-                    <Route path="/team" element={<TeamMembers />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/test" element={<TestConnection />} />
-                    <Route path="/profile" element={
-                      <ProtectedRoute>
-                        <Profile />
-                      </ProtectedRoute>
-                    } />
-                    <Route path="/admin/*" element={
-                      <ProtectedRoute requireAdmin>
-                        <AdminDashboard />
-                      </ProtectedRoute>
-                    } />
-                  </Routes>
-                </main>
-                <Footer />
-              </div>
+              <AnalyticsProvider>
+                <PerformanceProvider>
+                  <BlogProvider>
+                    <ScrollToTop />
+                    <PreloadResources />
+                    <div className="min-h-screen flex flex-col">
+                      <Navbar />
+                      <Cart />
+                      <main className="flex-grow">
+                        <Routes>
+                          <Route path="/" element={<Home />} />
+                          <Route path="/about" element={<About />} />
+                          <Route path="/services" element={<Services />} />
+                          <Route path="/portfolio" element={<Portfolio />} />
+                          <Route path="/blog" element={<Blog />} />
+                          <Route path="/blog/:id" element={<BlogPost />} />
+                          <Route path="/contact" element={<Contact />} />
+                          <Route path="/checkout" element={<Checkout />} />
+                          <Route path="/thank-you" element={<ThankYou />} />
+                          <Route path="/payment/:status" element={<PaymentStatus />} />
+                          <Route path="/team" element={<TeamMembers />} />
+                          <Route path="/login" element={<Login />} />
+                          <Route path="/test" element={<TestConnection />} />
+                          <Route path="/profile" element={
+                            <ProtectedRoute>
+                              <Profile />
+                            </ProtectedRoute>
+                          } />
+                          <Route path="/admin/*" element={
+                            <ProtectedRoute requireAdmin>
+                              <AdminDashboard />
+                            </ProtectedRoute>
+                          } />
+                        </Routes>
+                      </main>
+                      <Footer />
+                    </div>
+                  </BlogProvider>
+                </PerformanceProvider>
+              </AnalyticsProvider>
             </Router>
           </HelmetProvider>
         </CartProvider>

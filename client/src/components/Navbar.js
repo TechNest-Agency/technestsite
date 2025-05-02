@@ -24,7 +24,7 @@ const Navbar = (props) => {
         { path: '/portfolio', label: 'Portfolio' },
         { path: '/blog', label: 'Blog' },
         { path: '/contact', label: 'Contact' },
-        { path: '/courses', label: 'Courses' } // Added Courses link
+        // { path: '/courses', label: 'Courses' } // Added Courses link
     ];
 
     return (
@@ -36,9 +36,11 @@ const Navbar = (props) => {
                             onClick={handleLogoClick}
                             className="flex items-center hover:opacity-80 transition-opacity cursor-pointer"
                         >
-                            <span className="text-xl font-bold text-blue-600">
-                                TechNest
-                            </span>
+                            <img 
+                                src="/logo.png" 
+                                alt="TechNest Logo" 
+                                className="h-8"
+                            />
                         </div>
                     </div>
 

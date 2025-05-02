@@ -7,7 +7,7 @@ import {
   UserGroupIcon,
   TrophyIcon,
   StarIcon,
-  ChatBubbleLeftRightIcon,
+  // ChatBubbleLeftRightIcon,
   DocumentCheckIcon,
   LightBulbIcon,
   ArrowPathIcon,
@@ -24,7 +24,7 @@ const Home = () => {
 
   const testimonials = [
     {
-      name: 'Sarah Johnson',
+      name: 'Faruq Hasan',
       role: 'CEO, TechStart',
       image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80',
       text: 'TechNest transformed our digital presence. Their team delivered exceptional results and exceeded our expectations.'

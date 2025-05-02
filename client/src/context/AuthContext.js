@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
+import { trackDetailedUserAction } from '../utils/analytics';
 
 const AuthContext = createContext();
 
@@ -24,13 +25,32 @@ export const AuthProvider = ({ children }) => {
         setToken(authToken);
         localStorage.setItem('token', authToken);
         localStorage.setItem('user', JSON.stringify(userData));
+        localStorage.setItem('userId', userData.id);
+        sessionStorage.setItem('sessionId', Date.now().toString());
+        
+        // Track login event
+        trackDetailedUserAction('user_login', {
+            user_id: userData.id,
+            user_role: userData.role,
+            login_method: 'email'
+        });
     };
 
     const logout = () => {
+        // Track logout event
+        if (user) {
+            trackDetailedUserAction('user_logout', {
+                user_id: user.id,
+                session_duration: Date.now() - parseInt(sessionStorage.getItem('sessionId'))
+            });
+        }
+
         setUser(null);
         setToken(null);
         localStorage.removeItem('token');
         localStorage.removeItem('user');
+        localStorage.removeItem('userId');
+        sessionStorage.removeItem('sessionId');
     };
 
     const value = {
@@ -55,4 +75,4 @@ export const useAuth = () => {
         throw new Error('useAuth must be used within an AuthProvider');
     }
     return context;
-}; 
+};
