@@ -29,17 +29,6 @@ const TeamMembers = () => {
       }
     },
     {
-      name: 'Arifin Hasan',
-      role: 'CTO',
-      bio: 'Technical expert specializing in software architecture and innovation.',
-      image: '/ceo2.jpg',
-      social: {
-        linkedin: 'https://linkedin.com/in/arifinhasan',
-        twitter: 'https://twitter.com/arifinhasan',
-        github: 'https://github.com/arifinhasan'
-      }
-    },
-    {
       name: 'Momota Akter',
       role: 'Frontend Developer',
       bio: 'Creative frontend developer with a passion for building user-friendly interfaces.',
