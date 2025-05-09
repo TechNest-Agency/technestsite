@@ -18,6 +18,17 @@ const TeamMembers = () => {
       }
     },
     {
+      name: 'Liza Akter',
+      role: 'Project Manager',
+      bio: 'Experienced project manager with a knack for delivering projects on time and within budget.',
+      image: '/liza.jpg',
+      social: {
+        linkedin: 'https://linkedin.com/in/alexrodriguez',
+        twitter: 'https://twitter.com/alexrodriguez',
+        github: 'https://github.com/alexrodriguez'
+      }
+    },
+    {
       name: 'Arifin Hasan',
       role: 'CTO',
       bio: 'Technical expert specializing in software architecture and innovation.',
@@ -29,10 +40,10 @@ const TeamMembers = () => {
       }
     },
     {
-      name: 'Mike Johnson',
-      role: 'Lead Developer',
-      bio: 'Full-stack developer with expertise in modern web technologies.',
-      image: '/logo192.png',
+      name: 'Momota Akter',
+      role: 'Frontend Developer',
+      bio: 'Creative frontend developer with a passion for building user-friendly interfaces.',
+      image: '/momota.jpg',
       social: {
         linkedin: 'https://linkedin.com/in/mikejohnson',
         twitter: 'https://twitter.com/mikejohnson',
@@ -40,10 +51,10 @@ const TeamMembers = () => {
       }
     },
     {
-      name: 'Sarah Chen',
-      role: 'Senior Full Stack Developer',
-      bio: 'Expert in MERN stack with 5+ years of experience in building scalable applications.',
-      image: '/logo512.png',
+      name: 'Halima Khatun',
+      role: 'UI/UX Designer',
+      bio: 'Skilled designer focused on enhancing user experience through innovative design.',
+      image: '/halima.jpg',
       social: {
         linkedin: 'https://linkedin.com/in/sarahchen',
         twitter: 'https://twitter.com/sarahchen',
@@ -51,71 +62,17 @@ const TeamMembers = () => {
       }
     },
     {
-      name: 'Alex Rodriguez',
-      role: 'Full Stack Developer',
-      bio: 'Passionate about creating seamless web experiences using modern technologies.',
-      image: '/logo192.png',
+      name: 'Khadiza Samia',
+      role: 'MERN Stack Developer',
+      bio: 'Full-stack developer with expertise in MongoDB, Express, React, and Node.js.',
+      image: '/khadiza.png',
       social: {
         linkedin: 'https://linkedin.com/in/alexrodriguez',
         twitter: 'https://twitter.com/alexrodriguez',
         github: 'https://github.com/alexrodriguez'
       }
-    },
-    {
-      name: 'Emma Watson',
-      role: 'UI/UX Lead Designer',
-      bio: 'Creative designer focused on crafting beautiful and intuitive user experiences.',
-      image: '/logo512.png',
-      social: {
-        linkedin: 'https://linkedin.com/in/emmawatson',
-        twitter: 'https://twitter.com/emmawatson',
-        github: 'https://github.com/emmawatson'
-      }
-    },
-    {
-      name: 'David Kim',
-      role: 'UI/UX Designer',
-      bio: 'Specializing in mobile app design and responsive web interfaces.',
-      image: '/logo192.png',
-      social: {
-        linkedin: 'https://linkedin.com/in/davidkim',
-        twitter: 'https://twitter.com/davidkim',
-        github: 'https://github.com/davidkim'
-      }
-    },
-    {
-      name: 'Sophie Turner',
-      role: 'Digital Marketing Manager',
-      bio: 'Expert in SEO, content strategy, and social media marketing.',
-      image: '/logo512.png',
-      social: {
-        linkedin: 'https://linkedin.com/in/sophieturner',
-        twitter: 'https://twitter.com/sophieturner',
-        github: 'https://github.com/sophieturner'
-      }
-    },
-    {
-      name: 'James Wilson',
-      role: 'Digital Marketing Specialist',
-      bio: 'Focused on growth marketing and data-driven campaign optimization.',
-      image: '/logo192.png',
-      social: {
-        linkedin: 'https://linkedin.com/in/jameswilson',
-        twitter: 'https://twitter.com/jameswilson',
-        github: 'https://github.com/jameswilson'
-      }
-    },
-    {
-      name: 'Maria Garcia',
-      role: 'Full Stack Developer',
-      bio: 'Experienced in cloud architecture and serverless technologies.',
-      image: '/logo512.png',
-      social: {
-        linkedin: 'https://linkedin.com/in/mariagarcia',
-        twitter: 'https://twitter.com/mariagarcia',
-        github: 'https://github.com/mariagarcia'
-      }
     }
+    
   ];
 
   return (

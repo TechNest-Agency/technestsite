@@ -752,10 +752,10 @@ const teamMembers = [
     image: '/ceo2.jpg',
   },
   {
-    name: 'Mike Johnson',
-    role: 'Lead Developer',
-    bio: 'Full-stack developer with expertise in modern web technologies.',
-    image: '/favicon.ico',
+    name: 'Liza Akter',
+    role: 'Project Manager',
+    bio: 'Experienced project manager with a knack for delivering projects on time and within budget.',
+    image: '/liza.jpg',
   },
 ];
 

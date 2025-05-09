@@ -20,9 +20,7 @@ const Navbar = (props) => {
         { path: '/', label: 'Home' },
         { path: '/about', label: 'About' },
         { path: '/team', label: 'Team' },
-        { path: '/services', label: 'Services' },
-        { path: '/portfolio', label: 'Portfolio' },
-        { path: '/blog', label: 'Blog' },
+        { path: '/services', label: 'Services' },        { path: '/portfolio', label: 'Portfolio' },
         { path: '/contact', label: 'Contact' },
         // { path: '/courses', label: 'Courses' } // Added Courses link
     ];

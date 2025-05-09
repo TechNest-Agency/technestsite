@@ -6,21 +6,18 @@ import { AnalyticsProvider } from './context/AnalyticsContext';
 import { PerformanceProvider } from './context/PerformanceContext';
 import { HelmetProvider } from 'react-helmet-async';
 import { CartProvider } from './context/CartContext';
-import { BlogProvider } from './context/BlogContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import About from './pages/About';
 import Services from './pages/Services';
 import Portfolio from './pages/Portfolio';
-import Blog from './pages/Blog';
 import Contact from './pages/Contact';
 import Login from './pages/Login';
 import TestConnection from './pages/TestConnection';
 import AdminDashboard from './pages/admin/Dashboard';
 import ScrollToTop from './components/ScrollToTop';
 import ProtectedRoute from './components/ProtectedRoute';
-import BlogPost from './pages/BlogPost';
 import Cart from './components/Cart';
 import Checkout from './pages/Checkout';
 import ThankYou from './pages/ThankYou';
@@ -38,7 +35,6 @@ function App() {
             <Router>
               <AnalyticsProvider>
                 <PerformanceProvider>
-                  <BlogProvider>
                     <ScrollToTop />
                     <PreloadResources />
                     <div className="min-h-screen flex flex-col">
@@ -50,8 +46,6 @@ function App() {
                           <Route path="/about" element={<About />} />
                           <Route path="/services" element={<Services />} />
                           <Route path="/portfolio" element={<Portfolio />} />
-                          <Route path="/blog" element={<Blog />} />
-                          <Route path="/blog/:id" element={<BlogPost />} />
                           <Route path="/contact" element={<Contact />} />
                           <Route path="/checkout" element={<Checkout />} />
                           <Route path="/thank-you" element={<ThankYou />} />
@@ -73,7 +67,6 @@ function App() {
                       </main>
                       <Footer />
                     </div>
-                  </BlogProvider>
                 </PerformanceProvider>
               </AnalyticsProvider>
             </Router>

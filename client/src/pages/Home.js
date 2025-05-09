@@ -7,7 +7,6 @@ import {
   UserGroupIcon,
   TrophyIcon,
   StarIcon,
-  // ChatBubbleLeftRightIcon,
   DocumentCheckIcon,
   LightBulbIcon,
   ArrowPathIcon,
@@ -40,27 +39,6 @@ const Home = () => {
       role: 'Marketing Director, GrowthHub',
       image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80',
       text: 'The team at TechNest understood our vision perfectly and delivered a solution that perfectly aligned with our goals.'
-    }
-  ];
-
-  const latestBlogs = [
-    {
-      title: 'The Future of Web Development in 2024',
-      excerpt: 'Explore the latest trends and technologies shaping the future of web development.',
-      image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2072&q=80',
-      date: 'April 15, 2024'
-    },
-    {
-      title: 'AI Integration: Best Practices for Businesses',
-      excerpt: 'Learn how to effectively integrate AI solutions into your business operations.',
-      image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2072&q=80',
-      date: 'April 10, 2024'
-    },
-    {
-      title: 'Mobile App Development: Key Considerations',
-      excerpt: 'Essential factors to consider when planning your mobile app development project.',
-      image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2072&q=80',
-      date: 'April 5, 2024'
     }
   ];
 
@@ -337,51 +315,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Latest Blog Posts */}
-      <section className="py-20 bg-white dark:bg-gray-900">
-        <div className="container">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="text-center mb-12"
-          >
-            <h2 className="heading mb-4">Latest from Our Blog</h2>
-            <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              Stay updated with the latest insights and trends in technology.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {latestBlogs.map((blog, index) => (
-              <motion.div
-                key={blog.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg"
-              >
-                <img
-                  src={blog.image}
-                  alt={blog.title}
-                  className="w-full h-48 object-cover"
-                />
-                <div className="p-6">
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">{blog.date}</p>
-                  <h3 className="text-xl font-semibold mb-2">{blog.title}</h3>
-                  <p className="text-gray-600 dark:text-gray-300 mb-4">{blog.excerpt}</p>
-                  <Link to="/blog" className="text-primary-600 hover:text-primary-700 flex items-center">
-                    Read More <ArrowRightIcon className="h-4 w-4 ml-1" />
-                  </Link>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Technology Stack Section */}
       <section className="py-20 bg-gray-50 dark:bg-gray-800">
         <div className="container">
@@ -622,4 +555,4 @@ const projects = [
   },
 ];
 
-export default Home; 
+export default Home;
