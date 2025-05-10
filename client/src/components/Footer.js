@@ -36,7 +36,7 @@ const Footer = () => {
                     <div>
                         <h4 className="text-lg font-semibold mb-4">Contact</h4>
                         <ul className="space-y-2">
-                            <li className="text-gray-600 dark:text-gray-300">Email: technestsolution@gmail.com</li>
+                            <li className="text-gray-600 dark:text-gray-300">Email: technestagencies@gmail.com</li>
                             <li className="text-gray-600 dark:text-gray-300">Phone: +880 1322-695162</li>
                             <li className="text-gray-600 dark:text-gray-300">Address: Dhaka, Banglaedsh</li>
                         </ul>
@@ -44,7 +44,7 @@ const Footer = () => {
                 </div>
                 <div className="border-t border-gray-200 dark:border-gray-700 mt-8 pt-8 text-center">
                     <p className="text-gray-600 dark:text-gray-300">
-                        © {new Date().getFullYear()} TechNest Solutions. All rights reserved.
+                        © {new Date().getFullYear()} TechNest Agency. All rights reserved.
                     </p>
                 </div>
             </div>
