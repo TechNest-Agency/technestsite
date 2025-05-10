@@ -37,7 +37,7 @@ const Footer = () => {
                         <h4 className="text-lg font-semibold mb-4">Contact</h4>
                         <ul className="space-y-2">
                             <li className="text-gray-600 dark:text-gray-300">Email: technestsolution@gmail.com</li>
-                            <li className="text-gray-600 dark:text-gray-300">Phone: +880 1322-69516</li>
+                            <li className="text-gray-600 dark:text-gray-300">Phone: +880 1322-695162</li>
                             <li className="text-gray-600 dark:text-gray-300">Address: Dhaka, Banglaedsh</li>
                         </ul>
                     </div>
