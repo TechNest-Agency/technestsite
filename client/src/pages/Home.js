@@ -169,7 +169,8 @@ const Home = () => {  const [selectedFaq, setSelectedFaq] = useState(null);
                 alt="TechNest Hero Banner"
                 className="w-full h-full object-cover object-center min-h-[calc(100vh-64px)] lg:min-h-[85vh]"
               />
-              <div className="absolute inset-0 bg-gradient-to-l from-transparent via-white/50 to-white"></div>
+              {/* Enhanced gradient overlay for better text readability */}
+              <div className="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-transparent lg:bg-gradient-to-l lg:from-white lg:via-white/85 lg:to-transparent"></div>
             </motion.div>
           </div>
         </div>
@@ -181,7 +182,7 @@ const Home = () => {  const [selectedFaq, setSelectedFaq] = useState(null);
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7 }}
-              className="text-3xl sm:text-4xl md:text-6xl font-bold mb-6 text-gray-900"
+              className="text-3xl sm:text-4xl md:text-6xl font-bold mb-6 text-gray-900 drop-shadow-sm"
             >
               <Typewriter
                 options={{
@@ -197,7 +198,7 @@ const Home = () => {  const [selectedFaq, setSelectedFaq] = useState(null);
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.3 }}
-              className="text-lg sm:text-xl text-gray-600 mb-8 px-4 lg:px-0 max-w-2xl mx-auto lg:mx-0 leading-relaxed"
+              className="text-lg sm:text-xl text-gray-700 mb-8 px-4 lg:px-0 max-w-2xl mx-auto lg:mx-0 leading-relaxed drop-shadow-sm bg-white/60 lg:bg-transparent backdrop-blur-sm lg:backdrop-blur-none rounded-lg p-4 lg:p-0"
             >
               We are a team of passionate developers, designers, and strategists dedicated to creating exceptional digital experiences that transform businesses.
             </motion.p>
