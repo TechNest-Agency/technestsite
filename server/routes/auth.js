@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const { auth } = require('../middleware/auth');
 const nodemailer = require('nodemailer');
+const twoFactorAuth = require('../utils/twoFactorAuth');
 
 // Configure nodemailer
 const transporter = nodemailer.createTransport({
@@ -124,6 +125,14 @@ router.post('/login', async (req, res) => {
         const isMatch = await user.comparePassword(password);
         if (!isMatch) {
             return res.status(401).json({ message: 'Invalid credentials' });
+        }
+
+        // Check if 2FA is enabled
+        if (user.securitySettings.twoFactorEnabled) {
+            return res.json({
+                require2FA: true,
+                email: user.email
+            });
         }
 
         // Generate JWT token
@@ -301,4 +310,187 @@ router.put('/change-password', [
     }
 });
 
-module.exports = router; 
+// Setup 2FA
+router.post('/2fa/setup', auth, async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Generate secret
+        const { base32: secret, otpauth_url } = twoFactorAuth.generateSecret(user.email);
+        
+        // Generate QR code
+        const qrCode = await twoFactorAuth.generateQRCode(otpauth_url);
+        
+        // Generate backup codes
+        const backupCodes = twoFactorAuth.generateBackupCodes();
+        
+        // Save encrypted secret and backup codes
+        user.securitySettings.twoFactorSecret = twoFactorAuth.encrypt2FASecret(secret);
+        user.securitySettings.twoFactorBackupCodes = backupCodes;
+        await user.save();
+
+        res.json({
+            qrCode,
+            backupCodes,
+            secret
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// Verify and enable 2FA
+router.post('/2fa/verify', auth, async (req, res) => {
+    try {
+        const { token } = req.body;
+        const user = await User.findById(req.user._id);
+        
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Decrypt the secret
+        const secret = twoFactorAuth.decrypt2FASecret(user.securitySettings.twoFactorSecret);
+        
+        // Verify the token
+        const isValid = twoFactorAuth.verifyToken(token, secret);
+        
+        if (!isValid) {
+            return res.status(400).json({ message: 'Invalid verification code' });
+        }
+
+        // Enable 2FA
+        user.securitySettings.twoFactorEnabled = true;
+        await user.save();
+
+        res.json({ message: '2FA enabled successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// Validate 2FA token during login
+router.post('/2fa/validate', async (req, res) => {
+    try {
+        const { email, token } = req.body;
+        const user = await User.findOne({ email });
+
+        if (!user || !user.securitySettings.twoFactorEnabled) {
+            return res.status(400).json({ message: 'Invalid request' });
+        }
+
+        // Decrypt the secret
+        const secret = twoFactorAuth.decrypt2FASecret(user.securitySettings.twoFactorSecret);
+        
+        // Verify the token
+        const isValid = twoFactorAuth.verifyToken(token, secret);
+        
+        if (!isValid) {
+            return res.status(400).json({ message: 'Invalid verification code' });
+        }
+
+        // Generate JWT token
+        const jwtToken = jwt.sign(
+            { userId: user._id },
+            process.env.JWT_SECRET,
+            { expiresIn: '24h' }
+        );
+
+        res.json({
+            token: jwtToken,
+            user: {
+                id: user._id,
+                username: user.username,
+                email: user.email,
+                role: user.role,
+                isEmailVerified: user.isEmailVerified
+            }
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// Disable 2FA
+router.post('/2fa/disable', auth, async (req, res) => {
+    try {
+        const { token } = req.body;
+        const user = await User.findById(req.user._id);
+        
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Verify token before disabling
+        const secret = twoFactorAuth.decrypt2FASecret(user.securitySettings.twoFactorSecret);
+        const isValid = twoFactorAuth.verifyToken(token, secret);
+        
+        if (!isValid) {
+            return res.status(400).json({ message: 'Invalid verification code' });
+        }
+
+        // Disable 2FA
+        user.securitySettings.twoFactorEnabled = false;
+        user.securitySettings.twoFactorSecret = undefined;
+        user.securitySettings.twoFactorBackupCodes = undefined;
+        await user.save();
+
+        res.json({ message: '2FA disabled successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// Use backup code
+router.post('/2fa/backup', async (req, res) => {
+    try {
+        const { email, backupCode } = req.body;
+        const user = await User.findOne({ email });
+
+        if (!user || !user.securitySettings.twoFactorEnabled) {
+            return res.status(400).json({ message: 'Invalid request' });
+        }
+
+        // Check if backup code exists and hasn't been used
+        const validBackupCode = user.securitySettings.twoFactorBackupCodes.includes(backupCode);
+        
+        if (!validBackupCode) {
+            return res.status(400).json({ message: 'Invalid backup code' });
+        }
+
+        // Remove used backup code
+        user.securitySettings.twoFactorBackupCodes = user.securitySettings.twoFactorBackupCodes
+            .filter(code => code !== backupCode);
+        await user.save();
+
+        // Generate JWT token
+        const jwtToken = jwt.sign(
+            { userId: user._id },
+            process.env.JWT_SECRET,
+            { expiresIn: '24h' }
+        );
+
+        res.json({
+            token: jwtToken,
+            user: {
+                id: user._id,
+                username: user.username,
+                email: user.email,
+                role: user.role,
+                isEmailVerified: user.isEmailVerified
+            }
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+module.exports = router;
