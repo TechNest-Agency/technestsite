@@ -147,36 +147,22 @@ const Home = () => {  const [selectedFaq, setSelectedFaq] = useState(null);
   };
 
   return (
-    <div className="pt-0">      {/* Hero Section */}      <section className="relative min-h-[calc(100vh-64px)] lg:min-h-[85vh] flex items-center justify-center overflow-hidden bg-white">
+    <div className="pt-0">
+      {/* Hero Section */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
-          {/* Pattern overlay */}
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0wIDBoNjB2NjBIMHoiLz48cGF0aCBkPSJNMzYgMzRjMC0xLjEuOS0yIDItMnMyIC45IDIgMi0uOSAyLTIgMi0yLS45LTItMm0tMTIgMGMwLTEuMS45LTIgMi0yczIgLjkgMiAyLS45IDItMiAyLTItLjktMi0yIiBmaWxsPSJyZ2JhKDAsMCwwLDAuMDUpIi8+PC9nPjwvc3ZnPg==')] opacity-10"></div>
-          
-          {/* Hero Image Container */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 h-full">
-            {/* Left side - Text content will be positioned here */}
-            <div className="hidden lg:block"></div>
-            
-            {/* Right side - Image */}
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              className="relative w-full h-full"
-            >
-              <img
-                src="https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1469&q=80"
-                alt="TechNest Hero Banner"
-                className="w-full h-full object-cover object-center min-h-[calc(100vh-64px)] lg:min-h-[85vh]"
-              />
-              {/* Enhanced gradient overlay for better text readability */}
-              <div className="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-transparent lg:bg-gradient-to-l lg:from-white lg:via-white/85 lg:to-transparent"></div>
-            </motion.div>
-          </div>
+          <img
+            src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80"
+            alt="TechNest Hero Banner"
+            className="w-full h-screen object-cover object-center brightness-90"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/80 to-transparent"></div>
         </div>
-        <div className="container relative mx-auto px-4 py-12 sm:py-20">
+        
+        {/* Content Container */}
+        <div className="container relative mx-auto px-4 py-12 sm:py-20 z-10">
           <motion.div            
-            className="max-w-3xl mx-auto lg:mx-0 lg:ml-16 relative z-10 text-center lg:text-left"
+            className="max-w-3xl mx-auto lg:mx-0 lg:ml-16 relative text-center lg:text-left"
           >
             <motion.div 
               initial={{ opacity: 0, y: -20 }}
