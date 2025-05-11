@@ -2,354 +2,277 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
-import { useTheme } from '../context/ThemeContext';
-import { Formik, Form, Field } from 'formik';
-import * as Yup from 'yup';
-import {
-  GlobeAltIcon,
-  MapPinIcon,
-  CreditCardIcon,
-  QrCodeIcon,
+import { 
+  CreditCardIcon, 
+  BanknotesIcon,
+  ArrowPathIcon,
   DevicePhoneMobileIcon,
+  PhoneIcon
 } from '@heroicons/react/24/outline';
 
-const pricing = {
-  local: {
-    'starter-website': { price: '১২,০০০', name: 'Starter Website', details: 'Single Page, Responsive Design, Basic SEO, 1 Month Support' },
-    'pro-website': { price: '২৫,০০০', name: 'Pro Website + Admin Panel', details: 'Multi Page, CMS/Admin, Advanced SEO, Blog/Portfolio' },
-    'custom-mern': { price: '৫০,০০০+', name: 'Custom MERN SaaS MVP', details: 'Auth, Dashboard, API, Payment Integration, 3+ Months Support' },
-    'maintenance': { price: '৩,০০০–৭,০০০', name: 'Maintenance Monthly', details: 'Updates, Security, Performance, Content Management' },
-    'custom-logo': { price: '৩,০০০', name: 'Custom Logo + Branding', details: 'Professional Branding Package' },
-    'seo-optimization': { price: '৫,০০০', name: 'SEO Optimization (Full)', details: 'Complete SEO Package' },
-    'performance-opt': { price: '৩,৫০০', name: 'Performance Optimization', details: 'Website Speed and Performance Enhancement' },
-    'mobile-app': { price: '৩০,০০০+', name: 'Mobile App (PWA or Native)', details: 'Custom Mobile Application Development' }
-  },
-  international: {
-    'starter-website': { price: '$120', name: 'Starter Website', details: 'Single Page, Responsive Design, Basic SEO, 1 Month Support' },
-    'pro-website': { price: '$250', name: 'Pro Website + Admin Panel', details: 'Multi Page, CMS/Admin, Advanced SEO, Blog/Portfolio' },
-    'custom-mern': { price: '$500+', name: 'Custom MERN SaaS MVP', details: 'Auth, Dashboard, API, Payment Integration, 3+ Months Support' },
-    'maintenance': { price: '$30–$70', name: 'Maintenance Monthly', details: 'Updates, Security, Performance, Content Management' },
-    'custom-logo': { price: '$30', name: 'Custom Logo + Branding', details: 'Professional Branding Package' },
-    'seo-optimization': { price: '$50', name: 'SEO Optimization (Full)', details: 'Complete SEO Package' },
-    'performance-opt': { price: '$40', name: 'Performance Optimization', details: 'Website Speed and Performance Enhancement' },
-    'mobile-app': { price: '$300+', name: 'Mobile App (PWA or Native)', details: 'Custom Mobile Application Development' }
-  },
-  enterprise: {
-    'starter-website': { price: '$200', name: 'Starter Website', details: 'Enterprise Level Single Page Website' },
-    'pro-website': { price: '$400', name: 'Pro Website + Admin Panel', details: 'Enterprise Level Multi-Page Website' },
-    'custom-mern': { price: '$800–$1500', name: 'Custom MERN SaaS MVP', details: 'Enterprise Level Custom Solution' },
-    'maintenance': { price: '$100–$200', name: 'Maintenance Monthly', details: 'Enterprise Level Support and Maintenance' }
-  }
-};
-
-const paymentMethods = {
-  local: [
-    {
-      id: 'bkash',
-      name: 'bKash',
-      icon: DevicePhoneMobileIcon,
-      description: 'Pay with bKash mobile banking',
-    },
-    {
-      id: 'nagad',
-      name: 'Nagad',
-      icon: DevicePhoneMobileIcon,
-      description: 'Pay with Nagad mobile banking',
-    },
-    {
-      id: 'rocket',
-      name: 'Rocket',
-      icon: DevicePhoneMobileIcon,
-      description: 'Pay with Rocket mobile banking',
-    },
-    {
-      id: 'card-local',
-      name: 'Card Payment',
-      icon: CreditCardIcon,
-      description: 'Pay with Credit/Debit Card (SSLCommerz)',
-    },
-  ],
-  international: [
-    {
-      id: 'stripe',
-      name: 'Card Payment',
-      icon: CreditCardIcon,
-      description: 'Pay with Credit/Debit Card (Stripe)',
-    },
-    {
-      id: 'payoneer',
-      name: 'Payoneer',
-      icon: GlobeAltIcon,
-      description: 'Request Payoneer Invoice',
-    },
-  ],
-};
-
-const CheckoutSchema = Yup.object().shape({
-  email: Yup.string().email('Invalid email').required('Email is required'),
-  location: Yup.string().required('Please select your location'),
-  paymentMethod: Yup.string().required('Please select a payment method'),
-  message: Yup.string(),
-});
-
 const Checkout = () => {
-  const navigate = useNavigate();
-  // eslint-disable-next-line no-unused-vars
-  const { isDarkMode } = useTheme();
   const { cartItems, getCartTotal } = useCart();
-  const [showQR, setShowQR] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [formData, setFormData] = useState({
+    email: '',
+    name: '',
+    message: ''
+  });
+  const navigate = useNavigate();
 
-  const handleSubmit = async (values) => {
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+  const handlePayment = async (method) => {
     try {
-      if (values.location === 'local') {
-        if (values.paymentMethod === 'card-local') {
-          // Integrate SSLCommerz here
-          const response = await fetch('/api/payment/sslcommerz/init', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              cart: cartItems,
-              total: getCartTotal(),
-              email: values.email
-            }),
-          });
-          const data = await response.json();
-          if (data.url) {
-            window.location.href = data.url;
-          } else {
-            throw new Error('Payment initialization failed');
-          }
-        } else {
-          setShowQR(true);
-        }
+      setLoading(true);
+      setError('');
+      
+      // Validate form
+      if (!formData.email || !formData.name) {
+        throw new Error('Please fill in all required fields');
+      }
+
+      const cart = cartItems.map(item => ({
+        title: item.title,
+        price: parseFloat(item.price.replace(/[^0-9.]/g, '')),
+        type: item.type,
+        category: item.category
+      }));
+
+      const total = getCartTotal();      // Use localhost:5000 if no environment variable is set
+      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+      const response = await fetch(`${API_URL}/payment/${method}/init`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          cart,
+          total,
+          email: formData.email,
+          message: formData.message
+        })
+      });
+
+      const data = await response.json();      if (data.error) {
+        throw new Error(data.error);
+      }
+
+      if (data.url) {
+        window.location.href = data.url;
       } else {
-        if (values.paymentMethod === 'stripe') {
-          const response = await fetch('/api/payment/stripe/init', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              cart: cartItems,
-              total: getCartTotal(),
-              email: values.email
-            }),
-          });
-          const data = await response.json();
-          if (data.url) {
-            window.location.href = data.url;
-          } else {
-            throw new Error('Payment initialization failed');
-          }
-        } else if (values.paymentMethod === 'payoneer') {
-          // Send email to admin for Payoneer invoice
-          await fetch('/api/payment/payoneer/request', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              email: values.email,
-              message: values.message,
-              amount: getCartTotal(),
-              items: cartItems,
-            }),
-          });
-          navigate('/thank-you');
-        }
+        throw new Error('Payment initialization failed');
       }
     } catch (error) {
       console.error('Payment error:', error);
-      alert('Payment failed. Please try again.');
+      setError(error.message || 'An unexpected error occurred. Please try again.');
+      setLoading(false);
     }
   };
 
-  return (
-    <div className="min-h-screen py-12 bg-gray-50 dark:bg-gray-900">
-      <div className="container max-w-3xl mx-auto px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 md:p-8"
-        >
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
-            Checkout
-          </h1>
-
-          {/* Order Summary */}
-          <div className="mb-8 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-            <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
-              Order Summary
+  if (cartItems.length === 0) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
+        <div className="container max-w-3xl mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 text-center"
+          >
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+              Your cart is empty
             </h2>
-            <div className="space-y-2">
-              {cartItems.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex justify-between text-gray-600 dark:text-gray-300"
-                >
-                  <span>{item.title}</span>
-                  <span>{item.price}</span>
-                </div>
-              ))}
-              <div className="border-t border-gray-200 dark:border-gray-600 pt-2 mt-2">
-                <div className="flex justify-between font-semibold text-gray-900 dark:text-white">
-                  <span>Total</span>
-                  <span>${getCartTotal().toFixed(2)}</span>
+            <p className="text-gray-600 dark:text-gray-300 mb-6">
+              Add some items to your cart before proceeding to checkout.
+            </p>
+            <button
+              onClick={() => navigate('/services')}
+              className="inline-block px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200"
+            >
+              Browse Services
+            </button>
+          </motion.div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
+      <div className="container max-w-6xl mx-auto px-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Checkout Form */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+            className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8"
+          >
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+              Checkout Details
+            </h2>
+
+            {error && (
+              <div className="mb-6 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 p-4 rounded-lg">
+                {error}
+              </div>
+            )}
+
+            <form className="space-y-6">
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Message (Optional)
+                </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  rows="4"
+                  className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                ></textarea>
+              </div>
+            </form>
+          </motion.div>
+
+          {/* Order Summary and Payment Options */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+            className="space-y-8"
+          >
+            {/* Order Summary */}
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                Order Summary
+              </h3>
+              <div className="space-y-4">
+                {cartItems.map((item) => (
+                  <div key={item.id} className="flex justify-between items-start pb-4 border-b border-gray-200 dark:border-gray-700">
+                    <div>
+                      <h4 className="font-medium text-gray-900 dark:text-white">
+                        {item.title}
+                      </h4>
+                      {item.type && (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-200">
+                          {item.type}
+                        </span>
+                      )}
+                    </div>
+                    <p className="font-medium text-gray-900 dark:text-white">
+                      {item.price}
+                    </p>
+                  </div>
+                ))}
+                <div className="flex justify-between items-center pt-4">
+                  <span className="text-lg font-bold text-gray-900 dark:text-white">Total</span>
+                  <span className="text-lg font-bold text-primary-600">
+                    ${getCartTotal().toFixed(2)}
+                  </span>
                 </div>
               </div>
             </div>
-          </div>
 
-          <Formik
-            initialValues={{
-              email: '',
-              location: '',
-              paymentMethod: '',
-              message: '',
-            }}
-            validationSchema={CheckoutSchema}
-            onSubmit={handleSubmit}
-          >
-            {({ values, errors, touched, setFieldValue }) => (
-              <Form className="space-y-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Email
-                  </label>
-                  <Field
-                    type="email"
-                    name="email"
-                    className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                  />
-                  {errors.email && touched.email && (
-                    <div className="text-red-500 text-sm mt-1">{errors.email}</div>
-                  )}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Your Location
-                  </label>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {['local', 'international'].map((location) => (
-                      <button
-                        key={location}
-                        type="button"
-                        onClick={() => {
-                          setFieldValue('location', location);
-                          setFieldValue('paymentMethod', '');
-                        }}
-                        className={`p-4 rounded-lg border-2 transition-colors ${
-                          values.location === location
-                            ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20'
-                            : 'border-gray-200 dark:border-gray-700'
-                        }`}
-                      >
-                        <div className="flex items-center">
-                          {location === 'local' ? (
-                            <MapPinIcon className="h-5 w-5 mr-2 text-primary-600" />
-                          ) : (
-                            <GlobeAltIcon className="h-5 w-5 mr-2 text-primary-600" />
-                          )}
-                          <span className="font-medium capitalize">
-                            {location === 'local' ? 'Bangladesh' : 'International'}
-                          </span>
-                        </div>
-                      </button>
-                    ))}
-                  </div>
-                  {errors.location && touched.location && (
-                    <div className="text-red-500 text-sm mt-1">
-                      {errors.location}
-                    </div>
-                  )}
-                </div>
-
-                {values.location && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="space-y-4"
-                  >
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Payment Method
-                    </label>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {paymentMethods[values.location].map((method) => (
-                        <button
-                          key={method.id}
-                          type="button"
-                          onClick={() => setFieldValue('paymentMethod', method.id)}
-                          className={`p-4 rounded-lg border-2 transition-colors ${
-                            values.paymentMethod === method.id
-                              ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20'
-                              : 'border-gray-200 dark:border-gray-700'
-                          }`}
-                        >
-                          <div className="flex items-center mb-2">
-                            <method.icon className="h-5 w-5 mr-2 text-primary-600" />
-                            <span className="font-medium">{method.name}</span>
-                          </div>
-                          <p className="text-sm text-gray-500 dark:text-gray-400">
-                            {method.description}
-                          </p>
-                        </button>
-                      ))}
-                    </div>
-                    {errors.paymentMethod && touched.paymentMethod && (
-                      <div className="text-red-500 text-sm">
-                        {errors.paymentMethod}
-                      </div>
-                    )}
-                  </motion.div>
-                )}
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Message (Optional)
-                  </label>
-                  <Field
-                    as="textarea"
-                    name="message"
-                    rows={3}
-                    className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                  />
-                </div>
+            {/* Payment Options */}
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">
+                Payment Methods
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <button
+                  onClick={() => handlePayment('stripe')}
+                  disabled={loading || !formData.email || !formData.name}
+                  className={`flex items-center justify-center p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-primary-500 dark:hover:border-primary-500 transition-colors ${
+                    (!formData.email || !formData.name) ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
+                >
+                  <CreditCardIcon className="h-6 w-6 mr-2 text-primary-600" />
+                  <span className="font-medium">Pay with Card</span>
+                </button>
 
                 <button
-                  type="submit"
-                  className="w-full py-3 px-6 rounded-lg bg-primary-600 text-white hover:bg-primary-700 transition-colors duration-200"
+                  onClick={() => handlePayment('payoneer')}
+                  disabled={loading || !formData.email || !formData.name}
+                  className={`flex items-center justify-center p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-primary-500 dark:hover:border-primary-500 transition-colors ${
+                    (!formData.email || !formData.name) ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
                 >
-                  Proceed to Payment
+                  <BanknotesIcon className="h-6 w-6 mr-2 text-primary-600" />
+                  <span className="font-medium">Payoneer</span>
                 </button>
-              </Form>
-            )}
-          </Formik>
 
-          {/* QR Code Modal */}
-          {showQR && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-              <div className="bg-white dark:bg-gray-800 rounded-xl p-6 max-w-md w-full">
-                <div className="text-center">
-                  <QrCodeIcon className="h-24 w-24 mx-auto mb-4 text-primary-600" />
-                  <h3 className="text-xl font-bold mb-2">Scan to Pay</h3>
-                  <p className="text-gray-600 dark:text-gray-300 mb-4">
-                    Scan this QR code with your mobile banking app to complete the payment
-                  </p>
-                  <button
-                    onClick={() => setShowQR(false)}
-                    className="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg"
-                  >
-                    Close
-                  </button>
-                </div>
+                <button
+                  onClick={() => handlePayment('bkash')}
+                  disabled={loading || !formData.email || !formData.name}
+                  className={`flex items-center justify-center p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-primary-500 dark:hover:border-primary-500 transition-colors ${
+                    (!formData.email || !formData.name) ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
+                >
+                  <DevicePhoneMobileIcon className="h-6 w-6 mr-2 text-pink-600" />
+                  <span className="font-medium text-pink-600">bKash</span>
+                </button>
+
+                <button
+                  onClick={() => handlePayment('nagad')}
+                  disabled={loading || !formData.email || !formData.name}
+                  className={`flex items-center justify-center p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-primary-500 dark:hover:border-primary-500 transition-colors ${
+                    (!formData.email || !formData.name) ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
+                >
+                  <PhoneIcon className="h-6 w-6 mr-2 text-orange-600" />
+                  <span className="font-medium text-orange-600">Nagad</span>
+                </button>
               </div>
             </div>
-          )}
-        </motion.div>
+
+            {loading && (
+              <div className="flex justify-center items-center">
+                <ArrowPathIcon className="h-6 w-6 animate-spin text-primary-600" />
+                <span className="ml-2 text-gray-600 dark:text-gray-300">
+                  Processing payment...
+                </span>
+              </div>
+            )}
+          </motion.div>
+        </div>
       </div>
     </div>
   );

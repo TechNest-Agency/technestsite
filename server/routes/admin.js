@@ -13,6 +13,8 @@ const fs = require('fs');
 const dotenv = require('dotenv');
 const multer = require('multer');
 const Settings = require('../models/Settings');
+const Order = require('../models/Order');
+const Course = require('../models/Course');
 
 // Configure multer for file upload
 const storage = multer.diskStorage({
@@ -434,6 +436,82 @@ router.post('/upload', adminAuth, upload.single('image'), (req, res) => {
     } catch (error) {
         console.error('Error uploading image:', error);
         res.status(500).json({ error: 'Error uploading image' });
+    }
+});
+
+// Get admin dashboard statistics
+router.get('/stats', adminAuth, async (req, res) => {
+    try {
+        const [totalOrders, totalRevenue, totalUsers, totalCourses] = await Promise.all([
+            Order.countDocuments(),
+            Order.aggregate([
+                { $match: { status: 'paid' } },
+                { $group: { _id: null, total: { $sum: '$amount' } } }
+            ]),
+            User.countDocuments(),
+            Course.countDocuments()
+        ]);
+
+        res.json({
+            totalOrders,
+            totalRevenue: totalRevenue[0]?.total || 0,
+            totalUsers,
+            totalCourses
+        });
+    } catch (error) {
+        res.status(500).json({ error: 'Error fetching statistics' });
+    }
+});
+
+// Get revenue chart data
+router.get('/revenue-chart', adminAuth, async (req, res) => {
+    try {
+        const monthlyRevenue = await Order.aggregate([
+            { $match: { status: 'paid' } },
+            {
+                $group: {
+                    _id: {
+                        year: { $year: '$createdAt' },
+                        month: { $month: '$createdAt' }
+                    },
+                    total: { $sum: '$amount' }
+                }
+            },
+            { $sort: { '_id.year': 1, '_id.month': 1 } }
+        ]);
+
+        const labels = monthlyRevenue.map(item => {
+            const date = new Date(item._id.year, item._id.month - 1);
+            return date.toLocaleString('default', { month: 'short', year: 'numeric' });
+        });
+
+        const data = monthlyRevenue.map(item => item.total);
+
+        res.json({ labels, data });
+    } catch (error) {
+        res.status(500).json({ error: 'Error fetching revenue data' });
+    }
+});
+
+// Get payment methods distribution
+router.get('/payment-methods', adminAuth, async (req, res) => {
+    try {
+        const paymentMethods = await Order.aggregate([
+            { $match: { status: 'paid' } },
+            {
+                $group: {
+                    _id: '$paymentMethod',
+                    count: { $sum: 1 }
+                }
+            }
+        ]);
+
+        const labels = paymentMethods.map(method => method._id);
+        const data = paymentMethods.map(method => method.count);
+
+        res.json({ labels, data });
+    } catch (error) {
+        res.status(500).json({ error: 'Error fetching payment methods data' });
     }
 });
 

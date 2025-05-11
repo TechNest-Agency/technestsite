@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import { Bars3Icon, XMarkIcon, ShoppingCartIcon } from '@heroicons/react/24/outline';
 import { useCart } from '../context/CartContext';
+import Search from './Search';
 
 const Navbar = (props) => {
     const { isDarkMode, toggleTheme } = useTheme();
@@ -20,9 +21,10 @@ const Navbar = (props) => {
         { path: '/', label: 'Home' },
         { path: '/about', label: 'About' },
         { path: '/team', label: 'Team' },
-        { path: '/services', label: 'Services' },        { path: '/portfolio', label: 'Portfolio' },
-        { path: '/contact', label: 'Contact' },
-        // { path: '/courses', label: 'Courses' } // Added Courses link
+        { path: '/services', label: 'Services' },        
+        { path: '/portfolio', label: 'Portfolio' },
+        { path: '/courses', label: 'Courses' },
+        { path: '/contact', label: 'Contact' }
     ];
 
     return (
@@ -32,7 +34,7 @@ const Navbar = (props) => {
                     <div className="flex items-center">
                         <div 
                             onClick={handleLogoClick}
-                            className="flex items-center hover:opacity-80 transition-opacity cursor-pointer"
+                            className="flex items-center hover:opacity-80 transition-opacity cursor-pointer mr-8"
                         >
                             <img 
                                 src="/logo.png" 
@@ -40,27 +42,37 @@ const Navbar = (props) => {
                                 className="h-8"
                             />
                         </div>
+                        
+                        {/* Desktop Navigation */}
+                        <div className="hidden md:flex items-center space-x-8">
+                            {navLinks.map((link) => (
+                                <Link
+                                    key={link.path}
+                                    to={link.path}
+                                    className={`${
+                                        location.pathname === link.path
+                                            ? isDarkMode
+                                                ? 'text-blue-400'
+                                                : 'text-blue-600'
+                                            : isDarkMode
+                                            ? 'text-gray-300 hover:text-white'
+                                            : 'text-gray-600 hover:text-gray-900'
+                                    }`}
+                                >
+                                    {link.label}
+                                </Link>
+                            ))}
+                        </div>
                     </div>
 
-                    {/* Desktop Navigation */}
-                    <div className="hidden md:flex items-center space-x-8">
-                        {navLinks.map((link) => (
-                            <Link
-                                key={link.path}
-                                to={link.path}
-                                className={`${
-                                    location.pathname === link.path
-                                        ? isDarkMode
-                                            ? 'text-blue-400'
-                                            : 'text-blue-600'
-                                        : isDarkMode
-                                        ? 'text-gray-300 hover:text-white'
-                                        : 'text-gray-600 hover:text-gray-900'
-                                }`}
-                            >
-                                {link.label}
-                            </Link>
-                        ))}
+                    {/* Right side items */}
+                    <div className="flex items-center space-x-4">
+                        {/* Search component */}
+                        <div className="hidden md:block w-64">
+                            <Search />
+                        </div>
+
+                        {/* Cart */}
                         <button
                             onClick={() => setIsCartOpen(true)}
                             className="relative p-2 text-gray-600 hover:text-primary-600 dark:text-gray-300 dark:hover:text-primary-400"
@@ -72,6 +84,8 @@ const Navbar = (props) => {
                                 </span>
                             )}
                         </button>
+
+                        {/* Theme Toggle */}
                         <button
                             onClick={toggleTheme}
                             className={`p-2 rounded-full ${
@@ -88,26 +102,8 @@ const Navbar = (props) => {
                                 </svg>
                             )}
                         </button>
-                    </div>
 
-                    {/* Mobile menu button */}
-                    <div className="flex items-center space-x-4">
-                        <button
-                            onClick={toggleTheme}
-                            className={`md:hidden p-2 rounded-full ${
-                                isDarkMode ? 'text-yellow-400 hover:bg-gray-800' : 'text-gray-600 hover:bg-gray-100'
-                            }`}
-                        >
-                            {isDarkMode ? (
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                                </svg>
-                            ) : (
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                                </svg>
-                            )}
-                        </button>
+                        {/* Mobile menu button */}
                         <button
                             onClick={() => setIsMenuOpen(!isMenuOpen)}
                             className={`md:hidden p-2 rounded-lg transition-colors duration-200 ${
@@ -134,6 +130,12 @@ const Navbar = (props) => {
                             ? 'bg-gray-900/90 backdrop-blur-xl border border-gray-800/50' 
                             : 'bg-white/90 backdrop-blur-xl border border-gray-200/50'
                     }`}>
+                        {/* Mobile Search */}
+                        <div className="px-4 mb-4">
+                            <Search />
+                        </div>
+
+                        {/* Mobile Navigation Links */}
                         {navLinks.map((link) => (
                             <Link
                                 key={link.path}

@@ -90,6 +90,20 @@ const userSchema = new mongoose.Schema({
             encrypted: String,
             authTag: String
         }
+    },
+    twoFactorEnabled: {
+        type: Boolean,
+        default: false
+    },
+    twoFactorSecret: {
+        type: String
+    },
+    twoFactorBackupCodes: [{
+        type: String
+    }],
+    active: {
+        type: Boolean,
+        default: true
     }
 });
 

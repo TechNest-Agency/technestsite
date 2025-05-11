@@ -1,3 +1,20 @@
+// REQUIRED .env VARIABLES FOR LIVE DEPLOYMENT
+// STRIPE_SECRET_KEY=sk_live_...
+// SSLCOMMERZ_STORE_ID=...
+// SSLCOMMERZ_STORE_PASSWORD=...
+// SSLCOMMERZ_IS_LIVE=true
+// PAYONEER_CLIENT_ID=...
+// PAYONEER_CLIENT_SECRET=...
+// BKASH_APP_KEY=...
+// BKASH_APP_SECRET=...
+// BKASH_MERCHANT_NUMBER=...
+// NAGAD_MERCHANT_NUMBER=...
+// FRONTEND_URL=https://your-live-site.com
+// BACKEND_URL=https://your-live-api-domain.com/api
+// SMTP_USER=...
+// SMTP_PASS=...
+// ADMIN_EMAIL=...
+
 const express = require('express');
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
@@ -5,26 +22,69 @@ const nodemailer = require('nodemailer');
 const SSLCommerzPayment = require('sslcommerz-lts');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const Order = require('../models/Order');
+const axios = require('axios');
+const auth = require('../middleware/auth');
+const paymentController = require('../controllers/paymentController');
 
-// SSLCommerz store config
+// Payment Gateway Configs (all from process.env)
 const store_id = process.env.SSLCOMMERZ_STORE_ID;
 const store_passwd = process.env.SSLCOMMERZ_STORE_PASSWORD;
-const is_live = false; // true for live, false for sandbox
-
-// Initialize SSLCommerz
+const is_live = process.env.SSLCOMMERZ_IS_LIVE === 'true';
 const sslcommerz = new SSLCommerzPayment(store_id, store_passwd, is_live);
+
+const bkashAppKey = process.env.BKASH_APP_KEY;
+const bkashAppSecret = process.env.BKASH_APP_SECRET;
+const bkashBaseUrl = process.env.BKASH_BASE_URL || 'https://tokenized.pay.bka.sh/v1.2.0-beta';
+const bkashMerchantNumber = process.env.BKASH_MERCHANT_NUMBER;
+
+const nagadMerchantNumber = process.env.NAGAD_MERCHANT_NUMBER;
+const nagadBaseUrl = process.env.NAGAD_BASE_URL || 'https://api.mynagad.com/remote-payment-gateway/api/dfs';
+
+const payoneerClientId = process.env.PAYONEER_CLIENT_ID;
+const payoneerClientSecret = process.env.PAYONEER_CLIENT_SECRET;
+const payoneerBaseUrl = process.env.PAYONEER_BASE_URL || 'https://api.sandbox.payoneer.com/v4/programs';
+
+const FRONTEND_URL = process.env.FRONTEND_URL || 'https://your-live-site.com';
+const BACKEND_URL = process.env.BACKEND_URL || 'https://your-live-api-domain.com/api';
+
+// Debug route to test payment connectivity
+router.get('/test', (req, res) => {
+  res.json({ 
+    status: 'success',
+    message: 'Payment API is working',
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Middleware to log payment requests
+router.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] Payment Request:`, {
+    method: req.method,
+    path: req.path,
+    body: req.body,
+    headers: {
+      'content-type': req.headers['content-type'],
+      'accept': req.headers['accept']
+    }
+  });
+  next();
+});
 
 // Initialize payment with SSLCommerz
 router.post('/sslcommerz/init', async (req, res) => {
   try {
+    console.log('Payment initialization request:', req.body);
     const { cart, total, email } = req.body;
-    
+    if (!cart || !total || !email) {
+      console.error('Missing required fields:', { cart: !!cart, total: !!total, email: !!email });
+      return res.status(400).json({ 
+        error: 'Missing required fields. Please provide cart, total, and email.' 
+      });
+    }
     // Create a new order
     const order = new Order({
       orderId: 'REF' + new Date().getTime(),
-      customer: {
-        email: email
-      },
+      customer: { email: email },
       items: cart,
       payment: {
         method: 'sslcommerz',
@@ -34,15 +94,14 @@ router.post('/sslcommerz/init', async (req, res) => {
       }
     });
     await order.save();
-    
     const data = {
       total_amount: total,
       currency: 'BDT',
       tran_id: order.orderId,
-      success_url: `${process.env.FRONTEND_URL}/payment/success`,
-      fail_url: `${process.env.FRONTEND_URL}/payment/fail`,
-      cancel_url: `${process.env.FRONTEND_URL}/payment/cancel`,
-      ipn_url: `${process.env.BACKEND_URL}/api/payment/sslcommerz/ipn`,
+      success_url: `${FRONTEND_URL}/payment/success`,
+      fail_url: `${FRONTEND_URL}/payment/fail`,
+      cancel_url: `${FRONTEND_URL}/payment/cancel`,
+      ipn_url: `${BACKEND_URL}/payment/sslcommerz/ipn`,
       shipping_method: 'No',
       product_name: cart.map(item => item.title).join(', '),
       product_category: 'Services',
@@ -64,12 +123,15 @@ router.post('/sslcommerz/init', async (req, res) => {
       ship_postcode: '1000',
       ship_country: 'Bangladesh',
     };
-
     const sslcz = await sslcommerz.init(data);
     res.json({ url: sslcz.GatewayPageURL });
   } catch (error) {
     console.error('SSLCommerz payment error:', error);
-    res.status(500).json({ error: 'Payment initialization failed' });
+    res.status(500).json({ 
+      error: 'Payment initialization failed',
+      message: error.message,
+      details: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    });
   }
 });
 
@@ -138,8 +200,15 @@ router.post('/sslcommerz/ipn', async (req, res) => {
 // Initialize Stripe payment
 router.post('/stripe/init', async (req, res) => {
   try {
+    console.log('Stripe payment initialization request:', req.body);
     const { cart, total, email } = req.body;
-
+    
+    if (!cart || !total || !email) {
+      console.error('Missing required fields:', { cart: !!cart, total: !!total, email: !!email });
+      return res.status(400).json({ 
+        error: 'Missing required fields. Please provide cart, total, and email.' 
+      });
+    }
     // Create a new order
     const order = new Order({
       orderId: 'REF' + new Date().getTime(),
@@ -169,8 +238,8 @@ router.post('/stripe/init', async (req, res) => {
         quantity: 1,
       })),
       mode: 'payment',
-      success_url: `${process.env.FRONTEND_URL}/payment/success`,
-      cancel_url: `${process.env.FRONTEND_URL}/payment/cancel`,
+      success_url: `${FRONTEND_URL}/payment/success`,
+      cancel_url: `${FRONTEND_URL}/payment/cancel`,
       customer_email: email,
       metadata: {
         orderId: order.orderId
@@ -307,5 +376,17 @@ router.post('/payoneer/request', [
     res.status(500).json({ error: 'Failed to send invoice request' });
   }
 });
+
+// bKash routes
+router.post('/bkash/init', auth, paymentController.initiateBkashPayment);
+router.post('/bkash/callback', paymentController.bkashCallback);
+
+// Nagad routes
+router.post('/nagad/init', auth, paymentController.initiateNagadPayment);
+router.get('/nagad/callback', paymentController.nagadCallback);
+
+// Payoneer routes
+router.post('/payoneer/init', auth, paymentController.initiatePayoneerPayment);
+router.post('/payoneer/webhook', paymentController.payoneerWebhook);
 
 module.exports = router;

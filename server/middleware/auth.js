@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-const { auditLog, sanitizeUserData, rateLimit, securityHeaders } = require('../utils/security');
+const { auditLog, sanitizeUserData, securityHeaders } = require('../utils/security');
 const rateLimit = require('express-rate-limit');
 
 // Create rate limiter

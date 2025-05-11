@@ -25,6 +25,12 @@ import PaymentStatus from './pages/PaymentStatus';
 import TeamMembers from './pages/TeamMembers';
 import Profile from './pages/Profile';
 import PreloadResources from './components/PreloadResources';
+import Blog from './pages/Blog';
+import BlogPost from './pages/BlogPost';
+import Courses from './pages/Courses';
+import CourseDetail from './pages/CourseDetail';
+import UserDashboard from './pages/UserDashboard';
+import SearchResults from './pages/SearchResults';
 
 function App() {
   return (
@@ -63,6 +69,16 @@ function App() {
                               <AdminDashboard />
                             </ProtectedRoute>
                           } />
+                          <Route path="/blog" element={<Blog />} />
+                          <Route path="/blog/:slug" element={<BlogPost />} />
+                          <Route path="/courses" element={<Courses />} />
+                          <Route path="/courses/:slug" element={<CourseDetail />} />
+                          <Route path="/dashboard" element={
+                            <ProtectedRoute>
+                              <UserDashboard />
+                            </ProtectedRoute>
+                          } />
+                          <Route path="/search" element={<SearchResults />} />
                         </Routes>
                       </main>
                       <Footer />

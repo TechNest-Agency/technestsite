@@ -1,28 +1,45 @@
 const speakeasy = require('speakeasy');
-const qrcode = require('qrcode');
+const QRCode = require('qrcode');
 const { encrypt, decrypt } = require('./security');
 
-const generateSecret = async () => {
+// Generate secret for 2FA
+exports.generateSecret = (email) => {
     const secret = speakeasy.generateSecret({
-        name: 'TechNest',
-        length: 20
+        name: `TechNest:${email}`
     });
-
-    const qrCodeUrl = await qrcode.toDataURL(secret.otpauth_url);
-
     return {
-        secret: secret.base32,
-        qrCode: qrCodeUrl
+        base32: secret.base32,
+        otpauth_url: secret.otpauth_url
     };
 };
 
-const verifyToken = (token, secret) => {
+// Generate QR code for 2FA setup
+exports.generateQRCode = async (otpauthUrl) => {
+    try {
+        const qrCodeUrl = await QRCode.toDataURL(otpauthUrl);
+        return qrCodeUrl;
+    } catch (error) {
+        throw new Error('Error generating QR code');
+    }
+};
+
+// Verify 2FA token
+exports.verifyToken = (token, secret) => {
     return speakeasy.totp.verify({
         secret: secret,
         encoding: 'base32',
         token: token,
-        window: 1 // Allow 30 seconds clock drift
+        window: 1 // Allow 30 seconds window
     });
+};
+
+// Generate backup codes
+exports.generateBackupCodes = () => {
+    const codes = [];
+    for (let i = 0; i < 10; i++) {
+        codes.push(speakeasy.generateSecret({ length: 10 }).base32.substr(0, 10));
+    }
+    return codes;
 };
 
 const encrypt2FASecret = (secret) => {
@@ -38,8 +55,10 @@ const decrypt2FASecret = (encryptedSecret) => {
 };
 
 module.exports = {
-    generateSecret,
-    verifyToken,
+    generateSecret: exports.generateSecret,
+    generateQRCode: exports.generateQRCode,
+    verifyToken: exports.verifyToken,
+    generateBackupCodes: exports.generateBackupCodes,
     encrypt2FASecret,
     decrypt2FASecret
 };
