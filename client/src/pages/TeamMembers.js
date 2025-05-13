@@ -46,7 +46,7 @@ const TeamMembers = () => {
       name: 'Khadiza Samia',
       role: 'MERN Stack Developer',
       bio: 'Full-stack developer with expertise in MongoDB, Express, React, and Node.js.',
-      image: '/khadiza.png',
+      // image: '/khadiza.png',
       social: {
         linkedin: 'https://linkedin.com/in/alexrodriguez',
         facebook: 'https://facebook.com/khadizasamia',
