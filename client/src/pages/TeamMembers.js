@@ -32,17 +32,6 @@ const TeamMembers = () => {
     },
    
     {
-      name: 'Soraiya Akter',
-      role: 'MERN Stack Developer',
-      bio: 'Full-stack developer with expertise in MongoDB, Express, React, and Node.js.',
-      image: '/soraiya.png',
-      social: {
-        linkedin: 'https://linkedin.com/in/alexrodriguez',
-        facebook: 'https://facebook.com/soraiyaakter',
-        github: 'https://github.com/Soraiya11-7',
-      }
-    },
-    {
       name: 'Sumaiya Amin Prova',
       role: 'MERN Stack Developer',
       bio: 'Full-stack developer with expertise in MongoDB, Express, React, and Node.js.',
@@ -74,6 +63,17 @@ const TeamMembers = () => {
         linkedin: 'https://linkedin.com/in/alexrodriguez',
         facebook: 'https://facebook.com/khadizasamia',
         github: 'https://github.com/KhadizaSamiha',
+      }
+    },
+        {
+      name: 'Soraiya Akter',
+      role: 'MERN Stack Developer',
+      bio: 'Full-stack developer with expertise in MongoDB, Express, React, and Node.js.',
+      image: '/soraiya.png',
+      social: {
+        linkedin: 'https://linkedin.com/in/alexrodriguez',
+        facebook: 'https://facebook.com/soraiyaakter',
+        github: 'https://github.com/Soraiya11-7',
       }
     }
   ];
