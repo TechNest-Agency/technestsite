@@ -30,17 +30,7 @@ const TeamMembers = () => {
         behance: 'https://www.behance.net/halimakhatun'
       }
     },
-    {
-      name: 'Khadiza Samia',
-      role: 'MERN Stack Developer',
-      bio: 'Full-stack developer with expertise in MongoDB, Express, React, and Node.js.',
-      // image: '/khadiza.png',
-      social: {
-        linkedin: 'https://linkedin.com/in/alexrodriguez',
-        facebook: 'https://facebook.com/khadizasamia',
-        github: 'https://github.com/KhadizaSamiha',
-      }
-    },
+   
     {
       name: 'Soraiya Akter',
       role: 'MERN Stack Developer',
@@ -75,6 +65,17 @@ const TeamMembers = () => {
         behance: 'https://www.behance.net/momotaakter'
       }
     },
+     {
+      name: 'Khadiza Samia',
+      role: 'MERN Stack Developer',
+      bio: 'Full-stack developer with expertise in MongoDB, Express, React, and Node.js.',
+      // image: '/khadiza.png',
+      social: {
+        linkedin: 'https://linkedin.com/in/alexrodriguez',
+        facebook: 'https://facebook.com/khadizasamia',
+        github: 'https://github.com/KhadizaSamiha',
+      }
+    }
   ];
   return (
     <div className={`pt-16 ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
