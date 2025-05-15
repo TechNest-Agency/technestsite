@@ -18,18 +18,18 @@ const TeamMembers = () => {
         behance: 'https://www.behance.net/nazathossain'
       }
     },
-    {
-      name: 'Momota Akter',
-      role: 'Frontend Developer',
-      bio: 'Creative frontend developer with a passion for building user-friendly interfaces.',
-      image: '/momota.jpg',
-      social: {
-        linkedin: 'https://linkedin.com/in/mikejohnson',
-        facebook: 'https://facebook.com/momotaakter',
-        github: 'https://github.com/mikejohnson',
-        behance: 'https://www.behance.net/momotaakter'
-      }
-    },
+    // {
+    //   name: 'Momota Akter',
+    //   role: 'Frontend Developer',
+    //   bio: 'Creative frontend developer with a passion for building user-friendly interfaces.',
+    //   image: '/momota.jpg',
+    //   social: {
+    //     linkedin: 'https://linkedin.com/in/mikejohnson',
+    //     facebook: 'https://facebook.com/momotaakter',
+    //     github: 'https://github.com/mikejohnson',
+    //     behance: 'https://www.behance.net/momotaakter'
+    //   }
+    // },
     {
       name: 'Halima Khatun',
       role: 'UI/UX Designer',
@@ -51,7 +51,6 @@ const TeamMembers = () => {
         linkedin: 'https://linkedin.com/in/alexrodriguez',
         facebook: 'https://facebook.com/khadizasamia',
         github: 'https://github.com/KhadizaSamiha',
-        behance: 'https://www.behance.net/khadizasamia'
       }
     },
     {
@@ -63,7 +62,6 @@ const TeamMembers = () => {
         linkedin: 'https://linkedin.com/in/alexrodriguez',
         facebook: 'https://facebook.com/soraiyaakter',
         github: 'https://github.com/Soraiya11-7',
-        behance: 'https://www.behance.net/soraiyaakter'
       }
     },
     {
@@ -75,7 +73,6 @@ const TeamMembers = () => {
         linkedin: 'https://linkedin.com/in/alexrodriguez',
         facebook: 'https://facebook.com/sumaiyaamin',
         github: 'https://github.com/sumaiyaamin',
-        behance: 'https://www.behance.net/sumaiyaamin'
       }   
     }
   ];
