@@ -18,18 +18,6 @@ const TeamMembers = () => {
         behance: 'https://www.behance.net/nazathossain'
       }
     },
-    // {
-    //   name: 'Momota Akter',
-    //   role: 'Frontend Developer',
-    //   bio: 'Creative frontend developer with a passion for building user-friendly interfaces.',
-    //   image: '/momota.jpg',
-    //   social: {
-    //     linkedin: 'https://linkedin.com/in/mikejohnson',
-    //     facebook: 'https://facebook.com/momotaakter',
-    //     github: 'https://github.com/mikejohnson',
-    //     behance: 'https://www.behance.net/momotaakter'
-    //   }
-    // },
     {
       name: 'Halima Khatun',
       role: 'UI/UX Designer',
@@ -74,7 +62,19 @@ const TeamMembers = () => {
         facebook: 'https://facebook.com/sumaiyaamin',
         github: 'https://github.com/sumaiyaamin',
       }   
-    }
+    },
+        {
+      name: 'Momota Akter',
+      role: 'Frontend Developer',
+      bio: 'Creative frontend developer with a passion for building user-friendly interfaces.',
+      image: '/momota.jpg',
+      social: {
+        linkedin: 'https://linkedin.com/in/mikejohnson',
+        facebook: 'https://facebook.com/momotaakter',
+        github: 'https://github.com/mikejohnson',
+        behance: 'https://www.behance.net/momotaakter'
+      }
+    },
   ];
   return (
     <div className={`pt-16 ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
