@@ -31,17 +31,17 @@ const TeamMembers = () => {
       }
     },
    
-    {
-      name: 'Sumaiya Amin Prova',
-      role: 'MERN Stack Developer',
-      bio: 'Full-stack developer with expertise in MongoDB, Express, React, and Node.js.',
-      image: '/sumaiya.png',
-      social: {
-        linkedin: 'https://linkedin.com/in/alexrodriguez',
-        facebook: 'https://facebook.com/sumaiyaamin',
-        github: 'https://github.com/sumaiyaamin',
-      }   
-    },
+    // {
+    //   name: 'Sumaiya Amin Prova',
+    //   role: 'MERN Stack Developer',
+    //   bio: 'Full-stack developer with expertise in MongoDB, Express, React, and Node.js.',
+    //   image: '/sumaiya.png',
+    //   social: {
+    //     linkedin: 'https://linkedin.com/in/alexrodriguez',
+    //     facebook: 'https://facebook.com/sumaiyaamin',
+    //     github: 'https://github.com/sumaiyaamin',
+    //   }   
+    // },
     // {
     //   name: 'Momota Akter',
     //   role: 'Frontend Developer',
@@ -65,17 +65,17 @@ const TeamMembers = () => {
         github: 'https://github.com/',
       }
     },
-    // {
-    //   name: 'Khadiza Samia',
-    //   role: 'MERN Stack Developer',
-    //   bio: 'Full-stack developer with expertise in MongoDB, Express, React, and Node.js.',
-    //   // image: '/khadiza.png',
-    //   social: {
-    //     linkedin: 'https://linkedin.com/in/alexrodriguez',
-    //     facebook: 'https://facebook.com/khadizasamia',
-    //     github: 'https://github.com/KhadizaSamiha',
-    //   }
-    // },
+    {
+      name: 'Khadiza Samia',
+      role: 'MERN Stack Developer',
+      bio: 'Full-stack developer with expertise in MongoDB, Express, React, and Node.js.',
+      // image: '/khadiza.png',
+      social: {
+        linkedin: 'https://linkedin.com/in/alexrodriguez',
+        facebook: 'https://facebook.com/khadizasamia',
+        github: 'https://github.com/KhadizaSamiha',
+      }
+    },
     //     {
     //   name: 'Soraiya Akter',
     //   role: 'MERN Stack Developer',
