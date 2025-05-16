@@ -75,6 +75,17 @@ const TeamMembers = () => {
         facebook: 'https://facebook.com/soraiyaakter',
         github: 'https://github.com/Soraiya11-7',
       }
+    },
+    {
+      name: 'Ishita Akter',
+      role: 'Digital Marketer',
+      bio: 'Full-stack developer with expertise in MongoDB, Express, React, and Node.js.',
+      image: '/ishita.png',
+      social: {
+        linkedin: 'https://linkedin.com/in/alexrodriguez',
+        facebook: 'https://facebook.com/soraiyaakter',
+        github: 'https://github.com/Soraiya11-7',
+      }
     }
   ];
   return (
