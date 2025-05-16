@@ -55,7 +55,7 @@ const TeamMembers = () => {
       }
     },
      {
-      name: 'Khadiza Samia'(Unemployed),
+      name: 'Khadiza Samia',
       role: 'MERN Stack Developer',
       bio: 'Full-stack developer with expertise in MongoDB, Express, React, and Node.js.',
       // image: '/khadiza.png',
@@ -77,14 +77,14 @@ const TeamMembers = () => {
       }
     },
     {
-      name: 'Ishita Akter',
+      name: 'Ishita Jahan Mim',
       role: 'Digital Marketer',
-      bio: 'Full-stack developer with expertise in MongoDB, Express, React, and Node.js.',
-      image: '/ishita.png',
+      bio: 'Loding........................',
+      image: '/ishita.jpg',
       social: {
-        linkedin: 'https://linkedin.com/in/alexrodriguez',
-        facebook: 'https://facebook.com/soraiyaakter',
-        github: 'https://github.com/Soraiya11-7',
+        linkedin: 'https://linkedin.com/in',
+        facebook: 'https://facebook.com/',
+        github: 'https://github.com/',
       }
     }
   ];
