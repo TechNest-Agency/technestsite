@@ -42,18 +42,18 @@ const TeamMembers = () => {
         github: 'https://github.com/sumaiyaamin',
       }   
     },
-        {
-      name: 'Momota Akter',
-      role: 'Frontend Developer',
-      bio: 'Creative frontend developer with a passion for building user-friendly interfaces.',
-      image: '/momota.jpg',
-      social: {
-        linkedin: 'https://linkedin.com/in/mikejohnson',
-        facebook: 'https://facebook.com/momotaakter',
-        github: 'https://github.com/mikejohnson',
-        behance: 'https://www.behance.net/momotaakter'
-      }
-    },
+    // {
+    //   name: 'Momota Akter',
+    //   role: 'Frontend Developer',
+    //   bio: 'Creative frontend developer with a passion for building user-friendly interfaces.',
+    //   image: '/momota.jpg',
+    //   social: {
+    //     linkedin: 'https://linkedin.com/in/mikejohnson',
+    //     facebook: 'https://facebook.com/momotaakter',
+    //     github: 'https://github.com/mikejohnson',
+    //     behance: 'https://www.behance.net/momotaakter'
+    //   }
+    // },
         {
       name: 'Ishita Jahan Mim',
       role: 'Digital Marketer',
@@ -65,28 +65,28 @@ const TeamMembers = () => {
         github: 'https://github.com/',
       }
     },
-     {
-      name: 'Khadiza Samia',
-      role: 'MERN Stack Developer',
-      bio: 'Full-stack developer with expertise in MongoDB, Express, React, and Node.js.',
-      // image: '/khadiza.png',
-      social: {
-        linkedin: 'https://linkedin.com/in/alexrodriguez',
-        facebook: 'https://facebook.com/khadizasamia',
-        github: 'https://github.com/KhadizaSamiha',
-      }
-    },
-        {
-      name: 'Soraiya Akter',
-      role: 'MERN Stack Developer',
-      bio: 'Full-stack developer with expertise in MongoDB, Express, React, and Node.js.',
-      image: '/soraiya.png',
-      social: {
-        linkedin: 'https://linkedin.com/in/alexrodriguez',
-        facebook: 'https://facebook.com/soraiyaakter',
-        github: 'https://github.com/Soraiya11-7',
-      }
-    }
+    // {
+    //   name: 'Khadiza Samia',
+    //   role: 'MERN Stack Developer',
+    //   bio: 'Full-stack developer with expertise in MongoDB, Express, React, and Node.js.',
+    //   // image: '/khadiza.png',
+    //   social: {
+    //     linkedin: 'https://linkedin.com/in/alexrodriguez',
+    //     facebook: 'https://facebook.com/khadizasamia',
+    //     github: 'https://github.com/KhadizaSamiha',
+    //   }
+    // },
+    //     {
+    //   name: 'Soraiya Akter',
+    //   role: 'MERN Stack Developer',
+    //   bio: 'Full-stack developer with expertise in MongoDB, Express, React, and Node.js.',
+    //   image: '/soraiya.png',
+    //   social: {
+    //     linkedin: 'https://linkedin.com/in/alexrodriguez',
+    //     facebook: 'https://facebook.com/soraiyaakter',
+    //     github: 'https://github.com/Soraiya11-7',
+    //   }
+    // }
   ];
   return (
     <div className={`pt-16 ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
