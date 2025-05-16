@@ -54,6 +54,17 @@ const TeamMembers = () => {
         behance: 'https://www.behance.net/momotaakter'
       }
     },
+        {
+      name: 'Ishita Jahan Mim',
+      role: 'Digital Marketer',
+      bio: 'Loding........................',
+      image: '/ishita.jpg',
+      social: {
+        linkedin: 'https://linkedin.com/in',
+        facebook: 'https://facebook.com/',
+        github: 'https://github.com/',
+      }
+    },
      {
       name: 'Khadiza Samia',
       role: 'MERN Stack Developer',
@@ -74,17 +85,6 @@ const TeamMembers = () => {
         linkedin: 'https://linkedin.com/in/alexrodriguez',
         facebook: 'https://facebook.com/soraiyaakter',
         github: 'https://github.com/Soraiya11-7',
-      }
-    },
-    {
-      name: 'Ishita Jahan Mim',
-      role: 'Digital Marketer',
-      bio: 'Loding........................',
-      image: '/ishita.jpg',
-      social: {
-        linkedin: 'https://linkedin.com/in',
-        facebook: 'https://facebook.com/',
-        github: 'https://github.com/',
       }
     }
   ];
