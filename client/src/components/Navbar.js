@@ -23,7 +23,7 @@ const Navbar = (props) => {
         { path: '/team', label: 'Team' },
         { path: '/services', label: 'Services' },        
         { path: '/portfolio', label: 'Portfolio' },
-        { path: '/courses', label: 'Courses' },
+        // { path: '/courses', label: 'Courses' },
         { path: '/contact', label: 'Contact' }
     ];
 
