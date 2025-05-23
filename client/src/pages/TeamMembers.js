@@ -30,52 +30,6 @@ const TeamMembers = () => {
         behance: 'https://www.behance.net/halimakhatun'
       }
     },
-   
-    // {
-    //   name: 'Sumaiya Amin Prova',
-    //   role: 'MERN Stack Developer',
-    //   bio: 'Full-stack developer with expertise in MongoDB, Express, React, and Node.js.',
-    //   image: '/sumaiya.png',
-    //   social: {
-    //     linkedin: 'https://linkedin.com/in/alexrodriguez',
-    //     facebook: 'https://facebook.com/sumaiyaamin',
-    //     github: 'https://github.com/sumaiyaamin',
-    //   }   
-    // },
-    // {
-    //   name: 'Momota Akter',
-    //   role: 'Frontend Developer',
-    //   bio: 'Creative frontend developer with a passion for building user-friendly interfaces.',
-    //   image: '/momota.jpg',
-    //   social: {
-    //     linkedin: 'https://linkedin.com/in/mikejohnson',
-    //     facebook: 'https://facebook.com/momotaakter',
-    //     github: 'https://github.com/mikejohnson',
-    //     behance: 'https://www.behance.net/momotaakter'
-    //   }
-    // },
-    //     {
-    //   name: 'Ishita Jahan Mim',
-    //   role: 'Digital Marketer',
-    //   bio: 'Loding........................',
-    //   image: '/ishita.jpg',
-    //   social: {
-    //     linkedin: 'https://linkedin.com/in',
-    //     facebook: 'https://facebook.com/',
-    //     github: 'https://github.com/',
-    //   }
-    // },
-    {
-      name: 'Khadiza Samia',
-      role: 'MERN Stack Developer',
-      bio: 'Full-stack developer with expertise in MongoDB, Express, React, and Node.js.',
-      // image: '/khadiza.png',
-      social: {
-        linkedin: 'https://linkedin.com/in/alexrodriguez',
-        facebook: 'https://facebook.com/khadizasamia',
-        github: 'https://github.com/KhadizaSamiha',
-      }
-    },
     {
       name: 'Jasmin Ara Mim',
       role: 'Frontend Developer',
@@ -98,6 +52,17 @@ const TeamMembers = () => {
         github: '',}
       },
       {
+      name: 'Sumaiya Amin Prova',
+      role: 'MERN Stack Developer',
+      bio: 'Full-stack developer with expertise in MongoDB, Express, React, and Node.js.',
+      image: '/sumaiya.png',
+      social: {
+        linkedin: 'https://linkedin.com/in/alexrodriguez',
+        facebook: 'https://facebook.com/sumaiyaamin',
+        github: 'https://github.com/sumaiyaamin',
+          }   
+      },
+      {
       name: 'Nusrat Jahan Mim',
       role: 'UI/UX Designer',
       bio: 'Skilled designer focused on enhancing user experience through innovative design.',
@@ -108,6 +73,17 @@ const TeamMembers = () => {
         github: '',
         behance: 'https://www.behance.net/sadiaakter'
       },
+    },
+        {
+      name: 'Khadiza Samia',
+      role: 'MERN Stack Developer',
+      bio: 'Full-stack developer with expertise in MongoDB, Express, React, and Node.js.',
+      // image: '/khadiza.png',
+      social: {
+        linkedin: 'https://linkedin.com/in/alexrodriguez',
+        facebook: 'https://facebook.com/khadizasamia',
+        github: 'https://github.com/KhadizaSamiha',
+      }
     },
   ]
   return (
