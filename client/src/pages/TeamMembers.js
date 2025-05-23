@@ -76,18 +76,40 @@ const TeamMembers = () => {
         github: 'https://github.com/KhadizaSamiha',
       }
     },
-    //     {
-    //   name: 'Soraiya Akter',
-    //   role: 'MERN Stack Developer',
-    //   bio: 'Full-stack developer with expertise in MongoDB, Express, React, and Node.js.',
-    //   image: '/soraiya.png',
-    //   social: {
-    //     linkedin: 'https://linkedin.com/in/alexrodriguez',
-    //     facebook: 'https://facebook.com/soraiyaakter',
-    //     github: 'https://github.com/Soraiya11-7',
-    //   }
-    // }
-  ];
+    {
+      name: 'Jasmin Ara Mim',
+      role: 'Frontend Developer',
+      bio: 'Creative frontend developer with a passion for building user-friendly interfaces.',
+      image: '/jasmin.jpg',
+      social: {
+        linkedin: 'https://linkedin.com/in/alexrodriguez',
+        facebook: 'https://facebook.com/sadiaakter',
+        github: '',
+        }
+      },
+      {
+      name: 'Marufa Akter',
+      role: 'UI/UX Designer',
+      bio: 'Skilled designer focused on enhancing user experience through innovative design.',
+      image: '/marufa.png',
+      social: {
+        linkedin: 'https://linkedin.com/in/',
+        facebook: 'https://facebook.com/',
+        github: '',}
+      },
+      {
+      name: 'Nusrat Jahan Mim',
+      role: 'UI/UX Designer',
+      bio: 'Skilled designer focused on enhancing user experience through innovative design.',
+      image: '/sadia.png',
+      social: {
+        linkedin: 'https://linkedin.com/in/alexrodriguez',
+        facebook: 'https://facebook.com/sadiaakter',
+        github: '',
+        behance: 'https://www.behance.net/sadiaakter'
+      },
+    },
+  ]
   return (
     <div className={`pt-16 ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
       {/* Hero Section */}
