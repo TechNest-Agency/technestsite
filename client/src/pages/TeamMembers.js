@@ -53,16 +53,7 @@ const TeamMembers = () => {
         github: '',
         }
       },
-      {
-      name: 'Marufa Akter',
-      role: 'UI/UX Designer',
-      bio: 'Skilled designer focused on enhancing user experience through innovative design.',
-      image: '/marufa.png',
-      social: {
-        linkedin: 'https://linkedin.com/in/',
-        facebook: 'https://facebook.com/',
-        github: '',}
-      },
+
       {
       name: 'Sumaiya Amin Prova',
       role: 'MERN Stack Developer',
@@ -96,6 +87,16 @@ const TeamMembers = () => {
         facebook: 'https://facebook.com/khadizasamia',
         github: 'https://github.com/KhadizaSamiha',
       }
+    },
+    {
+      name: 'Marufa Akter',
+      role: 'UI/UX Designer',
+      bio: 'Skilled designer focused on enhancing user experience through innovative design.',
+      image: '/marufa.png',
+      social: {
+        linkedin: 'https://linkedin.com/in/',
+        facebook: 'https://facebook.com/',
+        github: '',}
     },
   ]
   return (
