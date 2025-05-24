@@ -20,8 +20,8 @@ const TeamMembers = () => {
     },
     {
       name: 'Liza Akter',
-      role: 'Heart of CEO',
-      bio: 'Visionary leader with 4+ years of experience in technology and business strategy.',
+      role: 'Digital Marketing Manager',
+      bio: 'Expert in digital marketing strategies and social media management.',
       image: '/liza.jpg',
       social: {
         linkedin: 'https://www.linkedin.com/in/nazat-mern-stack/',
