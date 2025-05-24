@@ -19,6 +19,18 @@ const TeamMembers = () => {
       }
     },
     {
+      name: 'Liza Akter',
+      role: 'Heart of CEO',
+      bio: 'Visionary leader with 4+ years of experience in technology and business strategy.',
+      image: '/liza.jpg',
+      social: {
+        linkedin: 'https://www.linkedin.com/in/nazat-mern-stack/',
+        facebook: 'https://facebook.com/nazathossain',
+        github: 'https://github.com/nazathossain',
+        behance: 'https://www.behance.net/nazathossain'
+      }
+    },
+    {
       name: 'Halima Khatun',
       role: 'UI/UX Designer',
       bio: 'Skilled designer focused on enhancing user experience through innovative design.',
