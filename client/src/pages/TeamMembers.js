@@ -66,7 +66,7 @@ const TeamMembers = () => {
       name: 'Nusrat Jahan Mim',
       role: 'UI/UX Designer',
       bio: 'Skilled designer focused on enhancing user experience through innovative design.',
-      image: '/sadia.png',
+      image: '/nusrat.jpg',
       social: {
         linkedin: 'https://linkedin.com/in/alexrodriguez',
         facebook: 'https://facebook.com/sadiaakter',
