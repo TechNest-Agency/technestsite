@@ -38,7 +38,7 @@ const TeamMembers = () => {
         linkedin: 'https://www.linkedin.com/in/nazat-mern-stack/',
         facebook: 'https://facebook.com/nazathossain',
         github: 'https://github.com/nazathossain',
-        behance: 'https://www.behance.net/nazathossain'
+        // behance: 'https://www.behance.net/nazathossain'
       }
     },
     {
@@ -139,7 +139,7 @@ const TeamMembers = () => {
       name: 'Mt. Soraiya Parvin',
       role: 'Frontend Developer',
       bio: 'Experienced Frontend developer with expertise in React, Node.js, and cloud infrastructure. Passionate about building scalable solutions and mentoring junior developers.',
-      image: '/alex.jpg',
+      // image: '/soraiya.png',
       social: {
         linkedin: 'https://www.linkedin.com/in/mt-soraya-parvin-49472b363/',
         facebook: '',
@@ -147,9 +147,6 @@ const TeamMembers = () => {
         behance: ''
       }
     },
-
-
-
 
     // ... more members
   ];
