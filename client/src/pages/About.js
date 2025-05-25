@@ -752,7 +752,7 @@ const teamMembers = [
     image: '/liza.png',
   },
   {
-    name: Halima Khatun,
+    name: 'Halima Khatun',
     role: 'UI/UX Designer',
     bio: 'Creative designer with a passion for crafting intuitive and engaging user experiences.',  
     image: '/halima.png',
