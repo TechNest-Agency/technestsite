@@ -91,29 +91,8 @@ const TeamMembers = () => {
         behance: ''
       }
     },
-    {
-      name: 'Alex Johnson',
-      role: 'Senior Developer',
-      bio: 'Experienced full-stack developer with expertise in React, Node.js, and cloud infrastructure. Passionate about building scalable solutions and mentoring junior developers.',
-      image: '/alex.jpg',
-      social: {
-        linkedin: 'https://www.linkedin.com/in//',
-        facebook: 'https://facebook.com/',
-        github: 'https://github.com/',
-        behance: ''
-      }
-    },    {
-      name: 'Alex Johnson',
-      role: 'Senior Developer',
-      bio: 'Experienced full-stack developer with expertise in React, Node.js, and cloud infrastructure. Passionate about building scalable solutions and mentoring junior developers.',
-      image: '/alex.jpg',
-      social: {
-        linkedin: 'https://www.linkedin.com/in//',
-        facebook: 'https://facebook.com/',
-        github: 'https://github.com/',
-        behance: ''
-      }
-    },    {
+
+   {
       name: 'Khadiza Samiha',
       role: 'Frontend Developer',
       bio: 'Experienced MERN developer with expertise in React, Node.js, and cloud infrastructure. Passionate about building scalable solutions and mentoring junior developers.',
