@@ -86,6 +86,7 @@ const TeamMembers = () => {
         linkedin: 'https://linkedin.com/in/alexrodriguez',
         facebook: 'https://facebook.com/khadizasamia',
         github: 'https://github.com/KhadizaSamiha',
+        behance: 'https://www.behance.net/khadizasamia'
       }
     },
     {
@@ -96,7 +97,33 @@ const TeamMembers = () => {
       social: {
         linkedin: 'https://linkedin.com/in/',
         facebook: 'https://facebook.com/',
-        github: '',}
+        github: '',
+        behance: 'https://www.behance.net/marufaakter'
+      }
+      },
+    {
+      name: 'Sadia Akter', 
+      role: 'UI/UX Designer',
+      bio: 'Skilled designer focused on enhancing user experience through innovative design.',
+      image: '/sadia.jpg',
+      sosial: { 
+        linkedin: 'https://linkedin.com/in/alexrodriguez',
+        facebook: 'https://facebook.com/sadiaakter',
+        github: '',
+        behance: 'https://www.behance.net/sadiaakter'
+      }
+    },
+    {
+      name: 'Sadia Akter', 
+      role: 'UI/UX Designer',
+      bio: 'Skilled designer focused on enhancing user experience through innovative design.',
+      image: '/sadia.jpg',
+      sosial: { 
+        linkedin: 'https://linkedin.com/in/alexrodriguez',
+        facebook: 'https://facebook.com/sadiaakter',
+        github: '',
+        behance: 'https://www.behance.net/sadiaakter'
+      }
     },
   ]
   return (
