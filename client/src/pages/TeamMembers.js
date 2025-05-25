@@ -66,18 +66,7 @@ const TeamMembers = () => {
       }
     },
     // New team member added here
-    {
-      name: 'Marufa Akter',
-      role: 'UI/UX Designer',
-      bio: 'Skilled designer focused on enhancing user experience through innovative design.',
-      // image: '/marufa.jpg',
-      social: {
-        linkedin: 'https://www.linkedin.com/in//',
-        facebook: 'https://facebook.com/',
-        github: 'https://github.com/',
-        behance: ''
-      }
-    },
+
     {
       name: 'Nusrat Jahan Mim',
       role: 'Ui/UX Designer',
@@ -144,6 +133,18 @@ const TeamMembers = () => {
         linkedin: 'https://www.linkedin.com/in/mt-soraya-parvin-49472b363/',
         facebook: '',
         github: 'https://github.com/Soraiya11-7',
+        behance: ''
+      }
+    },
+        {
+      name: 'Marufa Akter',
+      role: 'UI/UX Designer',
+      bio: 'Skilled designer focused on enhancing user experience through innovative design.',
+      // image: '/marufa.jpg',
+      social: {
+        linkedin: 'https://www.linkedin.com/in//',
+        facebook: 'https://facebook.com/',
+        github: 'https://github.com/',
         behance: ''
       }
     },
