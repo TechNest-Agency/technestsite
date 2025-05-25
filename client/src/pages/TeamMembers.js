@@ -1,10 +1,33 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../context/ThemeContext';
+import { FaLinkedin, FaFacebook, FaGithub, FaBehance, FaPlus } from 'react-icons/fa';
 
 const TeamMembers = () => {
   const { isDarkMode } = useTheme();
+  const [selectedMember, setSelectedMember] = useState(null);
 
+  // Define consistent animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { type: 'spring', stiffness: 100 }
+    }
+  };
+
+  // Get actual team members data from your original component
   const teamMembers = [
     {
       name: 'Nazat Hossain',
@@ -22,7 +45,7 @@ const TeamMembers = () => {
       name: 'Liza Akter',
       role: 'Digital Marketing Manager',
       bio: 'Expert in digital marketing strategies and social media management.',
-      image: '/liza.jpg',
+      image: '/liza.png',
       social: {
         linkedin: 'https://www.linkedin.com/in/nazat-mern-stack/',
         facebook: 'https://facebook.com/nazathossain',
@@ -34,7 +57,7 @@ const TeamMembers = () => {
       name: 'Halima Khatun',
       role: 'UI/UX Designer',
       bio: 'Skilled designer focused on enhancing user experience through innovative design.',
-      image: '/halima.jpg',
+      image: '/halima.png',
       social: {
         linkedin: 'https://www.linkedin.com/in/halima-khatun-a8b831256/',
         facebook: 'https://facebook.com/halimakhatun',
@@ -42,191 +65,278 @@ const TeamMembers = () => {
         behance: 'https://www.behance.net/halimakhatun'
       }
     },
-    {
-      name: 'Jasmin Ara Mim',
-      role: 'Frontend Developer',
-      bio: 'Creative frontend developer with a passion for building user-friendly interfaces.',
-      image: '/jasmin.jpg',
-      social: {
-        linkedin: 'https://linkedin.com/in/alexrodriguez',
-        facebook: 'https://facebook.com/sadiaakter',
-        github: '',
-        }
-      },
-
-      {
-      name: 'Sumaiya Amin Prova',
-      role: 'MERN Stack Developer',
-      bio: 'Full-stack developer with expertise in MongoDB, Express, React, and Node.js.',
-      image: '/sumaiya.png',
-      social: {
-        linkedin: 'https://linkedin.com/in/alexrodriguez',
-        facebook: 'https://facebook.com/sumaiyaamin',
-        github: 'https://github.com/sumaiyaamin',
-          }   
-      },
-      {
-      name: 'Nusrat Jahan Mim',
-      role: 'UI/UX Designer',
-      bio: 'Skilled designer focused on enhancing user experience through innovative design.',
-      image: '/nusrat.jpg',
-      social: {
-        linkedin: 'https://linkedin.com/in/alexrodriguez',
-        facebook: 'https://facebook.com/sadiaakter',
-        github: '',
-        behance: 'https://www.behance.net/sadiaakter'
-      },
-    },
-        {
-      name: 'Khadiza Samia',
-      role: 'MERN Stack Developer',
-      bio: 'Full-stack developer with expertise in MongoDB, Express, React, and Node.js.',
-      // image: '/khadiza.png',
-      social: {
-        linkedin: 'https://linkedin.com/in/alexrodriguez',
-        facebook: 'https://facebook.com/khadizasamia',
-        github: 'https://github.com/KhadizaSamiha',
-        behance: 'https://www.behance.net/khadizasamia'
-      }
-    },
+    // New team member added here
     {
       name: 'Marufa Akter',
       role: 'UI/UX Designer',
       bio: 'Skilled designer focused on enhancing user experience through innovative design.',
       image: '/marufa.png',
       social: {
-        linkedin: 'https://linkedin.com/in/',
+        linkedin: 'https://www.linkedin.com/in//',
         facebook: 'https://facebook.com/',
-        github: '',
-        behance: 'https://www.behance.net/marufaakter'
-      }
-      },
-    {
-      name: 'Sadia Akter', 
-      role: 'UI/UX Designer',
-      bio: 'Skilled designer focused on enhancing user experience through innovative design.',
-      image: '/sadia.jpg',
-      sosial: { 
-        linkedin: 'https://linkedin.com/in/alexrodriguez',
-        facebook: 'https://facebook.com/sadiaakter',
-        github: '',
-        behance: 'https://www.behance.net/sadiaakter'
+        github: 'https://github.com/',
+        behance: ''
       }
     },
     {
-      name: 'Sadia Akter', 
-      role: 'UI/UX Designer',
-      bio: 'Skilled designer focused on enhancing user experience through innovative design.',
-      image: '/sadia.jpg',
-      sosial: { 
-        linkedin: 'https://linkedin.com/in/alexrodriguez',
-        facebook: 'https://facebook.com/sadiaakter',
-        github: '',
-        behance: 'https://www.behance.net/sadiaakter'
+      name: 'Nusrat Jahan Mim',
+      role: 'Ui/UX Designer',
+      bio: 'Experienced full-stack developer with expertise in React, Node.js, and cloud infrastructure. Passionate about building scalable solutions and mentoring junior developers.',
+      image: '/mim.png',
+      social: {
+        linkedin: 'https://www.linkedin.com/in//',
+        facebook: 'https://facebook.com/',
+        github: 'https://github.com/',
+        behance: ''
       }
     },
-  ]
+    {
+      name: 'Jasmin Ara Mim',
+      role: 'Senior Developer',
+      bio: 'Experienced full-stack developer with expertise in React, Node.js, and cloud infrastructure. Passionate about building scalable solutions and mentoring junior developers.',
+      image: '/Jasmin.png',
+      social: {
+        linkedin: 'https://www.linkedin.com/in//',
+        facebook: 'https://facebook.com/',
+        github: 'https://github.com/',
+        behance: ''
+      }
+    },
+    {
+      name: 'Alex Johnson',
+      role: 'Senior Developer',
+      bio: 'Experienced full-stack developer with expertise in React, Node.js, and cloud infrastructure. Passionate about building scalable solutions and mentoring junior developers.',
+      image: '/alex.jpg',
+      social: {
+        linkedin: 'https://www.linkedin.com/in//',
+        facebook: 'https://facebook.com/',
+        github: 'https://github.com/',
+        behance: ''
+      }
+    },    {
+      name: 'Alex Johnson',
+      role: 'Senior Developer',
+      bio: 'Experienced full-stack developer with expertise in React, Node.js, and cloud infrastructure. Passionate about building scalable solutions and mentoring junior developers.',
+      image: '/alex.jpg',
+      social: {
+        linkedin: 'https://www.linkedin.com/in//',
+        facebook: 'https://facebook.com/',
+        github: 'https://github.com/',
+        behance: ''
+      }
+    },    {
+      name: 'Alex Johnson',
+      role: 'Senior Developer',
+      bio: 'Experienced full-stack developer with expertise in React, Node.js, and cloud infrastructure. Passionate about building scalable solutions and mentoring junior developers.',
+      image: '/alex.jpg',
+      social: {
+        linkedin: 'https://www.linkedin.com/in//',
+        facebook: 'https://facebook.com/',
+        github: 'https://github.com/',
+        behance: ''
+      }
+    },    {
+      name: 'Mt. Soraiya Parvin',
+      role: 'Frontend Developer',
+      bio: 'Experienced Frontend developer with expertise in React, Node.js, and cloud infrastructure. Passionate about building scalable solutions and mentoring junior developers.',
+      image: '/alex.jpg',
+      social: {
+        linkedin: 'https://www.linkedin.com/in//',
+        facebook: 'https://facebook.com/',
+        github: 'https://github.com/',
+        behance: ''
+      }
+    },
+
+
+
+
+    // ... more members
+  ];
+
+  // Social media icon mapping
+  const SocialIcon = ({ platform, url }) => {
+    if (!url) return null;
+
+    const icons = {
+      linkedin: <FaLinkedin />,
+      facebook: <FaFacebook />,
+      github: <FaGithub />,
+      behance: <FaBehance />
+    };
+
+    return (
+        <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-transform hover:scale-125 text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400"
+        >
+          {icons[platform]}
+        </a>
+    );
+  };
+
+  const handleMemberClick = (member) => {
+    setSelectedMember(member === selectedMember ? null : member);
+  };
+
+  // Function to safely get social media links
+  const getSocialLinks = (member) => {
+    // Check if social is defined - if not, return an empty object
+    // Also handle the case where it might be misspelled as 'sosial'
+    return member.social || member.sosial || {};
+  };
+
   return (
-    <div className={`pt-16 ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
-      {/* Hero Section */}
-      <section className="relative py-20">
-        <div className={`absolute inset-0 bg-gradient-to-br ${
-          isDarkMode 
-            ? 'from-primary-900/20 to-secondary-900/20' 
-            : 'from-primary-50 to-secondary-50'
-        } -z-10`} />
+      <section className={`py-16 ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-800'}`}>
         <div className="container mx-auto px-4">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="max-w-3xl mx-auto text-center"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="text-center mb-16"
           >
-            <h1 className="heading mb-6">Our Team</h1>
-            <p className={`text-lg ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-              Meet the passionate professionals behind TechNest's success. Our diverse team brings together expertise from various domains to deliver exceptional solutions.
+            <h2 className="text-4xl font-bold mb-4">Our Amazing Team</h2>
+            <div className="w-24 h-1 bg-blue-500 mx-auto mb-8"></div>
+            <p className="max-w-2xl mx-auto text-lg">
+              Meet the talented individuals behind our success. Passionate experts committed to delivering excellence.
             </p>
           </motion.div>
-        </div>
-      </section>
 
-      {/* Team Members Grid */}
-      <section className={`py-20 ${isDarkMode ? 'bg-gray-900' : 'bg-white'}`}>
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8"
+          >
             {teamMembers.map((member, index) => (
-              <motion.div
-                key={member.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className={`${
-                  isDarkMode ? 'bg-gray-800' : 'bg-gray-50'
-                } rounded-xl p-6 text-center group hover:scale-105 transition-transform duration-300`}
-              >
-                <div className="w-48 h-48 mx-auto mb-6 rounded-full overflow-hidden">
-                  <img
-                    src={member.image}
-                    alt={member.name}
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                  />
-                </div>
-                <h3 className="text-xl font-semibold mb-2">{member.name}</h3>
-                <p className={`${isDarkMode ? 'text-primary-400' : 'text-primary-600'} mb-3`}>{member.role}</p>
-                <p className={`${isDarkMode ? 'text-gray-300' : 'text-gray-600'} mb-4`}>{member.bio}</p>
-                <div className="flex justify-center space-x-4">
-                  <a href={member.social.linkedin} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-primary-600 transition-colors">
-                    <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-                    </svg>
-                  </a>
-                  <a href={member.social.facebook} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-primary-600 transition-colors">
-                    <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M18.77,7.46H14.5v-1.9c0-.9.6-1.1,1-1.1h3V.5h-4.33C10.24.5,9.5,3.44,9.5,5.32v2.15h-3v4h3v12h5v-12h3.85l.42-4Z"/>
-                    </svg>
-                  </a>
-                  <a href={member.social.github} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-primary-600 transition-colors">
-                    <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                    </svg>
-                  </a>
-                  <a href={member.social.behance} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-primary-600 transition-colors">
-                    <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M22 7h-7V5h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14H15.97c.13 3.211 3.483 3.312 4.588 2.029h3.168zm-7.686-4h4.965c-.105-1.547-1.136-2.219-2.477-2.219-1.466 0-2.277.768-2.488 2.219zm-9.574 6.988H0V5.021h6.953c5.476.081 5.58 5.444 2.72 6.906 3.461 1.26 3.577 8.061-3.207 8.061zM3 11h3.584c2.508 0 2.906-3-.312-3H3v3zm3.391 3H3v3.016h3.341c3.055 0 2.868-3.016.05-3.016z"/>
-                    </svg>
-                  </a>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+                <motion.div
+                    key={`${member.name}-${index}`}
+                    variants={itemVariants}
+                    whileHover={{ y: -10, transition: { duration: 0.3 } }}
+                    className={`relative overflow-hidden rounded-xl shadow-lg ${
+                        isDarkMode ? 'bg-gray-800' : 'bg-white'
+                    } h-full flex flex-col`}
+                    onClick={() => handleMemberClick(member)}
+                >
+                  {/* Responsive image container */}
+                  <div className="relative pt-[100%] w-full overflow-hidden">
+                    {member.image ? (
+                        <img
+                            src={member.image}
+                            alt={member.name}
+                            className="absolute inset-0 w-full h-full object-cover object-center transform transition-transform duration-500 hover:scale-110"
+                        />
+                    ) : (
+                        <div className={`absolute inset-0 flex items-center justify-center ${
+                            isDarkMode ? 'bg-gray-700' : 'bg-gray-200'
+                        }`}>
+                          <span className="text-4xl font-bold opacity-30">
+                            {member.name.split(' ').map(n => n[0]).join('')}
+                          </span>
+                        </div>
+                    )}
 
-      {/* Join Our Team Section */}
-      <section className={`py-20 ${isDarkMode ? 'bg-gray-800' : 'bg-gray-50'}`}>
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="max-w-3xl mx-auto text-center"
-          >
-            <h2 className="heading mb-6">Join Our Team</h2>
-            <p className={`text-lg ${isDarkMode ? 'text-gray-300' : 'text-gray-600'} mb-8`}>
-              We're always looking for talented individuals who share our passion for innovation and excellence. If you think you'd be a great fit, we'd love to hear from you.
-            </p>
-            <a
-              href="/contact"
-              className="inline-flex items-center px-6 py-3 text-lg font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors duration-200"
-            >
-              View Open Positions
-            </a>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 sm:p-6">
+                      <p className="text-white text-xs sm:text-sm mb-2 sm:mb-4 line-clamp-3">{member.bio}</p>
+                      <div className="flex space-x-2 sm:space-x-3">
+                        {Object.entries(getSocialLinks(member)).map(([platform, url]) => (
+                            url && <SocialIcon key={platform} platform={platform} url={url} />
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 sm:p-6 flex-grow">
+                    <h3 className="font-bold text-lg sm:text-xl">{member.name}</h3>
+                    <div className="w-10 h-0.5 bg-blue-500 my-2"></div>
+                    <p className={`text-xs sm:text-sm ${isDarkMode ? 'text-blue-300' : 'text-blue-600'}`}>
+                      {member.role}
+                    </p>
+                  </div>
+
+                  <div className="absolute top-2 right-2 sm:top-4 sm:right-4">
+                    <motion.div
+                        whileHover={{ rotate: 90 }}
+                        className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full ${
+                            isDarkMode ? 'bg-blue-500' : 'bg-blue-600'
+                        } flex items-center justify-center cursor-pointer`}
+                    >
+                      <FaPlus className="text-white text-xs" />
+                    </motion.div>
+                  </div>
+                </motion.div>
+            ))}
           </motion.div>
         </div>
+
+        {/* Modal for detailed view */}
+        <AnimatePresence>
+          {selectedMember && (
+              <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70"
+                  onClick={() => setSelectedMember(null)}
+              >
+                <motion.div
+                    initial={{ scale: 0.9, y: 20 }}
+                    animate={{ scale: 1, y: 0 }}
+                    exit={{ scale: 0.9, y: 20 }}
+                    className={`relative max-w-2xl w-full rounded-2xl overflow-hidden ${
+                        isDarkMode ? 'bg-gray-800' : 'bg-white'
+                    }`}
+                    onClick={e => e.stopPropagation()}
+                >
+                  <div className="flex flex-col md:flex-row">
+                    <div className="md:w-2/5 h-64 md:h-auto relative">
+                      {selectedMember.image ? (
+                          <img
+                              src={selectedMember.image}
+                              alt={selectedMember.name}
+                              className="w-full h-full object-cover"
+                          />
+                      ) : (
+                          <div className={`w-full h-full min-h-[200px] flex items-center justify-center ${
+                              isDarkMode ? 'bg-gray-700' : 'bg-gray-200'
+                          }`}>
+                            <span className="text-6xl font-bold opacity-30">
+                              {selectedMember.name.split(' ').map(n => n[0]).join('')}
+                            </span>
+                          </div>
+                      )}
+                    </div>
+                    <div className="md:w-3/5 p-6 sm:p-8">
+                      <h2 className="text-xl sm:text-2xl font-bold mb-2">{selectedMember.name}</h2>
+                      <div className="w-12 h-1 bg-blue-500 mb-4"></div>
+                      <p className={`text-xs sm:text-sm mb-4 sm:mb-6 ${isDarkMode ? 'text-blue-300' : 'text-blue-600'}`}>
+                        {selectedMember.role}
+                      </p>
+                      <p className="text-sm sm:text-base mb-6">{selectedMember.bio}</p>
+
+                      <div className="flex space-x-4">
+                        {Object.entries(getSocialLinks(selectedMember)).map(([platform, url]) => (
+                            url && <SocialIcon key={platform} platform={platform} url={url} />
+                        ))}
+                      </div>
+
+                      <button
+                          className={`mt-6 sm:mt-8 px-4 sm:px-6 py-2 rounded-full ${
+                              isDarkMode ? 'bg-blue-500 hover:bg-blue-600' : 'bg-blue-600 hover:bg-blue-700'
+                          } text-white transition-colors text-sm sm:text-base`}
+                          onClick={() => setSelectedMember(null)}
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                </motion.div>
+              </motion.div>
+          )}
+        </AnimatePresence>
       </section>
-    </div>
   );
 };
 
