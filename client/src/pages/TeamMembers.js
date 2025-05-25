@@ -62,7 +62,7 @@ const TeamMembers = () => {
         linkedin: 'https://www.linkedin.com/in/halima-khatun-a8b831256/',
         facebook: 'https://facebook.com/halimakhatun',
         github: '',
-        behance: 'https://www.behance.net/halimakhatun'
+        behance: 'https://www.behance.net/halimakhatun8'
       }
     },
     // New team member added here
@@ -125,10 +125,10 @@ const TeamMembers = () => {
         behance: ''
       }
     },    {
-      name: 'Alex Johnson',
-      role: 'Senior Developer',
-      bio: 'Experienced full-stack developer with expertise in React, Node.js, and cloud infrastructure. Passionate about building scalable solutions and mentoring junior developers.',
-      image: '/alex.jpg',
+      name: 'Khadiza Samiha',
+      role: 'Frontend Developer',
+      bio: 'Experienced MERN developer with expertise in React, Node.js, and cloud infrastructure. Passionate about building scalable solutions and mentoring junior developers.',
+      // image: '/khadiza.png',
       social: {
         linkedin: 'https://www.linkedin.com/in//',
         facebook: 'https://facebook.com/',
@@ -141,9 +141,9 @@ const TeamMembers = () => {
       bio: 'Experienced Frontend developer with expertise in React, Node.js, and cloud infrastructure. Passionate about building scalable solutions and mentoring junior developers.',
       image: '/alex.jpg',
       social: {
-        linkedin: 'https://www.linkedin.com/in//',
-        facebook: 'https://facebook.com/',
-        github: 'https://github.com/',
+        linkedin: 'https://www.linkedin.com/in/mt-soraya-parvin-49472b363/',
+        facebook: '',
+        github: 'https://github.com/Soraiya11-7',
         behance: ''
       }
     },
