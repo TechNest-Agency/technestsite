@@ -70,7 +70,7 @@ const TeamMembers = () => {
       name: 'Marufa Akter',
       role: 'UI/UX Designer',
       bio: 'Skilled designer focused on enhancing user experience through innovative design.',
-      image: '/marufa.jpg',
+      // image: '/marufa.jpg',
       social: {
         linkedin: 'https://www.linkedin.com/in//',
         facebook: 'https://facebook.com/',
