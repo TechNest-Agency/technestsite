@@ -416,7 +416,7 @@ const About = () => {
               </motion.div>
             ))}
           </div>
-          
+
           <div className="text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -746,16 +746,10 @@ const teamMembers = [
     image: '/ceo.png',
   },
   {
-    name: 'Arifin Hasan',
-    role: 'CTO',
-    bio: 'Technical expert specializing in software architecture and innovation.',
-    image: '/ceo2.jpg',
-  },
-  {
     name: 'Liza Akter',
     role: 'Project Manager',
     bio: 'Experienced project manager with a knack for delivering projects on time and within budget.',
-    image: '/liza.jpg',
+    image: '/liza.png',
   },
 ];
 
