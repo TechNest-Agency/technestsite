@@ -92,9 +92,9 @@ const TeamMembers = () => {
     },
     {
       name: 'Jasmin Ara Mim',
-      role: 'Senior Developer',
+      role: 'Frontend Developer',
       bio: 'Experienced full-stack developer with expertise in React, Node.js, and cloud infrastructure. Passionate about building scalable solutions and mentoring junior developers.',
-      image: '/Jasmin.png',
+      image: '/jasmin.png',
       social: {
         linkedin: 'https://www.linkedin.com/in//',
         facebook: 'https://facebook.com/',
