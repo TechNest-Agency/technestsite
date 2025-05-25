@@ -751,6 +751,12 @@ const teamMembers = [
     bio: 'Experienced project manager with a knack for delivering projects on time and within budget.',
     image: '/liza.png',
   },
+  {
+    name: Halima Khatun,
+    role: 'UI/UX Designer',
+    bio: 'Creative designer with a passion for crafting intuitive and engaging user experiences.',  
+    image: '/halima.png',
+  }
 ];
 
 export default About;
