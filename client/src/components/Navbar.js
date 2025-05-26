@@ -21,7 +21,7 @@ const Navbar = (props) => {
         { path: '/', label: 'Home' },
         { path: '/about', label: 'About' },
         { path: '/team', label: 'Team' },
-        { path: '/services', label: 'Services' },        
+        { path: '/services', label: 'Services' },
         { path: '/portfolio', label: 'Portfolio' },
         // { path: '/courses', label: 'Courses' },
         { path: '/contact', label: 'Contact' }

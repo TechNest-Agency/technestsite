@@ -92,18 +92,7 @@ const TeamMembers = () => {
       }
     },
 
-   {
-      name: 'Khadiza Samiha',
-      role: 'Frontend Developer',
-      bio: 'Experienced MERN developer with expertise in React, Node.js, and cloud infrastructure. Passionate about building scalable solutions and mentoring junior developers.',
-      // image: '/khadiza.png',
-      social: {
-        linkedin: 'https://www.linkedin.com/in//',
-        facebook: 'https://facebook.com/',
-        github: 'https://github.com/',
-        behance: ''
-      }
-    },    {
+    {
       name: 'Mt. Soraiya Parvin',
       role: 'Frontend Developer',
       bio: 'Experienced Frontend developer with expertise in React, Node.js, and cloud infrastructure. Passionate about building scalable solutions and mentoring junior developers.',
