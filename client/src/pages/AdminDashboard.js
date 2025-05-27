@@ -9,7 +9,8 @@ import {
   CogIcon,
   PlusIcon,
   PencilIcon,
-  TrashIcon
+  TrashIcon,
+  PhoneIcon
 } from '@heroicons/react/24/outline';
 
 const AdminDashboard = () => {
@@ -136,6 +137,8 @@ const AdminDashboard = () => {
       setPosts(posts.filter(post => post.id !== postId));
     }
   };
+
+  const showFloatingContact = true;
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -599,9 +602,23 @@ const AdminDashboard = () => {
             {/* Settings content will go here */}
           </motion.div>
         )}
+
+        {showFloatingContact && (
+          <div className="fixed bottom-4 sm:bottom-8 right-4 sm:right-8 z-50">
+            <a
+              href="/contact"
+              className="flex items-center gap-2 bg-primary-600/90 backdrop-blur-sm hover:bg-primary-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full shadow-lg transition-colors text-sm sm:text-base"
+              style={{ boxShadow: '0 4px 24px 0 rgba(0,0,0,0.10)' }}
+            >
+              <PhoneIcon className="h-4 w-4 sm:h-5 sm:w-5" />
+              <span className="hidden sm:inline">Contact Us</span>
+              <span className="sm:hidden">Chat</span>
+            </a>
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
-export default AdminDashboard; 
+export default AdminDashboard;

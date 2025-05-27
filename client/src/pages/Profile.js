@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { useTheme } from '../context/ThemeContext';
 import { motion } from 'framer-motion';
 import {
     UserCircleIcon,
@@ -14,7 +13,6 @@ import {
 
 const Profile = () => {
     const { user, updateUser, logout } = useAuth();
-    const { isDarkMode } = useTheme();
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
     const [message, setMessage] = useState({ type: '', text: '' });
@@ -129,7 +127,7 @@ const Profile = () => {
             className="min-h-screen py-12 px-4 sm:px-6 lg:px-8"
         >
             <div className="max-w-3xl mx-auto">
-                <div className={`${isDarkMode ? 'bg-gray-800' : 'bg-white'} shadow rounded-lg`}>
+                <div className="bg-white shadow rounded-lg">
                     <div className="px-4 py-5 sm:p-6">
                         <h2 className="text-2xl font-bold mb-6">Profile Settings</h2>
 

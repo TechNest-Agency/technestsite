@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
+import { motion, AnimatePresence } from 'framer-motion';
 import Typewriter from 'typewriter-effect';
 import { 
   ArrowRightIcon,
@@ -14,18 +13,13 @@ import {
   ArrowPathIcon,
   RocketLaunchIcon,
   EnvelopeIcon,
-  ChevronDownIcon,
-  PhoneIcon
+  ChevronDownIcon
 } from '@heroicons/react/24/outline';
 
-const Home = () => {  const [selectedFaq, setSelectedFaq] = useState(null);
-  const [isFloatingCtaVisible, setIsFloatingCtaVisible] = useState(false);
+const Home = () => {
+  const [selectedFaq, setSelectedFaq] = useState(null);
   const [email, setEmail] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
-
-  const { scrollY } = useScroll();
-  const heroTextY = useTransform(scrollY, [0, 300], [0, 150]);
-  const heroOpacity = useTransform(scrollY, [0, 300], [1, 0]);
 
   const stats = [
     { number: '100+', label: 'Projects Completed', icon: CodeBracketIcon },
@@ -121,7 +115,7 @@ const Home = () => {  const [selectedFaq, setSelectedFaq] = useState(null);
       id: 'mobile-apps',
       title: 'Mobile Apps',
       description: 'Native and cross-platform mobile applications for iOS and Android.',
-      icon: PhoneIcon
+      icon: ArrowPathIcon
     },
     {
       id: 'ai-solutions',
@@ -130,15 +124,6 @@ const Home = () => {  const [selectedFaq, setSelectedFaq] = useState(null);
       icon: LightBulbIcon
     }
   ];
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsFloatingCtaVisible(window.scrollY > 500);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   const handleSubscribe = (e) => {
     e.preventDefault();
@@ -538,28 +523,6 @@ const Home = () => {  const [selectedFaq, setSelectedFaq] = useState(null);
           </motion.div>
         </div>
       </section>    
-        {/* Floating Contact Button */}
-      <AnimatePresence>
-        {isFloatingCtaVisible && (
-          <div className="fixed bottom-4 sm:bottom-8 right-4 sm:right-8 z-50">
-            {/* Contact Button */}
-            <motion.div
-              initial={{ opacity: 0, y: 100 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 100 }}
-            >
-              <Link
-                to="/contact"
-                className="flex items-center gap-2 bg-primary-600/90 backdrop-blur-sm hover:bg-primary-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full shadow-lg transition-colors text-sm sm:text-base"
-              >
-                <PhoneIcon className="h-4 w-4 sm:h-5 sm:w-5" />
-                <span className="hidden sm:inline">Contact Us</span>
-                <span className="sm:hidden">Chat</span>
-              </Link>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
     </div>
   );
 };

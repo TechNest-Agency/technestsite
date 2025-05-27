@@ -2,11 +2,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { CheckCircleIcon } from '@heroicons/react/24/outline';
-import { useTheme } from '../context/ThemeContext';
 
 const ThankYou = () => {
-  const { isDarkMode } = useTheme();
-
   return (
     <div className="min-h-screen py-12 bg-gray-50 dark:bg-gray-900">
       <div className="container max-w-3xl mx-auto px-4">

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -15,11 +15,7 @@ const Courses = () => {
     const [totalPages, setTotalPages] = useState(1);
     const { user } = useAuth();
 
-    useEffect(() => {
-        fetchCourses();
-    }, [currentPage, filters]);
-
-    const fetchCourses = async () => {
+    const fetchCourses = useCallback(async () => {
         try {
             const params = new URLSearchParams({
                 page: currentPage,
@@ -34,7 +30,11 @@ const Courses = () => {
             console.error('Error fetching courses:', error);
             setLoading(false);
         }
-    };
+    }, [currentPage, filters]);
+
+    useEffect(() => {
+        fetchCourses();
+    }, [fetchCourses]);
 
     const handleFilterChange = (e) => {
         const { name, value } = e.target;

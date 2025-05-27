@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
@@ -10,11 +10,7 @@ const BlogPost = () => {
     const [error, setError] = useState(null);
     const [relatedPosts, setRelatedPosts] = useState([]);
 
-    useEffect(() => {
-        fetchPost();
-    }, [slug]);
-
-    const fetchPost = async () => {
+    const fetchPost = useCallback(async () => {
         try {
             const [postResponse, relatedResponse] = await Promise.all([
                 axios.get(`/api/blog/${slug}`),
@@ -29,7 +25,11 @@ const BlogPost = () => {
             setError('Failed to load blog post');
             setLoading(false);
         }
-    };
+    }, [slug]);
+
+    useEffect(() => {
+        fetchPost();
+    }, [fetchPost]);
 
     if (loading) {
         return (

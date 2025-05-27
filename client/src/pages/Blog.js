@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
@@ -11,12 +11,7 @@ const Blog = () => {
     const [selectedCategory, setSelectedCategory] = useState('');
     const [categories, setCategories] = useState([]);
 
-    useEffect(() => {
-        fetchPosts();
-        fetchCategories();
-    }, [currentPage, selectedCategory]);
-
-    const fetchPosts = async () => {
+    const fetchPosts = useCallback(async () => {
         try {
             const url = `/api/blog?page=${currentPage}${selectedCategory ? `&category=${selectedCategory}` : ''}`;
             const response = await axios.get(url);
@@ -27,16 +22,21 @@ const Blog = () => {
             console.error('Error fetching blog posts:', error);
             setLoading(false);
         }
-    };
+    }, [currentPage, selectedCategory]);
 
-    const fetchCategories = async () => {
+    const fetchCategories = useCallback(async () => {
         try {
             const response = await axios.get('/api/blog/categories');
             setCategories(response.data);
         } catch (error) {
             console.error('Error fetching categories:', error);
         }
-    };
+    }, []);
+
+    useEffect(() => {
+        fetchPosts();
+        fetchCategories();
+    }, [fetchPosts, fetchCategories]);
 
     const handleSearch = async (e) => {
         e.preventDefault();

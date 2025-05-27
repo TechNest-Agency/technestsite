@@ -221,10 +221,8 @@ const Contact = () => {
               <div className="rounded-xl overflow-hidden h-64">
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3651.105693257605!2d90.4202373!3d23.7798198!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c7a7b8c7b8c7%3A0x1c1c1c1c1c1c1c1c!2sTechNest%20Solutions!5e0!3m2!1sen!2sbd!4v1234567890!5m2!1sen!2sbd"
-                  width="100%"
-                  height="450"
-                  style={{ border: 0 }}
-                  allowFullScreen
+                  style={{ border: 0, width: '100%', height: '100%' }}
+                  allowFullScreen={true}
                   loading="lazy"
                   title="TechNest Solutions Location Map"
                   referrerPolicy="no-referrer-when-downgrade"
@@ -238,4 +236,4 @@ const Contact = () => {
   );
 };
 
-export default Contact; 
+export default Contact;

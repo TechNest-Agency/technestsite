@@ -2,12 +2,10 @@ import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
-import { useTheme } from '../context/ThemeContext';
 import { useCart } from '../context/CartContext';
 
 const PaymentStatus = () => {
   const location = useLocation();
-  const { isDarkMode } = useTheme();
   const isSuccess = location.pathname.includes('success');
   const { clearCart } = useCart();
 

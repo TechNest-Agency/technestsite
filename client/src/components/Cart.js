@@ -82,7 +82,12 @@ const Cart = () => {
             items_count: cartItems.length,
             low_power_mode: isLowPowerMode
         });
-        navigate(path);
+        // Redirect '/products' to '/services' instead
+        if (path === '/products') {
+            navigate('/services');
+        } else {
+            navigate(path);
+        }
     }, [setIsCartOpen, trackDetailedEvent, getCartTotal, cartItems.length, isLowPowerMode, navigate]);
 
     const handleRemoveItem = useCallback((item) => {

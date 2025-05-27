@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
@@ -36,13 +36,7 @@ const SearchResults = () => {
         }
     });
 
-    useEffect(() => {
-        if (query) {
-            fetchResults();
-        }
-    }, [query, type, filters]);
-
-    const fetchResults = async () => {
+    const fetchResults = useCallback(async () => {
         setLoading(true);
         try {
             const response = await axios.post('/api/search/advanced', {
@@ -56,7 +50,13 @@ const SearchResults = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [query, type, filters]);
+
+    useEffect(() => {
+        if (query) {
+            fetchResults();
+        }
+    }, [query, fetchResults]);
 
     const handleFilterChange = (category, filterType, value) => {
         setFilters(prev => ({

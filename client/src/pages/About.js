@@ -1,6 +1,5 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { useCart } from '../context/CartContext';
 import { Link } from 'react-router-dom';
 import { 
   LightBulbIcon, 
@@ -22,12 +21,10 @@ import {
   CubeTransparentIcon,
   ChatBubbleBottomCenterTextIcon,
   DevicePhoneMobileIcon,
-  CurrencyDollarIcon,
-  ShoppingCartIcon
+  PhoneIcon
 } from '@heroicons/react/24/outline';
 
 const About = () => {
-  const { addToCart } = useCart();
 
   const milestones = [
     {
@@ -211,78 +208,7 @@ const About = () => {
     }
   ];
 
-  const packages = [
-    {
-      id: 'basic-website',
-      title: 'Basic Website',
-      price: '15,000৳ / $136',
-      features: [
-        'Single Page Website',
-        'Responsive Design',
-        'Basic SEO',
-        '2 Revisions',
-        '1 Month Support'
-      ],
-      icon: CurrencyDollarIcon,
-      buttonText: 'Get Started'
-    },
-    {
-      id: 'pro-website',
-      title: 'Pro Website with Admin Panel',
-      price: '25,000৳ / $227',
-      features: [
-        'Multi-page Website',
-        'Admin Dashboard',
-        'Content Management',
-        'Advanced SEO',
-        '3 Revisions',
-        '2 Months Support'
-      ],
-      icon: CurrencyDollarIcon,
-      buttonText: 'Get Pro'
-    },
-    {
-      id: 'full-mern-saas',
-      title: 'Full MERN SaaS MVP',
-      price: '40,000৳+ / $364+',
-      features: [
-        'Complete SaaS Solution',
-        'Custom Features',
-        'Admin & User Dashboard',
-        'API Integration',
-        'Unlimited Revisions',
-        '3 Months Support'
-      ],
-      icon: CurrencyDollarIcon,
-      buttonText: 'Get Enterprise'
-    },
-    {
-      id: 'monthly-maintenance',
-      title: 'Monthly Maintenance',
-      price: '2,000৳-5,000৳ / $18-$45',
-      features: [
-        'Regular Updates',
-        'Security Monitoring',
-        'Performance Optimization',
-        'Content Updates',
-        'Technical Support'
-      ],
-      icon: CurrencyDollarIcon,
-      buttonText: 'Subscribe'
-    }
-  ];
-
-  const handleAddToCart = (pkg) => {
-    addToCart({
-      id: pkg.id,
-      title: pkg.title,
-      price: pkg.price,
-      type: 'enterprise-package',
-      description: pkg.details,
-      features: pkg.features,
-      category: 'Enterprise Solutions'
-    });
-  };
+  const showFloatingContact = true;
 
   return (
     <div className="pt-0 overflow-hidden">
@@ -638,68 +564,19 @@ const About = () => {
         </div>
       </section>
 
-      {/* Pricing Packages Section */}
-      <section className="py-20 bg-white dark:bg-gray-900">
-        <div className="container">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="text-center mb-12"
+      {showFloatingContact && (
+        <div className="fixed bottom-4 sm:bottom-8 right-4 sm:right-8 z-50">
+          <a
+            href="/contact"
+            className="flex items-center gap-2 bg-primary-600/90 backdrop-blur-sm hover:bg-primary-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full shadow-lg transition-colors text-sm sm:text-base"
+            style={{ boxShadow: '0 4px 24px 0 rgba(0,0,0,0.10)' }}
           >
-            <h2 className="heading mb-4">Pricing Packages</h2>
-            <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              Choose the perfect package for your needs
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {packages.map((pkg, index) => (
-              <motion.div
-                key={pkg.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 shadow-lg flex flex-col"
-              >
-                <div className="flex-1">
-                  <div className="w-12 h-12 bg-primary-100 dark:bg-primary-900/20 rounded-lg flex items-center justify-center mb-4">
-                    <pkg.icon className="h-6 w-6 text-primary-600" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2">{pkg.title}</h3>
-                  <p className="text-2xl font-bold text-primary-600 mb-4">{pkg.price}</p>
-                  <ul className="space-y-2 mb-6">
-                    {pkg.features.map((feature, i) => (
-                      <li key={i} className="flex items-center text-gray-600 dark:text-gray-300">
-                        <span className="w-2 h-2 bg-primary-600 rounded-full mr-2"></span>
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="space-y-3 pt-4 mt-auto">
-                  <button
-                    onClick={() => handleAddToCart(pkg)}
-                    className="w-full flex items-center justify-center py-2 px-4 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200"
-                  >
-                    <ShoppingCartIcon className="h-5 w-5 mr-2" />
-                    Add to Cart
-                  </button>
-                  <button
-                    onClick={() => window.location.href = '/contact'}
-                    className="w-full py-2 px-4 border-2 border-primary-600 text-primary-600 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/10 transition-colors duration-200"
-                  >
-                    {pkg.buttonText}
-                  </button>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+            <PhoneIcon className="h-4 w-4 sm:h-5 sm:w-5" />
+            <span className="hidden sm:inline">Contact Us</span>
+            <span className="sm:hidden">Chat</span>
+          </a>
         </div>
-      </section>
-
+      )}
     </div>
   );
 };
