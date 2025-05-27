@@ -36,7 +36,20 @@ export const AuthProvider = ({ children }) => {
         });
     };
 
-    const logout = () => {
+    const logout = async () => {
+        try {
+            // Call logout endpoint to invalidate token
+            await fetch('http://localhost:5000/api/auth/logout', {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+        } catch (error) {
+            console.error('Logout error:', error);
+        }
+
         // Track logout event
         if (user) {
             trackDetailedUserAction('user_logout', {

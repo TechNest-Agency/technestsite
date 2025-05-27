@@ -1,10 +1,24 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { XMarkIcon, MinusIcon, PlusIcon, ShoppingBagIcon } from '@heroicons/react/24/outline';
+import { XMarkIcon, MinusIcon, PlusIcon, ShoppingBagIcon, SparklesIcon } from '@heroicons/react/24/outline';
 import { useCart } from '../context/CartContext';
 import { useNavigate } from 'react-router-dom';
 import { useAnalytics } from '../context/AnalyticsContext';
 import { usePerformance } from '../context/PerformanceContext';
 import { motion, AnimatePresence } from 'framer-motion';
+
+// Utility function to parse price strings
+const parsePrice = (priceString) => {
+    if (!priceString) return 0;
+    
+    // Remove everything except numbers, dots, and dashes
+    const cleanPrice = priceString.replace(/[^\d.-]/g, '');
+    
+    // Handle price ranges (e.g., "100-250" -> take the lower price)
+    const prices = cleanPrice.split('-').map(p => parseFloat(p));
+    
+    // Return the first valid number, or 0 if no valid numbers found
+    return prices.find(p => !isNaN(p)) || 0;
+};
 
 const Cart = () => {
     const navigate = useNavigate();
@@ -115,153 +129,211 @@ const Cart = () => {
         updateQuantity(item.id, newQuantity);
     }, [handleRemoveItem, updateQuantity, trackDetailedEvent, isLowPowerMode]);
 
-    // Memoized cart total
-    const cartTotal = useMemo(() => getCartTotal(), [getCartTotal]);
+    // Update the getCartTotal calculation
+    const cartTotal = useMemo(() => {
+        return cartItems.reduce((total, item) => {
+            const itemPrice = parsePrice(item.price);
+            return total + (itemPrice * (item.quantity || 1));
+        }, 0);
+    }, [cartItems]);
 
-    // Memoized cart items rendering
+    // Enhanced animations for cart items
+    const cartItemAnimation = {
+        initial: { opacity: 0, y: 20, scale: 0.95 },
+        animate: { opacity: 1, y: 0, scale: 1 },
+        exit: { opacity: 0, x: -20, scale: 0.95 },
+        transition: { type: "spring", stiffness: 300, damping: 25 }
+    };
+
+    // Memoized cart items rendering with enhanced UI
     const cartItemsList = useMemo(() => (
-        <ul className="divide-y divide-gray-200">
-            <AnimatePresence>
+        <ul className="divide-y divide-gray-200/50">
+            <AnimatePresence mode="popLayout">
                 {cartItems.map(item => (
                     <motion.li
                         key={item.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, x: -20 }}
-                        transition={{ duration: 0.2 }}
-                        className="py-4 flex items-center"
+                        {...cartItemAnimation}
+                        className="py-6 flex items-center bg-white/50 backdrop-blur-sm rounded-xl my-2 px-4 shadow-sm hover:shadow-md transition-all duration-300"
                     >
-                        <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                            <img
-                                src={item.image}
-                                alt={item.title}
-                                className="h-full w-full object-cover object-center"
-                                loading="lazy"
-                            />
+                        <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl border border-gray-100 bg-gradient-to-br from-white to-gray-50">
+                            {item.image ? (
+                                <img
+                                    src={item.image}
+                                    alt={item.title}
+                                    className="h-full w-full object-cover object-center"
+                                    loading="lazy"
+                                />
+                            ) : (
+                                <div className="h-full w-full flex items-center justify-center text-gray-400">
+                                    <SparklesIcon className="h-8 w-8" />
+                                </div>
+                            )}
                         </div>
 
-                        <div className="ml-4 flex-1">
-                            <h3 className="text-sm font-medium text-gray-900">{item.title}</h3>
-                            <p className="mt-1 text-sm text-gray-500">{item.category}</p>
-                            <p className="mt-1 text-sm font-semibold text-gray-900">${parseFloat(item.price).toFixed(2)}</p>
-                        </div>
-
-                        <div className="flex items-center">
-                            <div className="flex items-center border border-gray-300 rounded-md">
-                                <button
+                        <div className="ml-6 flex-1">
+                            <div className="flex justify-between">
+                                <h3 className="text-base font-medium text-gray-900 group-hover:text-indigo-600 transition-colors">
+                                    {item.title}
+                                </h3>
+                                <motion.button
+                                    whileHover={{ scale: 1.1 }}
+                                    whileTap={{ scale: 0.95 }}
                                     type="button"
-                                    className="p-1.5 text-gray-500 hover:text-gray-700"
-                                    onClick={() => handleUpdateQuantity(item, item.quantity - 1)}
+                                    className="text-gray-400 hover:text-red-500 transition-colors"
+                                    onClick={() => handleRemoveItem(item)}
                                 >
-                                    <MinusIcon className="h-4 w-4" aria-hidden="true" />
-                                </button>
-                                <span className="px-2 text-sm">{item.quantity}</span>
-                                <button
-                                    type="button"
-                                    className="p-1.5 text-gray-500 hover:text-gray-700"
-                                    onClick={() => handleUpdateQuantity(item, item.quantity + 1)}
-                                >
-                                    <PlusIcon className="h-4 w-4" aria-hidden="true" />
-                                </button>
+                                    <XMarkIcon className="h-5 w-5" aria-hidden="true" />
+                                </motion.button>
                             </div>
-
-                            <button
-                                type="button"
-                                className="ml-4 text-gray-400 hover:text-gray-500"
-                                onClick={() => handleRemoveItem(item)}
-                            >
-                                <XMarkIcon className="h-5 w-5" aria-hidden="true" />
-                            </button>
+                            <p className="mt-1 text-sm text-gray-500">{item.category}</p>
+                            <div className="mt-2 flex justify-between items-center">
+                                <div>
+                                    <p className="text-sm font-semibold text-indigo-600">{item.price}</p>
+                                    {item.price.includes('month') && (
+                                        <span className="text-xs text-gray-500">(Monthly subscription)</span>
+                                    )}
+                                </div>
+                                <div className="flex items-center">
+                                    <motion.div 
+                                        className="flex items-center space-x-1 bg-gray-50 rounded-lg p-1 border border-gray-100"
+                                        whileHover={{ scale: 1.02 }}
+                                    >
+                                        <motion.button
+                                            whileTap={{ scale: 0.9 }}
+                                            type="button"
+                                            className="p-1 text-gray-500 hover:text-indigo-600 transition-colors rounded-md hover:bg-gray-100"
+                                            onClick={() => handleUpdateQuantity(item, item.quantity - 1)}
+                                        >
+                                            <MinusIcon className="h-4 w-4" />
+                                        </motion.button>
+                                        <span className="w-8 text-center text-sm font-medium text-gray-900">{item.quantity || 1}</span>
+                                        <motion.button
+                                            whileTap={{ scale: 0.9 }}
+                                            type="button"
+                                            className="p-1 text-gray-500 hover:text-indigo-600 transition-colors rounded-md hover:bg-gray-100"
+                                            onClick={() => handleUpdateQuantity(item, (item.quantity || 1) + 1)}
+                                        >
+                                            <PlusIcon className="h-4 w-4" />
+                                        </motion.button>
+                                    </motion.div>
+                                </div>
+                            </div>
                         </div>
                     </motion.li>
                 ))}
             </AnimatePresence>
         </ul>
-    ), [cartItems, handleRemoveItem, handleUpdateQuantity]);
+    ), [cartItems, handleRemoveItem, handleUpdateQuantity, cartItemAnimation]);
 
     return (
         <AnimatePresence>
             {isCartOpen && (
                 <>
-                    {/* Backdrop */}
+                    {/* Backdrop with enhanced blur effect */}
                     <motion.div
                         initial={{ opacity: 0 }}
-                        animate={{ opacity: 0.5 }}
+                        animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        transition={{ duration: 0.2 }}
-                        className="fixed inset-0 bg-black bg-opacity-50 z-40"
+                        transition={{ duration: 0.3 }}
+                        className="fixed inset-0 bg-gray-900/20 backdrop-blur-sm z-40"
                         onClick={() => setIsCartOpen(false)}
                     />
 
-                    {/* Cart panel */}
+                    {/* Modern Cart Panel */}
                     <motion.div
-                        initial={{ x: '100%' }}
-                        animate={{ x: 0 }}
-                        exit={{ x: '100%' }}
-                        transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-                        className="fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-xl z-50 flex flex-col"
+                        initial={{ x: '100%', opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        exit={{ x: '100%', opacity: 0 }}
+                        transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+                        className="fixed top-0 right-0 h-full w-full max-w-md bg-gradient-to-b from-white to-gray-50 shadow-2xl z-50 flex flex-col rounded-l-2xl overflow-hidden border-l border-gray-100"
                     >
-                        <div className="flex items-center justify-between px-4 py-5 border-b border-gray-200">
-                            <h2 className="text-lg font-medium text-gray-900 flex items-center">
-                                <ShoppingBagIcon className="h-5 w-5 mr-2" aria-hidden="true" />
+                        <div className="flex items-center justify-between px-6 py-6 border-b border-gray-100 bg-white/80 backdrop-blur-sm">
+                            <h2 className="text-xl font-semibold text-gray-900 flex items-center">
+                                <div className="relative">
+                                    <ShoppingBagIcon className="h-6 w-6 mr-3 text-indigo-600" aria-hidden="true" />
+                                    {cartItems.length > 0 && (
+                                        <span className="absolute -top-2 -right-1 bg-pink-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                                            {cartItems.length}
+                                        </span>
+                                    )}
+                                </div>
                                 Your Cart
-                                <span className="ml-2 text-sm text-gray-500">({cartItems.length} items)</span>
                             </h2>
-                            <button
+                            <motion.button
+                                whileHover={{ scale: 1.1, rotate: 90 }}
+                                whileTap={{ scale: 0.9 }}
                                 type="button"
-                                className="text-gray-400 hover:text-gray-500 p-2 rounded-md"
+                                className="text-gray-400 hover:text-gray-500 p-2"
                                 onClick={() => setIsCartOpen(false)}
                             >
-                                <XMarkIcon className="h-6 w-6" aria-hidden="true" />
-                            </button>
+                                <XMarkIcon className="h-6 w-6" />
+                            </motion.button>
                         </div>
 
-                        <div className="flex-1 overflow-y-auto px-4 py-2">
+                        <div className="flex-1 overflow-y-auto px-6 py-4 custom-scrollbar">
                             {cartItems.length === 0 ? (
-                                <div className="py-12 text-center">
-                                    <ShoppingBagIcon className="mx-auto h-12 w-12 text-gray-400" aria-hidden="true" />
-                                    <h3 className="mt-2 text-sm font-medium text-gray-900">Your cart is empty</h3>
-                                    <p className="mt-1 text-sm text-gray-500">Start adding items to your cart</p>
-                                    <div className="mt-6">
-                                        <button
-                                            type="button"
-                                            className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                                            onClick={() => handleNavigate('/products')}
-                                        >
-                                            Browse Products
-                                        </button>
+                                <motion.div
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    className="py-12 text-center"
+                                >
+                                    <div className="w-24 h-24 mx-auto bg-indigo-50 rounded-full flex items-center justify-center mb-4">
+                                        <ShoppingBagIcon className="h-12 w-12 text-indigo-400" />
                                     </div>
-                                </div>
+                                    <h3 className="text-lg font-medium text-gray-900 mb-2">Your cart is empty</h3>
+                                    <p className="text-gray-500 mb-8">Start adding some amazing services!</p>
+                                    <motion.button
+                                        whileHover={{ scale: 1.02 }}
+                                        whileTap={{ scale: 0.98 }}
+                                        type="button"
+                                        className="inline-flex items-center px-6 py-3 rounded-xl shadow-sm text-white bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 transition-all duration-200"
+                                        onClick={() => handleNavigate('/services')}
+                                    >
+                                        Explore Services
+                                    </motion.button>
+                                </motion.div>
                             ) : (
                                 cartItemsList
                             )}
                         </div>
 
                         {cartItems.length > 0 && (
-                            <div className="border-t border-gray-200 px-4 py-5 sm:px-6">
-                                <div className="flex justify-between text-base font-medium text-gray-900 mb-4">
-                                    <p>Subtotal</p>
-                                    <p>${cartTotal.toFixed(2)}</p>
+                            <div className="border-t border-gray-100 px-6 py-6 bg-white/80 backdrop-blur-sm">
+                                <div className="flex justify-between items-center mb-6">
+                                    <span className="text-base text-gray-600">Subtotal</span>
+                                    <div className="text-right">
+                                        <span className="text-2xl font-semibold text-gray-900">${cartTotal.toFixed(2)}</span>
+                                        {cartItems.some(item => item.price.includes('month')) && (
+                                            <p className="text-xs text-gray-500 mt-1">*Some items are billed monthly</p>
+                                        )}
+                                    </div>
                                 </div>
-                                <div className="flex flex-col gap-3">
-                                    <button
+                                <div className="space-y-3">
+                                    <motion.button
+                                        whileHover={{ scale: 1.01 }}
+                                        whileTap={{ scale: 0.99 }}
                                         type="button"
                                         onClick={() => handleNavigate('/checkout')}
-                                        className="w-full inline-flex justify-center items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                        className="w-full inline-flex justify-center items-center px-6 py-3.5 rounded-xl text-base font-medium text-white bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 shadow-sm hover:shadow-md transition-all duration-200"
                                     >
-                                        Checkout
-                                    </button>
-                                    <button
+                                        Proceed to Checkout
+                                    </motion.button>
+                                    <motion.button
+                                        whileHover={{ scale: 1.01 }}
+                                        whileTap={{ scale: 0.99 }}
                                         type="button"
-                                        onClick={() => handleNavigate('/products')}
-                                        className="w-full inline-flex justify-center items-center px-6 py-3 border border-gray-300 rounded-md shadow-sm text-base font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                        onClick={() => handleNavigate('/services')}
+                                        className="w-full inline-flex justify-center items-center px-6 py-3.5 rounded-xl text-base font-medium text-gray-700 bg-gray-50 hover:bg-gray-100 border border-gray-200 transition-all duration-200"
                                     >
                                         Continue Shopping
-                                    </button>
+                                    </motion.button>
                                 </div>
                                 {isLowPowerMode && (
-                                    <p className="mt-3 text-xs text-amber-600">
-                                        Low power mode active: Some features may sync less frequently
+                                    <p className="mt-4 text-xs text-amber-600 flex items-center justify-center">
+                                        <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                        </svg>
+                                        Low power mode: Syncing less frequently
                                     </p>
                                 )}
                             </div>
