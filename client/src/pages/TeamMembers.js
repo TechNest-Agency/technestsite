@@ -11,10 +11,10 @@ import {
 const TeamMembers = () => {
   const teamMembers = [
     {
-      name: 'Sarah Johnson',
+      name: 'Nazat Aliyev',
       role: 'CEO & Founder',
-      image: '/path/to/sarah.jpg',
-      bio: 'Tech visionary with 15+ years of industry experience.',
+      image: '/ceo.png',
+      bio: 'Tech visionary with 4+ years of industry experience.',
       expertise: ['Strategy', 'Innovation', 'Leadership'],
       social: {
         linkedin: '#',
@@ -23,11 +23,11 @@ const TeamMembers = () => {
       }
     },
     {
-      name: 'Michael Zhang',
-      role: 'CTO',
-      image: '/path/to/michael.jpg',
-      bio: 'Cloud architecture specialist and tech innovation leader.',
-      expertise: ['Cloud Architecture', 'AI/ML', 'System Design'],
+      name: 'Halima Khatun',
+      role: 'UI/UX Designer',
+      image: '/halima.png',
+      bio: 'Creative designer with a focus on user experience and interface design.',
+      expertise: ['UI/UX', 'Prototyping', 'User Research'],
       social: {
         linkedin: '#',
         twitter: '#',
@@ -35,17 +35,103 @@ const TeamMembers = () => {
       }
     },
     {
-      name: 'Emma Davis',
-      role: 'Lead Designer',
-      image: '/path/to/emma.jpg',
-      bio: 'Award-winning UX designer with a passion for user-centric design.',
-      expertise: ['UI/UX', 'Design Systems', 'Branding'],
+      name: 'Tafroza Tofaz',
+      role: 'Sales Manager',
+      image: '/tafroza.png',
+      bio: 'Dynamic sales leader with a passion for building client relationships.',
+      expertise: ['Sales Strategy', 'Client Relations', 'Negotiation'],
       social: {
         linkedin: '#',
         twitter: '#',
         github: '#'
       }
     },
+    {
+      name: 'MST JASMIN ARA MIM',
+      role: 'Frontend Developer',
+      image: '/jasmin.png',
+      bio: 'Frontend developer with a knack for creating responsive and user-friendly web applications.',
+      expertise: ['React', 'JavaScript', 'CSS'],
+      social: {
+        linkedin: '#',
+        twitter: '#',
+        github: '#'
+      }
+    },
+        {
+      name: 'Nusrat Jahan Mim',
+      role: 'UI/UX Designer',
+      image: '/mim.png',
+      bio: 'Innovative UI/UX designer with a passion for creating intuitive user experiences.',
+      expertise: ['UI/UX Design', 'Prototyping', 'User Research'],
+      social: {
+        linkedin: '#',
+        twitter: '#',
+        github: '#'
+      }
+    },
+    {
+      name: 'Mustafizur Rahman Sumon',
+      role: 'Full Stack Developer',
+      image: '/sumon.jpg',
+      bio: 'Full stack developer with expertise in building scalable web applications.',
+      expertise: ['Full Stack Development', 'Node.js', 'React'],
+      social: {
+        linkedin: '#',
+        twitter: '#',
+        github: '#'
+      }
+    },
+    {
+      name: 'Sumaiya Amin Prova',
+      role: 'Frontend Developer',
+      image: '/sumaiya.png',
+      bio: 'Frontend developer specializing in responsive design and user interfaces.',
+      expertise: ['HTML', 'CSS', 'JavaScript', 'React'],
+      social: {
+        linkedin: '#',
+        twitter: '#',
+        github: '#'
+      }
+    },
+    {
+      name: 'Nure Jannat Mim',
+      role: 'Digital Marketing Specialist',
+      image: '/jannat.png',
+      bio: 'Digital marketing expert with a focus on social media and content strategy.',
+      expertise: ['SEO', 'Content Marketing', 'Social Media'],
+      social: {
+        linkedin: '#',
+        twitter: '#',
+        github: '#'
+      }
+    },
+    {
+      name: 'Marufa Akter',
+      role: 'UI/UX Designer',
+      image: '/marufa.png',
+      bio: 'UI/UX designer with a passion for creating engaging user experiences.',
+      expertise: ['UI/UX Design', 'Wireframing', 'User Testing'],
+      social: {
+        linkedin: '#',
+        twitter: '#',
+        github: '#'
+      }
+    },
+    {
+      name: 'Soraya Parvin',
+      role: 'Frontend Developer',
+      image: '/soraya.png',
+      bio: 'Frontend developer with a focus on building interactive web applications.',
+      expertise: ['React', 'JavaScript', 'CSS'],
+      social: {
+        linkedin: '#',
+        twitter: '#',
+        github: '#'
+      }
+    },
+
+
     // Add more team members
   ];
 

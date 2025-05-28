@@ -9,10 +9,10 @@ import {
     GlobeAltIcon,
 } from '@heroicons/react/24/outline';
 import {
-    FaTwitter,
     FaLinkedinIn,
     FaGithub,
-    FaInstagram
+    FaInstagram,
+    FaFacebookF
 } from 'react-icons/fa';
 
 const Footer = () => {
@@ -42,21 +42,38 @@ const Footer = () => {
             { label: 'Terms of Service', path: '/terms' },
             { label: 'Cookie Policy', path: '/cookies' }
         ]
+    };    const socialLinks = [
+        { icon: FaFacebookF, url: 'https://facebook.com/technest.agency', label: 'Facebook' },
+        { icon: FaLinkedinIn, url: 'https://linkedin.com/company/technest.agency', label: 'LinkedIn' },
+        { icon: FaInstagram, url: 'https://instagram.com/technest.agency', label: 'Instagram' },
+        { icon: FaGithub, url: 'https://github.com/technest-agency', label: 'GitHub' }
+    ];const contactInfo = [
+        { 
+            icon: MapPinIcon, 
+            text: 'Dhaka, Bangladesh',
+            label: 'Location'
+        },
+        { 
+            icon: EnvelopeIcon, 
+            text: 'technestagencies@gmail.com',
+            label: 'Email'
+        },
+        { 
+            icon: PhoneIcon, 
+            text: '+880 132 2695162',
+            label: 'Phone/WhatsApp'
+        },
+        { 
+            icon: GlobeAltIcon, 
+            text: 'www.technestagency.com',
+            label: 'Website'
+        }
+    ];
+
+    const workingHours = {
+        days: 'Sunday–Thursday',
+        hours: '10 AM – 7 PM (BST)'
     };
-
-    const socialLinks = [
-        { icon: FaTwitter, url: 'https://twitter.com/technest', label: 'Twitter' },
-        { icon: FaLinkedinIn, url: 'https://linkedin.com/company/technest', label: 'LinkedIn' },
-        { icon: FaGithub, url: 'https://github.com/technest', label: 'GitHub' },
-        { icon: FaInstagram, url: 'https://instagram.com/technest', label: 'Instagram' }
-    ];
-
-    const contactInfo = [
-        { icon: PhoneIcon, text: '+1 (555) 123-4567' },
-        { icon: EnvelopeIcon, text: 'contact@technest.com' },
-        { icon: MapPinIcon, text: '123 Tech Street, Silicon Valley, CA' },
-        { icon: GlobeAltIcon, text: 'www.technest.com' }
-    ];
 
     return (
         <footer className={`relative pt-16 pb-6 mt-auto ${
@@ -76,8 +93,9 @@ const Footer = () => {
             
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
                 {/* Main Footer Content */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-12">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 lg:gap-8 mb-12">
                     {/* Company Info Section */}
+                    <div className="lg:col-span-3 space-y-6">
                     <div className="space-y-6">
                         <Link to="/" className="inline-block">
                             <img src="/logo.png" alt="TechNest Logo" className="h-8 w-auto" />
@@ -85,33 +103,11 @@ const Footer = () => {
                         <p className={`text-sm max-w-md ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
                             Empowering businesses with innovative technology solutions. We create cutting-edge digital experiences that help businesses thrive in the modern world.
                         </p>
-                        <div className="flex flex-wrap gap-4">
-                            {socialLinks.map((social, index) => {
-                                const Icon = social.icon;
-                                return (
-                                    <motion.a
-                                        key={index}
-                                        href={social.url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        whileHover={{ scale: 1.1 }}
-                                        whileTap={{ scale: 0.9 }}
-                                        className={`p-2.5 rounded-lg transition-all duration-300 ${
-                                            isDarkMode
-                                                ? 'hover:bg-white/10 text-gray-400 hover:text-white'
-                                                : 'hover:bg-gray-100 text-gray-500 hover:text-gray-900'
-                                        }`}
-                                        aria-label={social.label}
-                                    >
-                                        <Icon className="h-5 w-5" />
-                                    </motion.a>
-                                );
-                            })}
-                        </div>
                     </div>
+                </div>
 
                     {/* Navigation Links Section */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 lg:col-span-2">
+                    <div className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-8">
                         {/* Company & Services Column */}
                         <div className="space-y-8">
                             <div>
@@ -211,11 +207,14 @@ const Footer = () => {
                                 </ul>
                             </div>
                         </div>
-                    </div>
-
-                    {/* Contact Info Section */}
-                    <div className="space-y-6">
-                        <h4 className="text-lg font-semibold mb-4">Contact Us</h4>
+                    </div>                    {/* Contact Info Section */}
+                    <div className="lg:col-span-3 space-y-6">
+                        <div className="space-y-2">
+                            <h4 className="text-lg font-semibold">📞 Contact Us</h4>
+                            <h5 className="text-base font-medium text-primary-600 dark:text-primary-400">TechNest Agency</h5>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">Crafting SaaS, UI/UX & Web Solutions</p>
+                        </div>
+                        
                         <ul className="space-y-4">
                             {contactInfo.map((item, index) => (
                                 <motion.li
@@ -227,7 +226,10 @@ const Footer = () => {
                                     <item.icon className={`h-5 w-5 flex-shrink-0 mt-0.5 transition-colors duration-300 ${
                                         isDarkMode ? 'text-gray-400 group-hover:text-white' : 'text-gray-500 group-hover:text-gray-900'
                                     }`} />
-                                    <span className="text-sm">{item.text}</span>
+                                    <div className="flex-1">
+                                        <span className="block text-xs uppercase tracking-wider text-gray-500 dark:text-gray-400">{item.label}</span>
+                                        <span className="text-sm mt-0.5">{item.text}</span>
+                                    </div>
                                 </motion.li>
                             ))}
                         </ul>
