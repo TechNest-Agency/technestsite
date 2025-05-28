@@ -5,7 +5,6 @@ const rateLimit = require('express-rate-limit');
 
 // Create rate limiter
 const authRateLimiter = rateLimit({
-    ...rateLimit,
     max: 5, // More strict limit for auth endpoints
     windowMs: 15 * 60 * 1000, // 15 minutes
     message: 'Too many login attempts, please try again later.'
@@ -18,7 +17,8 @@ const auth = async (req, res, next) => {
             res.setHeader(key, value);
         });
 
-        const token = req.header('Authorization')?.replace('Bearer ', '');
+        // Try cookie first, then Authorization header
+        let token = req.cookies?.token || req.header('Authorization')?.replace('Bearer ', '');
         
         if (!token) {
             throw new Error('No token provided');
@@ -29,6 +29,11 @@ const auth = async (req, res, next) => {
 
         if (!user) {
             throw new Error('User not found');
+        }
+
+        // Check if user's password hasn't changed since token was issued
+        if (user.passwordChangedAt && decoded.iat < user.passwordChangedAt.getTime() / 1000) {
+            throw new Error('User recently changed password. Please login again');
         }
 
         // Audit successful authentication
@@ -49,7 +54,7 @@ const auth = async (req, res, next) => {
     } catch (error) {
         // Audit failed authentication
         await auditLog(
-            decoded?.userId || null,
+            null,
             'authentication',
             'failure',
             {

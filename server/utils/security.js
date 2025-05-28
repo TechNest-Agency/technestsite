@@ -67,6 +67,20 @@ const decrypt = (encrypted, iv, authTag) => {
     return decrypted;
 };
 
+// Security headers configuration
+const securityHeaders = {
+    'X-Content-Type-Options': 'nosniff',
+    'X-Frame-Options': 'DENY',
+    'X-XSS-Protection': '1; mode=block',
+    'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
+    'Content-Security-Policy': "default-src 'self'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline';",
+    'Referrer-Policy': 'same-origin',
+    'Access-Control-Allow-Credentials': 'true',
+    'Access-Control-Allow-Origin': 'http://localhost:3000',
+    'Access-Control-Allow-Methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+};
+
 // Security audit utility
 const auditLog = async (userId, action, status, details = {}) => {
     try {
@@ -118,15 +132,6 @@ const rateLimit = {
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 100, // limit each IP to 100 requests per windowMs
     message: 'Too many requests from this IP, please try again later.'
-};
-
-// Security headers configuration
-const securityHeaders = {
-    'X-Content-Type-Options': 'nosniff',
-    'X-Frame-Options': 'DENY',
-    'X-XSS-Protection': '1; mode=block',
-    'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
-    'Content-Security-Policy': "default-src 'self'; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline';"
 };
 
 module.exports = {

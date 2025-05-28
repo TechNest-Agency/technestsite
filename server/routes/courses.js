@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../middleware/auth');
-const adminAuth = require('../middleware/adminAuth');
+const { auth } = require('../middleware/auth');
+const { adminAuth } = require('../middleware/adminAuth');
 const courseController = require('../controllers/courseController');
 const { uploadImage } = require('../utils/imageUpload');
 
@@ -17,33 +17,18 @@ router.post('/',
     courseController.createCourse
 );
 
+// Only admin can modify courses
 router.put('/:id',
     auth,
     adminAuth,
     uploadImage.single('thumbnail'),
-    courseController.updateCourse
+    courseController.createCourse
 );
 
 router.delete('/:id',
     auth,
     adminAuth,
-    courseController.deleteCourse
-);
-
-// Student routes
-router.post('/:id/enroll',
-    auth,
-    courseController.enrollCourse
-);
-
-router.post('/:id/progress',
-    auth,
-    courseController.updateProgress
-);
-
-router.post('/:id/review',
-    auth,
-    courseController.addReview
+    courseController.createCourse
 );
 
 module.exports = router;

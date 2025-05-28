@@ -59,8 +59,15 @@ exports.getCourse = async (req, res) => {
 // Create new course (instructor/admin only)
 exports.createCourse = async (req, res) => {
     try {
+        const { title, description, price, duration } = req.body;
+        const thumbnail = req.file ? req.file.path : null;
+
         const course = new Course({
-            ...req.body,
+            title,
+            description,
+            price,
+            duration,
+            thumbnail,
             instructor: req.user._id
         });
 

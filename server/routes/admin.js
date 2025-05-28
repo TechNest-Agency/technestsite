@@ -48,6 +48,57 @@ const upload = multer({
 // Get dashboard stats
 router.get('/dashboard', [auth, adminAuth], async (req, res) => {
     try {
+        const startOfMonth = new Date();
+        startOfMonth.setDate(1);
+        startOfMonth.setHours(0, 0, 0, 0);
+
+        // Get counts
+        const [ordersCount, usersCount, servicesCount, messagesCount] = await Promise.all([
+            Order.countDocuments(),
+            User.countDocuments(),
+            Service.countDocuments(),
+            Message.countDocuments()
+        ]);
+
+        // Get recent orders
+        const recentOrders = await Order.find()
+            .sort({ createdAt: -1 })
+            .limit(5)
+            .populate('userId', 'username email');
+
+        // Calculate monthly revenue
+        const monthlyOrders = await Order.aggregate([
+            {
+                $match: {
+                    createdAt: { $gte: new Date(new Date().getFullYear(), 0, 1) }
+                }
+            },
+            {
+                $group: {
+                    _id: { $month: '$createdAt' },
+                    total: { $sum: '$totalAmount' },
+                    count: { $sum: 1 }
+                }
+            }
+        ]);
+
+        // Format revenue data
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const revenueData = new Array(12).fill(0);
+        const ordersData = new Array(12).fill(0);
+
+        monthlyOrders.forEach(item => {
+            const monthIndex = item._id - 1;
+            revenueData[monthIndex] = item.total;
+            ordersData[monthIndex] = item.count;
+        });
+
+        // Get recent notifications
+        const recentNotifications = await Message.find()
+            .sort({ createdAt: -1 })
+            .limit(5)
+            .select('name subject createdAt');
+
         const stats = {
             totalPosts: await Blog.countDocuments(),
             totalServices: await Service.countDocuments(),

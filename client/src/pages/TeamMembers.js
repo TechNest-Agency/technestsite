@@ -42,10 +42,10 @@ const TeamMembers = () => {
       }
     },
     {
-      name: 'Liza Akter',
-      role: 'Digital Marketing Manager',
+      name: 'Nure Jannat Mim',
+      role: 'Digital Marketer',
       bio: 'Expert in digital marketing strategies and social media management.',
-      image: '/liza.png',
+      image: '/jannat.png',
       social: {
         linkedin: 'https://www.linkedin.com/in/nazat-mern-stack/',
         facebook: 'https://facebook.com/nazathossain',
@@ -67,10 +67,22 @@ const TeamMembers = () => {
     },
     // New team member added here
 
+        {
+      name: 'Mustafizur Rahman Sumon',
+      role: 'Full Stack Developer',
+      bio: 'Experienced full-stack developer with expertise in React, Node.js, and cloud infrastructure. Passionate about building scalable solutions and mentoring junior developers.',
+      image: '/sumon.jpg',
+      social: {
+        linkedin: 'https://www.linkedin.com/in//',
+        facebook: 'https://facebook.com/',
+        github: 'https://github.com/',
+        behance: ''
+      }
+    },    
     {
       name: 'Nusrat Jahan Mim',
       role: 'Ui/UX Designer',
-      bio: 'Experienced full-stack developer with expertise in React, Node.js, and cloud infrastructure. Passionate about building scalable solutions and mentoring junior developers.',
+      bio: 'Creative UI/UX designer with a passion for crafting intuitive user experiences and visually appealing interfaces.',
       image: '/mim.png',
       social: {
         linkedin: 'https://www.linkedin.com/in//',
@@ -82,7 +94,7 @@ const TeamMembers = () => {
     {
       name: 'Jasmin Ara Mim',
       role: 'Frontend Developer',
-      bio: 'Experienced full-stack developer with expertise in React, Node.js, and cloud infrastructure. Passionate about building scalable solutions and mentoring junior developers.',
+      bio: 'Dedicated frontend developer with a strong focus on React and responsive design. Committed to delivering high-quality user interfaces.',
       image: '/jasmin.png',
       social: {
         linkedin: 'https://www.linkedin.com/in//',
@@ -91,7 +103,18 @@ const TeamMembers = () => {
         behance: ''
       }
     },
-
+    {
+      name: 'Tafroza Tofaz',
+      role: 'Sales & Marketing',
+      bio: 'Dynamic sales and marketing professional with a proven track record in driving growth and building strong client relationships.',
+      image: '/tofaz.png',
+      social: {
+        linkedin: 'https://www.linkedin.com/in//',
+        facebook: 'https://facebook.com/',
+        github: 'https://github.com/',
+        behance: ''
+      }
+    },
     {
       name: 'Mt. Soraiya Parvin',
       role: 'Frontend Developer',

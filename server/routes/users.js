@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 const auth = require('../middleware/auth');
 const emailService = require('../utils/emailService');
@@ -20,10 +20,10 @@ router.get('/profile', auth, async (req, res) => {
 // Update user profile
 router.put('/profile', [
     auth,
-    body('username').optional().trim().notEmpty(),
+    body('username').optional().trim().isLength({ min: 3 }),
     body('email').optional().isEmail(),
-    body('currentPassword').optional().trim().notEmpty(),
-    body('newPassword').optional().trim().isLength({ min: 6 })
+    body('currentPassword').optional().isLength({ min: 6 }),
+    body('newPassword').optional().isLength({ min: 6 })
 ], async (req, res) => {
     try {
         const errors = validationResult(req);
@@ -47,11 +47,11 @@ router.put('/profile', [
 
         // Update password if provided
         if (req.body.currentPassword && req.body.newPassword) {
-            const isMatch = await bcrypt.compare(req.body.currentPassword, user.password);
+            const isMatch = await user.comparePassword(req.body.currentPassword);
             if (!isMatch) {
                 return res.status(400).json({ message: 'Current password is incorrect' });
             }
-            user.password = await bcrypt.hash(req.body.newPassword, 10);
+            user.password = req.body.newPassword;
         }
 
         // Update preferences
