@@ -1,19 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
-import { Bars3Icon, XMarkIcon, ShoppingCartIcon } from '@heroicons/react/24/outline';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+    Bars3Icon, 
+    XMarkIcon, 
+    ShoppingCartIcon,
+    SunIcon, 
+    MoonIcon
+} from '@heroicons/react/24/outline';
 import { useCart } from '../context/CartContext';
 import Search from './Search';
 
-const Navbar = (props) => {
+const Navbar = () => {
     const { isDarkMode, toggleTheme } = useTheme();
     const navigate = useNavigate();
     const location = useLocation();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [scrollPosition, setScrollPosition] = useState(0);
     const { getCartCount, setIsCartOpen } = useCart();
 
-    const handleLogoClick = (e) => {
-        console.log('Logo clicked');
+    // Handle scroll effect
+    useEffect(() => {
+        const handleScroll = () => {
+            setScrollPosition(window.scrollY);
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    const handleLogoClick = () => {
         navigate('/', { replace: true });
     };
 
@@ -23,44 +39,96 @@ const Navbar = (props) => {
         { path: '/team', label: 'Team' },
         { path: '/services', label: 'Services' },
         { path: '/portfolio', label: 'Portfolio' },
-        // { path: '/courses', label: 'Courses' },
         { path: '/contact', label: 'Contact' }
     ];
 
+    const containerVariants = {
+        hidden: { opacity: 0, y: -5 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.3 }
+        }
+    };
+
+    const mobileMenuVariants = {
+        closed: { 
+            opacity: 0,
+            y: -10,
+            transition: {
+                duration: 0.2
+            }
+        },
+        open: { 
+            opacity: 1,
+            y: 0,
+            transition: {
+                duration: 0.3,
+                staggerChildren: 0.07,
+                delayChildren: 0.2
+            }
+        }
+    };
+
+    const menuItemVariants = {
+        closed: { opacity: 0, x: -10 },
+        open: { opacity: 1, x: 0 }
+    };
+
     return (
-        <nav className={`sticky top-0 z-50 ${isDarkMode ? 'bg-gray-900/80' : 'bg-white/80'} backdrop-blur-md shadow-md`}>
+        <motion.nav
+            initial="hidden"
+            animate="visible"
+            variants={containerVariants}
+            className={`fixed w-full top-0 z-50 transition-all duration-300 ${
+                scrollPosition > 0
+                    ? isDarkMode
+                        ? 'bg-gray-900/90 backdrop-blur-lg shadow-lg shadow-gray-900/10'
+                        : 'bg-white/90 backdrop-blur-lg shadow-lg shadow-black/5'
+                    : isDarkMode
+                    ? 'bg-gray-900/50 backdrop-blur-sm'
+                    : 'bg-white/50 backdrop-blur-sm'
+            }`}
+        >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between h-16">
                     <div className="flex items-center">
-                        <div 
+                        <motion.div 
                             onClick={handleLogoClick}
-                            className="flex items-center hover:opacity-80 transition-opacity cursor-pointer mr-8"
+                            className="flex items-center cursor-pointer mr-8"
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
                         >
                             <img 
                                 src="/logo.png" 
                                 alt="TechNest Logo" 
-                                className="h-8"
+                                className="h-8 transition-transform"
                             />
-                        </div>
+                        </motion.div>
                         
                         {/* Desktop Navigation */}
-                        <div className="hidden md:flex items-center space-x-8">
+                        <div className="hidden md:flex items-center space-x-1">
                             {navLinks.map((link) => (
-                                <Link
+                                <motion.div
                                     key={link.path}
-                                    to={link.path}
-                                    className={`${
-                                        location.pathname === link.path
-                                            ? isDarkMode
-                                                ? 'text-blue-400'
-                                                : 'text-blue-600'
-                                            : isDarkMode
-                                            ? 'text-gray-300 hover:text-white'
-                                            : 'text-gray-600 hover:text-gray-900'
-                                    }`}
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
                                 >
-                                    {link.label}
-                                </Link>
+                                    <Link
+                                        to={link.path}
+                                        className={`px-4 py-2 rounded-lg transition-all duration-200 ${
+                                            location.pathname === link.path
+                                                ? isDarkMode
+                                                    ? 'text-primary-400 bg-primary-900/20'
+                                                    : 'text-primary-600 bg-primary-50'
+                                                : isDarkMode
+                                                ? 'text-gray-300 hover:text-white hover:bg-white/5'
+                                                : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                                        }`}
+                                    >
+                                        {link.label}
+                                    </Link>
+                                </motion.div>
                             ))}
                         </div>
                     </div>
@@ -73,43 +141,51 @@ const Navbar = (props) => {
                         </div>
 
                         {/* Cart */}
-                        <button
+                        <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
                             onClick={() => setIsCartOpen(true)}
-                            className="relative p-2 text-gray-600 hover:text-primary-600 dark:text-gray-300 dark:hover:text-primary-400"
+                            className="relative p-2 rounded-lg text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-white/5 transition-colors"
                         >
                             <ShoppingCartIcon className="h-6 w-6" />
                             {getCartCount() > 0 && (
-                                <span className="absolute -top-1 -right-1 bg-primary-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                                <motion.span
+                                    initial={{ scale: 0 }}
+                                    animate={{ scale: 1 }}
+                                    className="absolute -top-1 -right-1 bg-primary-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"
+                                >
                                     {getCartCount()}
-                                </span>
+                                </motion.span>
                             )}
-                        </button>
+                        </motion.button>
 
                         {/* Theme Toggle */}
-                        <button
+                        <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
                             onClick={toggleTheme}
-                            className={`p-2 rounded-full ${
-                                isDarkMode ? 'text-yellow-400 hover:bg-gray-800' : 'text-gray-600 hover:bg-gray-100'
+                            className={`p-2 rounded-lg transition-colors ${
+                                isDarkMode 
+                                    ? 'text-yellow-400 hover:bg-white/5' 
+                                    : 'text-gray-600 hover:bg-gray-100'
                             }`}
                         >
                             {isDarkMode ? (
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                                </svg>
+                                <SunIcon className="h-6 w-6" />
                             ) : (
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                                </svg>
+                                <MoonIcon className="h-6 w-6" />
                             )}
-                        </button>
+                        </motion.button>
 
                         {/* Mobile menu button */}
-                        <button
+                        <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
                             onClick={() => setIsMenuOpen(!isMenuOpen)}
-                            className={`md:hidden p-2 rounded-lg transition-colors duration-200 ${
+                            className={`md:hidden p-2 rounded-lg transition-colors ${
                                 isDarkMode 
-                                    ? 'hover:bg-gray-800/50 text-gray-300' 
-                                    : 'hover:bg-gray-100/50 text-gray-600'
+                                    ? 'text-gray-300 hover:bg-white/5' 
+                                    : 'text-gray-600 hover:bg-gray-100'
                             }`}
                         >
                             {isMenuOpen ? (
@@ -117,43 +193,59 @@ const Navbar = (props) => {
                             ) : (
                                 <Bars3Icon className="h-6 w-6" />
                             )}
-                        </button>
+                        </motion.button>
                     </div>
                 </div>
 
                 {/* Mobile Navigation */}
-                <div className={`md:hidden transition-all duration-300 ease-in-out ${
-                    isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
-                }`}>
-                    <div className={`py-4 space-y-2 rounded-lg shadow-lg ${
-                        isDarkMode 
-                            ? 'bg-gray-900/90 backdrop-blur-xl border border-gray-800/50' 
-                            : 'bg-white/90 backdrop-blur-xl border border-gray-200/50'
-                    }`}>
-                        {/* Mobile Search */}
-                        <div className="px-4 mb-4">
-                            <Search />
-                        </div>
+                <AnimatePresence>
+                    {isMenuOpen && (
+                        <motion.div
+                            initial="closed"
+                            animate="open"
+                            exit="closed"
+                            variants={mobileMenuVariants}
+                            className="md:hidden"
+                        >
+                            <div className={`py-4 px-4 space-y-2 rounded-lg shadow-lg mt-2 ${
+                                isDarkMode 
+                                    ? 'bg-gray-900/90 backdrop-blur-xl border border-gray-800/50' 
+                                    : 'bg-white/90 backdrop-blur-xl border border-gray-200/50'
+                            }`}>
+                                {/* Mobile Search */}
+                                <div className="mb-4">
+                                    <Search />
+                                </div>
 
-                        {/* Mobile Navigation Links */}
-                        {navLinks.map((link) => (
-                            <Link
-                                key={link.path}
-                                to={link.path}
-                                className={`block px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
-                                    isDarkMode 
-                                        ? 'text-gray-300 hover:text-white hover:bg-gray-800/50 hover:translate-x-2' 
-                                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100/50 hover:translate-x-2'
-                                }`}
-                                onClick={() => setIsMenuOpen(false)}
-                            >
-                                {link.label}
-                            </Link>
-                        ))}
-                    </div>
-                </div>
+                                {/* Mobile Navigation Links */}
+                                {navLinks.map((link) => (
+                                    <motion.div
+                                        key={link.path}
+                                        variants={menuItemVariants}
+                                    >
+                                        <Link
+                                            to={link.path}
+                                            className={`block px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${
+                                                location.pathname === link.path
+                                                    ? isDarkMode
+                                                        ? 'text-primary-400 bg-primary-900/20'
+                                                        : 'text-primary-600 bg-primary-50'
+                                                    : isDarkMode
+                                                    ? 'text-gray-300 hover:text-white hover:bg-white/5'
+                                                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                                            }`}
+                                            onClick={() => setIsMenuOpen(false)}
+                                        >
+                                            {link.label}
+                                        </Link>
+                                    </motion.div>
+                                ))}
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </div>
-        </nav>
+        </motion.nav>
     );
 };
 

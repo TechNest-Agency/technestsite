@@ -19,10 +19,13 @@ export const CartProvider = ({ children }) => {
     }, [cartItems]);
 
     const addToCart = (item) => {
+        // Clean up price while preserving decimal points
+        const cleanPrice = item.price?.toString().replace(/[^\d.]/g, '') || '0';
+        
         const productDetails = {
             id: item.id,
             title: item.title,
-            price: item.price,
+            price: cleanPrice,
             type: item.type || 'service',
             description: item.details || item.description || '',
             category: item.category || '',
@@ -32,11 +35,11 @@ export const CartProvider = ({ children }) => {
         };
 
         setCartItems(prev => {
-            const existingItem = prev.find(i => i.id === item.id);
+            const existingItem = prev.find(i => i.id === productDetails.id);
             if (existingItem) {
                 return prev.map(i => 
-                    i.id === item.id 
-                        ? { ...i, quantity: i.quantity + 1 }
+                    i.id === productDetails.id 
+                        ? { ...i, quantity: (i.quantity || 1) + 1 }
                         : i
                 );
             }
@@ -46,7 +49,9 @@ export const CartProvider = ({ children }) => {
     };
 
     const removeFromCart = (itemId) => {
-        setCartItems(prev => prev.filter(item => item.id !== itemId));
+        // If itemId is an object (the item itself), use its id property
+        const id = typeof itemId === 'object' ? itemId.id : itemId;
+        setCartItems(prev => prev.filter(item => item.id !== id));
     };
 
     const updateQuantity = (itemId, newQuantity) => {
@@ -66,13 +71,14 @@ export const CartProvider = ({ children }) => {
 
     const getCartTotal = () => {
         return cartItems.reduce((total, item) => {
-            const price = parseFloat(item.price?.replace(/[^\d.]/g, '')) || 0;
-            return total + (price * item.quantity);
+            const price = parseFloat(item.price) || 0;
+            const quantity = item.quantity || 1;
+            return total + (price * quantity);
         }, 0);
     };
 
     const getCartCount = () => {
-        return cartItems.reduce((count, item) => count + item.quantity, 0);
+        return cartItems.reduce((count, item) => count + (item.quantity || 1), 0);
     };
 
     const value = {
