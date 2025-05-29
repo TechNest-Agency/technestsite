@@ -35,11 +35,11 @@ const TeamMembers = () => {
       }
     },
     {
-      name: 'Tafroza Tofaz',
-      role: 'Sales Manager',
-      image: '/tafroza.png',
-      bio: 'Dynamic sales leader with a passion for building client relationships.',
-      expertise: ['Sales Strategy', 'Client Relations', 'Negotiation'],
+      name: 'Mustafizur Rahman Sumon',
+      role: 'Full Stack Developer',
+      image: '/sumon.jpg',
+      bio: 'Full stack developer with expertise in building scalable web applications.',
+      expertise: ['Full Stack Development', 'Node.js', 'React'],
       social: {
         linkedin: '#',
         twitter: '#',
@@ -70,12 +70,36 @@ const TeamMembers = () => {
         github: '#'
       }
     },
+    
     {
-      name: 'Mustafizur Rahman Sumon',
-      role: 'Full Stack Developer',
-      image: '/sumon.jpg',
-      bio: 'Full stack developer with expertise in building scalable web applications.',
-      expertise: ['Full Stack Development', 'Node.js', 'React'],
+      name: 'Nure Jannat Mim',
+      role: 'Digital Marketing Specialist',
+      image: '/jannat.jpeg',
+      bio: 'Digital marketing expert with a focus on social media and content strategy.',
+      expertise: ['SEO', 'Content Marketing', 'Social Media'],
+      social: {
+        linkedin: '#',
+        twitter: '#',
+        github: '#'
+      }
+    },
+    {
+      name: 'Tafroza Tofaz',
+      role: 'Sales Manager',
+      image: '/tafroza.png',
+      bio: 'Dynamic sales leader with a passion for building client relationships.',
+      expertise: ['Sales Strategy', 'Client Relations', 'Negotiation'],
+      social: {
+        linkedin: '#',
+        twitter: '#',
+        github: '#'
+      }
+    },
+    {
+      name: 'Marufa Akter',
+      image: '/developer.jpeg',
+      bio: 'UI/UX designer with a passion for creating engaging user experiences.',
+      expertise: ['UI/UX Design', 'Wireframing', 'User Testing'],
       social: {
         linkedin: '#',
         twitter: '#',
@@ -95,33 +119,9 @@ const TeamMembers = () => {
       }
     },
     {
-      name: 'Nure Jannat Mim',
-      role: 'Digital Marketing Specialist',
-      image: '/jannat.png',
-      bio: 'Digital marketing expert with a focus on social media and content strategy.',
-      expertise: ['SEO', 'Content Marketing', 'Social Media'],
-      social: {
-        linkedin: '#',
-        twitter: '#',
-        github: '#'
-      }
-    },
-    {
-      name: 'Marufa Akter',
-      role: 'UI/UX Designer',
-      image: '/marufa.png',
-      bio: 'UI/UX designer with a passion for creating engaging user experiences.',
-      expertise: ['UI/UX Design', 'Wireframing', 'User Testing'],
-      social: {
-        linkedin: '#',
-        twitter: '#',
-        github: '#'
-      }
-    },
-    {
       name: 'Soraya Parvin',
       role: 'Frontend Developer',
-      image: '/soraya.png',
+      image: '/developer.jpg',
       bio: 'Frontend developer with a focus on building interactive web applications.',
       expertise: ['React', 'JavaScript', 'CSS'],
       social: {
