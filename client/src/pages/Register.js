@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation, NavLink } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "../context/ThemeContext";
 import {
@@ -7,28 +8,31 @@ import {
   EyeSlashIcon,
   ShieldCheckIcon,
 } from "@heroicons/react/24/outline";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { useAuth } from "../context/AuthContext";
 
-const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [totpCode, setTotpCode] = useState("");
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+const Register = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {},
+  });
   const [showPassword, setShowPassword] = useState(false);
   const [requires2FA, setRequires2FA] = useState(false);
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
   const navigate = useNavigate();
   const { isDarkMode } = useTheme();
-  const { setUser } = useAuth();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const onSubmit = async (data) => {
     setError("");
     setIsLoading(true);
 
     try {
-      const response = await fetch("http://localhost:5000/api/auth/login", {
+      const response = await fetch("http://localhost:5000/api/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -36,33 +40,25 @@ const Login = () => {
         },
         credentials: "include",
         body: JSON.stringify({
-          email: email.trim(),
-          password,
-          ...(requires2FA ? { totpCode } : {}),
+          userName: data.name,
+          email: data.email.trim(),
+          password: data.password,
+          ...(requires2FA ? { totpCode: data.totpCode } : {}),
         }),
       });
 
-      console.log(response);
-
-      if (response.status === 429) {
-        return toast.error("Too many login attempts. Try again in 15 minutes");
-      }
-
-      const data = await response.json();
+      const resData = await response.json();
 
       if (!response.ok) {
-        return toast.error(data?.message || "something went wrong");
+        throw new Error(resData.message || "Login failed");
       }
 
-      toast.success("Check your email for the code");
+      toast.success("Register Successful, Please Login");
 
-      setUser(data?.user);
-
-      // Store the token and user data
-      navigate("/two-factor-verify");
+      navigate("/login");
     } catch (err) {
       console.error("Login error:", err);
-      setError(err || "Failed to connect to server. Please try again.");
+      setError(err.message || "Failed to connect to server. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -70,7 +66,7 @@ const Login = () => {
 
   return (
     <div
-      className={`min-h-screen flex mt-10 items-center justify-center py-12 px-4 sm:px-6 lg:px-8 ${
+      className={`min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 ${
         isDarkMode
           ? "bg-gray-900"
           : "bg-gradient-to-br from-indigo-50 via-white to-purple-50"
@@ -93,10 +89,10 @@ const Login = () => {
               <ShieldCheckIcon className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
             </motion.div>
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
-              Login
+              Register
             </h2>
             <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-              Sign in to access the dashboard
+              Please fill necessary information to register
             </p>
           </div>
 
@@ -115,7 +111,8 @@ const Login = () => {
             )}
           </AnimatePresence>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            {/* Email Field */}
             <div>
               <label
                 htmlFor="email"
@@ -126,17 +123,30 @@ const Login = () => {
               <div className="mt-1">
                 <input
                   id="email"
-                  name="email"
                   type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:bg-gray-700 dark:text-white"
-                  placeholder="enter your email"
+                  {...register("email", {
+                    required: "Email is required",
+                    pattern: {
+                      value: /\S+@\S+\.\S+/,
+                      message: "Enter a valid email",
+                    },
+                  })}
+                  className={`appearance-none block w-full px-3 py-2 border ${
+                    errors.email
+                      ? "border-red-500"
+                      : "border-gray-300 dark:border-gray-600"
+                  } rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:bg-gray-700 dark:text-white`}
+                  placeholder="admin@example.com"
                 />
+                {errors.email && (
+                  <p className="text-xs text-red-500 mt-1">
+                    {errors.email.message}
+                  </p>
+                )}
               </div>
             </div>
 
+            {/* Password Field */}
             <div>
               <label
                 htmlFor="password"
@@ -147,12 +157,24 @@ const Login = () => {
               <div className="mt-1 relative">
                 <input
                   id="password"
-                  name="password"
                   type={showPassword ? "text" : "password"}
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:bg-gray-700 dark:text-white"
+                  {...register("password", {
+                    required: "Password is required",
+                    minLength: {
+                      value: 8,
+                      message: "Password must be at least 8 characters long",
+                    },
+                    pattern: {
+                      value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/,
+                      message:
+                        "Password must contain at least 1 uppercase, 1 lowercase, 1 digit, and 1 special character",
+                    },
+                  })}
+                  className={`appearance-none block w-full px-3 py-2 border ${
+                    errors.password
+                      ? "border-red-500"
+                      : "border-gray-300 dark:border-gray-600"
+                  } rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:bg-gray-700 dark:text-white`}
                   placeholder="••••••••"
                 />
                 <button
@@ -167,8 +189,14 @@ const Login = () => {
                   )}
                 </button>
               </div>
+              {errors.password && (
+                <p className="text-xs text-red-500 mt-1">
+                  {errors.password.message}
+                </p>
+              )}
             </div>
 
+            {/* 2FA Field */}
             {requires2FA && (
               <motion.div
                 initial={{ opacity: 0, height: 0 }}
@@ -176,23 +204,27 @@ const Login = () => {
                 exit={{ opacity: 0, height: 0 }}
               >
                 <label
-                  htmlFor="totp"
+                  htmlFor="totpCode"
                   className="block text-sm font-medium text-gray-700 dark:text-gray-300"
                 >
                   Two-Factor Authentication Code
                 </label>
                 <div className="mt-1">
                   <input
-                    id="totp"
-                    name="totp"
+                    id="totpCode"
                     type="text"
-                    required
-                    value={totpCode}
-                    onChange={(e) => setTotpCode(e.target.value)}
+                    maxLength="6"
+                    {...register("totpCode", {
+                      required: "2FA Code is required",
+                    })}
                     className="appearance-none block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:bg-gray-700 dark:text-white"
                     placeholder="Enter 6-digit code"
-                    maxLength="6"
                   />
+                  {errors.totpCode && (
+                    <p className="text-xs text-red-500 mt-1">
+                      {errors.totpCode.message}
+                    </p>
+                  )}
                 </div>
               </motion.div>
             )}
@@ -231,16 +263,16 @@ const Login = () => {
                 ) : requires2FA ? (
                   "Verify Code"
                 ) : (
-                  "Sign In"
+                  "Sign Up"
                 )}
               </motion.button>
             </div>
           </form>
           <div className="mt-3 text-center">
-            <NavLink to={"/register"}>
-              don't have a acccount?{" "}
+            <NavLink to={"/login"}>
+              already have an account?{" "}
               <span className="underline text-[#3784cb] font-semibold">
-                Register
+                Login
               </span>
             </NavLink>
           </div>
@@ -250,4 +282,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
