@@ -11,6 +11,7 @@ import {
   CpuChipIcon,
   BeakerIcon
 } from '@heroicons/react/24/outline';
+import Testimonial from '../components/Testimonial';
 
 const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -299,7 +300,30 @@ const Home = () => {
                 ))}
               </div>
             </div>
-          </motion.section>          {/* Newsletter Section */}
+          </motion.section>  
+
+                {/* Testimonial Section....... */}
+                  {/* Newsletter Section */}
+          <motion.section
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={containerVariants}
+            className="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden"
+          >
+            <div className="max-w-3xl mx-auto text-center relative z-10">
+              <motion.div
+                variants={itemVariants}
+                className="bg-white/5 backdrop-blur-md p-8 md:p-12 rounded-2xl"
+              >
+                
+              <Testimonial></Testimonial>
+              </motion.div>
+            </div>
+             
+          </motion.section>
+          
+            {/* Newsletter Section */}
           <motion.section
             initial="hidden"
             whileInView="visible"
