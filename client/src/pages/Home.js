@@ -13,6 +13,12 @@ import {
 } from '@heroicons/react/24/outline';
 import Testimonial from '../components/Testimonial';
 
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+import Testimonial from '../components/Testimonial';
+
+
 const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
 
@@ -329,31 +335,67 @@ const Home = () => {
             className="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden"
           >
             <div className="max-w-3xl mx-auto text-center relative z-10">
-              <motion.div
-                variants={itemVariants}
-                className="bg-white/5 backdrop-blur-md p-8 md:p-12 rounded-2xl"
-              >
-                <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                  Stay Updated
-                </h2>
-                <p className="text-gray-300 mb-8">
-                  Subscribe to our newsletter for the latest tech insights and updates.
-                </p>
-                <form onSubmit={(e) => e.preventDefault()} className="flex flex-col sm:flex-row gap-4">
-                  <input
-                    type="email"
-                    placeholder="Enter your email"
-                    className="flex-1 px-6 py-3 bg-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500"
-                  />
-                  <button
-                    type="submit"
-                    className="px-8 py-3 bg-primary-500 hover:bg-primary-600 text-white rounded-lg transform transition hover:scale-105"
-                  >
-                    Subscribe
-                  </button>
-                </form>
-              </motion.div>
-            </div>
+             
+  
+    <motion.div
+      variants={itemVariants}
+      className="bg-white/10 backdrop-blur-lg p-8 md:p-12 rounded-2xl shadow-xl border border-white/20"
+    >
+      <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+        Stay Updated
+      </h2>
+      <p className="text-gray-300 mb-8">
+        Subscribe to our newsletter for the latest tech insights and updates.
+      </p>
+
+      <form
+        onSubmit={async (e) => {
+          e.preventDefault();
+          const email = e.target.email.value;
+
+          try {
+            const res = await fetch('http://localhost:3000/api/newsletter/subscribe', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ email }),
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+              toast.success('✅ Subscribed successfully!');
+              e.target.reset();
+            } else {
+              toast.warn(data.message || '⚠️ Subscription failed');
+            }
+          } catch (err) {
+            toast.error('❌ Server error. Please try again later.');
+            console.error(err);
+          }
+        }}
+        className="flex flex-col sm:flex-row gap-4"
+      >
+        <input
+          name="email"
+          type="email"
+          required
+          placeholder="Enter your email"
+          className="flex-1 px-5 py-3 bg-white/20 border border-white/30 text-white placeholder-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 transition-all"
+        />
+        <button
+          type="submit"
+          className="px-8 py-3 bg-indigo-500 hover:bg-indigo-600 text-white font-semibold rounded-lg transition-all hover:scale-105 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-400"
+        >
+          Subscribe
+        </button>
+      </form>
+    </motion.div>
+  </div>
+  <ToastContainer position="bottom-right" autoClose={4000} hideProgressBar={false} />
+
+          
             {/* Decorative background elements */}
             <div className="absolute inset-0 bg-gradient-to-r from-primary-500/20 to-secondary-500/20 -z-10" />
             <motion.div
