@@ -318,19 +318,50 @@ const Home = () => {
                 <p className="text-gray-300 mb-8">
                   Subscribe to our newsletter for the latest tech insights and updates.
                 </p>
-                <form onSubmit={(e) => e.preventDefault()} className="flex flex-col sm:flex-row gap-4">
-                  <input
-                    type="email"
-                    placeholder="Enter your email"
-                    className="flex-1 px-6 py-3 bg-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500"
-                  />
-                  <button
-                    type="submit"
-                    className="px-8 py-3 bg-primary-500 hover:bg-primary-600 text-white rounded-lg transform transition hover:scale-105"
-                  >
-                    Subscribe
-                  </button>
-                </form>
+                <form
+  onSubmit={async (e) => {
+    e.preventDefault();
+    const email = e.target.email.value;
+
+    try {
+      const res = await fetch('http://localhost:3000/api/newsletter/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        alert('✅ Subscribed successfully!');
+        e.target.reset();
+      } else {
+        alert(`⚠️ ${data.message || 'Subscription failed'}`);
+      }
+    } catch (err) {
+      alert('❌ Server error. Please try again later.');
+      console.error(err);
+    }
+  }}
+  className="flex flex-col sm:flex-row gap-4"
+>
+  <input
+    name="email"
+    type="email"
+    required
+    placeholder="Enter your email"
+    className="flex-1 px-6 py-3 bg-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500"
+  />
+  <button
+    type="submit"
+    className="px-8 py-3 bg-primary-500 hover:bg-primary-600 text-white rounded-lg transform transition hover:scale-105"
+  >
+    Subscribe
+  </button>
+</form>
+
               </motion.div>
             </div>
             {/* Decorative background elements */}
