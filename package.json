@@ -4,9 +4,13 @@
     "express-validator": "^7.2.1",
     "framer-motion": "^12.15.0",
     "multer": "^1.4.5-lts.2",
-    "nodemailer": "^6.10.1"
+    "nodemailer": "^6.10.1",
+    "react-scripts": "^5.0.1",
+    "react-scroll": "^1.9.3"
   },
   "devDependencies": {
-    "@tailwindcss/aspect-ratio": "^0.4.2"
+    "@tailwindcss/aspect-ratio": "^0.4.2",
+    "parcel": "^2.15.2",
+    "vite": "^6.3.5"
   }
 }
