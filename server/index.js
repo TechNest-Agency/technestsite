@@ -24,6 +24,8 @@ app.get('/test', (req, res) => {
 
 // Auth routes
 app.use('/api/auth', require('./routes/auth'));
+// Newsletter routes
+app.use('/api/newsletter', require('./routes/newsletter'));
 
 // Connect to MongoDB
 console.log('Connecting to MongoDB...');
