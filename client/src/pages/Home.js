@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Typewriter from 'typewriter-effect';
-import { 
+import {
   ArrowRightIcon,
   CodeBracketIcon,
   UserGroupIcon,
@@ -56,7 +56,7 @@ const Home = () => {
     { number: '50+', label: 'Happy Clients', icon: UserGroupIcon },
     { number: '15+', label: 'Awards Won', icon: TrophyIcon },
   ];
-// Stats data
+  // Stats data
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -118,7 +118,7 @@ const Home = () => {
             </div>
 
             <div className="relative z-10 max-w-7xl mx-auto text-center">
-              <motion.h1 
+              <motion.h1
                 variants={itemVariants}
                 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-8"
               >
@@ -134,14 +134,14 @@ const Home = () => {
                 />
               </motion.h1>
 
-              <motion.p 
+              <motion.p
                 variants={itemVariants}
                 className="text-lg md:text-xl text-gray-300 mb-12 max-w-3xl mx-auto px-4"
               >
                 We create cutting-edge digital solutions that help businesses thrive in the modern world.
               </motion.p>
 
-              <motion.div 
+              <motion.div
                 variants={itemVariants}
                 className="flex flex-col sm:flex-row gap-4 justify-center"
               >
@@ -163,7 +163,7 @@ const Home = () => {
 
             {/* Floating Tech Badges */}
             <div className="absolute bottom-10 left-0 right-0 overflow-hidden">
-              <motion.div 
+              <motion.div
                 initial={{ x: -1000 }}
                 animate={{ x: 1000 }}
                 transition={{
@@ -221,7 +221,7 @@ const Home = () => {
             className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-900/50"
           >
             <div className="max-w-7xl mx-auto">
-              <motion.h2 
+              <motion.h2
                 variants={itemVariants}
                 className="text-3xl md:text-4xl font-bold text-white text-center mb-12"
               >
@@ -300,30 +300,27 @@ const Home = () => {
                 ))}
               </div>
             </div>
-          </motion.section>  
+          </motion.section>
 
-                {/* Testimonial Section....... */}
-                  {/* Newsletter Section */}
+          {/* Testimonial Section....... */}
           <motion.section
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={containerVariants}
-            className="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden"
+            className="py-14 md:py-20 relative overflow-hidden"
           >
-            <div className="max-w-3xl mx-auto text-center relative z-10">
+            <div className="max-w-7xl mx-auto text-center relative z-10">
               <motion.div
                 variants={itemVariants}
-                className="bg-white/5 backdrop-blur-md p-8 md:p-12 rounded-2xl"
               >
-                
-              <Testimonial></Testimonial>
+                <Testimonial></Testimonial>
               </motion.div>
             </div>
-             
+
           </motion.section>
-          
-            {/* Newsletter Section */}
+
+          {/* Newsletter Section */}
           <motion.section
             initial="hidden"
             whileInView="visible"
